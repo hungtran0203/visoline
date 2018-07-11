@@ -1,8 +1,12 @@
+import _ from 'lodash';
 class Stream {
   bufferSize = 10;
   buffers = [];
   subscribers = [];
   value = null;
+  constructor(opts) {
+    this.value = _.get(opts, 'init', null);
+  }
   next(value) {
     // this.buffers.push(value);
     this.value = value;
@@ -24,7 +28,7 @@ class Stream {
 
 const streams = {};
 
-export const getStream = (name) => {
-  streams[name] = streams[name] || new Stream();
+export const getStream = (name, opts) => {
+  streams[name] = streams[name] || new Stream(opts);
   return streams[name];
 };

@@ -1,4 +1,23 @@
 .container {
   max-width: 800px;
   margin: 40px auto;
+  height: 800px;
+  border: 1px solid whitesmoke;
+}
+
+
+.box {
+  border: 1px dashed black;
+  min-height: 40px;
+  min-width: 40px;
+  padding: 5px;
+}
+
+.active {
+  border-color: blue;
+}
+
+.actions {
+  position: absolute;
+  top: 300px;
 }

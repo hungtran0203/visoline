@@ -6,7 +6,8 @@ export const withStreams = (config) => BaseComponent => {
     const props = {};
     Object.keys(config).map(prop => {
       const streamName = typeof config[prop] === 'function' ? config[prop](ownerProps) : config[prop];
-      props[prop] = getStream(streamName);
+      const args = Array.isArray(streamName) ? streamName : [streamName];
+      props[prop] = getStream(...args);
       return prop;
     });
     return props;
