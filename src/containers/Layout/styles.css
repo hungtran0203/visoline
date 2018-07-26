@@ -21,3 +21,7 @@
   position: absolute;
   top: 300px;
 }
+
+:global(.isActivation) {
+  border: 1px solid blue !important;
+}

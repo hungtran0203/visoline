@@ -1,0 +1,19 @@
+{
+  "presets": [
+    "react-app"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src"
+        ],
+        "alias": {
+          "test": "./test",
+          "underscore": "lodash"
+        }
+      }
+    ]
+  ]
+}

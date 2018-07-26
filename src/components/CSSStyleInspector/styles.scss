@@ -1,0 +1,67 @@
+.container {
+  border: 1px solid black;
+
+  & .layoutView {
+    margin: 20px;
+    font-size: 10px;
+
+    & .margin {
+      border: 0.5px dashed black;
+      background-color: wheat;
+    }
+
+    & .border {
+      border: 0.5px solid black;
+      background-color: rgb(209, 176, 114);
+    }
+
+    & .padding {
+      border: 0.5px dashed black;
+      background-color: rgb(123, 189, 37);
+    }
+
+    & .content {
+      padding: 10px 0px;
+      border: 0.5px solid black;
+      background-color: rgb(59, 88, 143);
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  & .boxing {
+    position: relative;
+
+    & .label {
+      position: absolute;
+      top: 0px;
+      left: 5px;
+    }
+
+    & .left,
+    & .right {
+      transform: rotate(90deg);
+      padding: 0;
+    }
+
+    & .top,
+    & .bottom {
+      padding: 0px;
+    }
+
+    & .center {
+    }
+
+    & .centering {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  & .input {
+    &.text {
+      width: 100%;
+    }
+  }
+}
