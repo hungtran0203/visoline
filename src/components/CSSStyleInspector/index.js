@@ -8,7 +8,7 @@ import { compose, withState, branch, withHandlers,
 import KEYCODES from 'libs/constants/keycodes';
 import { useChangedProps, withStreams } from 'libs/hoc';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
-import { storage } from 'libs/builder';
+import * as storage from 'libs/storage';
 
 export const CSSStyleInspector = ({ element }) => {
   const cs = window.getComputedStyle(element,null);

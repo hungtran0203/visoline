@@ -25,3 +25,10 @@
 :global(.isActivation) {
   border: 1px solid blue !important;
 }
+
+.btn {
+  padding: 10px;
+  border: solid 0.1px grey;
+  margin: 5px;
+  cursor: pointer;
+}

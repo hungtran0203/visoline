@@ -9,7 +9,7 @@ export const withStreamProps = (config) => BaseComponent => {
     withStreams(config),
     lifecycle({
       componentWillMount() {
-        const refresh = () => this.setState({ refresh: true });
+        const refresh = () => this.setState({ refresh: {} });
         streamProps.map(prop => {
           unsub[prop] = this.props[prop].subscribe(refresh);
           return prop;

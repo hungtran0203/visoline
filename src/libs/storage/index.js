@@ -35,6 +35,13 @@ export const updateItem = (item) => {
   }
 };
 
+export const deleteItem = (item) => {
+  const itemIm = getItem(item);
+  const itemId = itemIm.get('id');
+  delete storage[itemId];
+  subscribers[itemId] = [];
+};
+
 export const subscribe = ({ item }) => (listener) => {
   const itemId = getItemId(item);
   subscribers[itemId] = subscribers[itemId] || [];
@@ -43,4 +50,44 @@ export const subscribe = ({ item }) => (listener) => {
     subscribers[itemId].splice(subscribers[itemId].indexOf(listener), 1);
   };
   return disposer;
+};
+
+export const getParent = (item) => {
+  const itemIm = getItem(item);
+  if (itemIm) {
+    const parentId = itemIm.get('parentId');
+    if (parentId) {
+      return getItem(parentId);
+    }  
+  }
+};
+
+export const getChild = (item, nChild = 0 ) => {
+  const itemIm = getItem(item);
+  if (itemIm) {
+    const children = itemIm.get('children');
+    if (children) {
+      const childId = children.get(nChild);
+      if (isItemId(childId)) {
+        return getItem(childId);
+      }
+    }  
+  }
+};
+
+export const getSiblings = (item, dir = 1 ) => {
+  const itemIm = getItem(item);
+  const parentIm = getParent(item);
+  let siblings = [];
+  if (itemIm && parentIm) {
+    const children = parentIm.get('children');
+    if (children) {
+      const index = children.indexOf(getItemId(itemIm));
+      if (index >= 0) {
+        const range = dir > 0 ? [ index + 1, index + dir + 1 ] : [ index + dir, index ];
+        siblings = children.slice(...range).toJS();
+      }
+    }  
+  }
+  return siblings;
 };

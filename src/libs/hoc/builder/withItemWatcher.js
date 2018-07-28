@@ -1,4 +1,4 @@
-import { compose, lifecycle, withHandlers, withState } from 'recompose';
+import { compose, lifecycle, withHandlers, withState, withPropsOnChange } from 'recompose';
 import { subscribe } from 'libs/storage';
 import { useChangedProps, omitProps } from 'libs/hoc';
 
@@ -28,5 +28,5 @@ export const withItemWatcher = () => compose(
     },
   }),
   useChangedProps(['item', PROPS.ITEM_VALUE]),
-  omitProps(Object.keys(PROPS)),
+  omitProps(Object.values(PROPS)),
 );

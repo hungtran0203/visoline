@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './styles.css';
+import styles from './styles.scss';
 import classnames from 'classnames';
 import * as Components from 'reflexbox';
 import { compose, withHandlers, withProps, branch, renderNothing } from 'recompose';
@@ -9,8 +9,8 @@ import uuid from 'uuid';
 import invariant from 'invariant';
 import _ from 'lodash';
 import * as storage from 'libs/storage';
-
-import { withActivation, ACTIVE_ELEMENT_STREAM, ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
+import * as handlers from './handlers';
+import { withActivation, ACTIVE_ELEMENT_STREAM, ACTIVE_ITEM_STREAM, Navigator } from 'libs/hoc/editor';
 import { withItemWatcher, withItemBuilder, getItemBuilder } from 'libs/hoc/builder';
 import CSSStyleInspector from 'components/CSSStyleInspector';
 
@@ -30,27 +30,38 @@ const RootItemComponent = compose(
   )
 )(({ itemBuilder, item }) => itemBuilder()(item));
 
-export const Layout = ({ doPush, doInsert, newRoot, rootItem }) => {
-  console.log('rootItem', rootItem);
-  return (
-    <Flex>
-      <Box auto>
-        <div  className={classnames(styles.container)}>
-          <Flex>
-            <RootItemComponent item={rootItem} />
-          </Flex>
-        </div>
-      </Box>
-      <Flex w={200} justify="space-between" column>
+export class Layout extends React.Component {
+  componentWillMount() {
+    this._nav = new Navigator(this.props.activeItem$);
+  }
+
+  render() {
+    const { doPush, doInsert, doDelete, toColum, toRow, newRoot, rootItem } = this.props;
+    return (
+      <div>
         <Flex>
-          <Box auto className={styles.btn} onClick={newRoot}>New</Box>
-          <Box auto className={styles.btn} onClick={doPush}>Span</Box>
-          <Box auto className={styles.btn} onClick={doInsert}>Insert</Box>
+          <Box className={styles.btn} onClick={newRoot}>New</Box>
+          <Box className={styles.btn} onClick={doPush}>Span</Box>
+          <Box className={styles.btn} onClick={doInsert}>Insert</Box>
+          <Box className={styles.btn} onClick={doDelete}>Delete</Box>
+          <Box className={styles.btn} onClick={toColum}>Col</Box>
+          <Box className={styles.btn} onClick={toRow}>Row</Box>
         </Flex>
-        <ActiveBoxPanel />
-      </Flex>
-    </Flex>
-  );
+        <Flex>
+          <Box auto>
+            <div  className={classnames(styles.container)}>
+              <Flex>
+                <RootItemComponent item={rootItem} />
+              </Flex>
+            </div>
+          </Box>
+          <Flex w={200} justify="space-between" column>
+            <ActiveBoxPanel />
+          </Flex>
+        </Flex>
+      </div>
+    );
+  }
 }
 
 const ActiveBoxPanel = compose(
@@ -93,34 +104,6 @@ const ActiveBoxPanel = compose(
 const DATA_STREAM = 'data.stream';
 const ROOT_ITEM_STREAM = 'data.root.stream';
 
-export const initBox = ({ parentId }) => {
-  return fromJS({
-    id: uuid(),
-    parentId,
-    type: 'Box',
-    className: classnames(styles.box),
-    children: [],
-  });
-};
-
-export const newRoot = (opts) => {
-  const newBox = initBox({ ...opts, parentId: null });
-  storage.updateItem(newBox);
-  return newBox;
-};
-
-export const insertBox = (parentItem, opts) => {
-  const parent = storage.isItemId(parentItem) ? storage.getItemFromId(parentItem) : parentItem;
-  invariant(parent, `Parent Box (${parentItem}) does not exists`);
-  const parentId = storage.isItemId(parentItem) ? parentItem : parent.get('id');
-  const newBox = initBox({ ...opts, parentId });
-  const children = parent.get('children', fromJS([])).push(storage.getItemId(newBox));
-  storage.updateItem(newBox);
-  const newParent = parent.set('children', children);
-  storage.updateItem(newParent);
-  return [newBox, newParent];
-};
-
 export default compose(
   withStreamProps({
     rootItem: [ROOT_ITEM_STREAM],
@@ -134,23 +117,11 @@ export default compose(
     setActiveItem: ({ activeItem$ }) => (activeItem) => activeItem$.set(activeItem),
   }),
   withHandlers({
-    newRoot: ({ setRootItem, setActiveItem }) => () => {
-      const root = newRoot();
-      setRootItem(root);
-      setActiveItem(root);
-      return root;
-    },
-    doPush: ({ activeItem$ }) => () => {
-      const activeItem = activeItem$.get();
-      if(activeItem && activeItem.get('parentId')) {
-        const parentBox = storage.getItemFromId(activeItem.get('parentId'), true);
-        insertBox(parentBox.id, {});
-      }
-    },
-    doInsert: ({ activeItem$ }) => () => {
-      const activeItem = activeItem$.get();
-      const [newItem, newParent ] = insertBox(activeItem, {});
-      activeItem$.set(newItem);
-    }
+    newRoot: handlers.newRoot,
+    doPush: handlers.doPush,
+    doInsert: handlers.doInsert,
+    doDelete: handlers.doDelete,
+    toColum: handlers.toColum,
+    toRow: handlers.toRow,
   }),
 )(Layout);

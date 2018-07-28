@@ -1,6 +1,6 @@
 import { compose, withProps } from 'recompose';
 import classnames from 'classnames';
-import { storage } from 'libs/builder';
+import * as storage from 'libs/storage';
 import { omitProps, withStreams, withStreamProps } from 'libs/hoc';
 
 export const ACTIVE_ITEM_STREAM = 'activeItem.stream';
@@ -25,12 +25,6 @@ export const withActivation = (activationClass='isActivation') => {
           e.stopPropagation();
           activationId$.set(itemIm.get('id'));
           return false;
-        },
-        ref: (ref) => {
-          allRefs[itemIm.get('id')] = ref;
-          if (itemIm === activationIm) {
-            activationEle$.set(ref);
-          }
         },
       };
     }),
