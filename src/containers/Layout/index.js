@@ -10,7 +10,9 @@ import invariant from 'invariant';
 import _ from 'lodash';
 import * as storage from 'libs/storage';
 import * as handlers from './handlers';
-import { withActivation, ACTIVE_ELEMENT_STREAM, ACTIVE_ITEM_STREAM, Navigator } from 'libs/hoc/editor';
+import { withActivation, ACTIVE_ELEMENT_STREAM, ACTIVE_ITEM_STREAM, ITEM_SELECTION_STREAM,
+  Navigator,
+} from 'libs/hoc/editor';
 import { withItemWatcher, withItemBuilder, getItemBuilder } from 'libs/hoc/builder';
 import CSSStyleInspector from 'components/CSSStyleInspector';
 
@@ -38,7 +40,7 @@ export class Layout extends React.Component {
   }
 
   render() {
-    const { doPush, doInsert, doDelete, toColum, toRow, newRoot, doSave, rootItem } = this.props;
+    const { doPush, doInsert, doDelete, toColum, toRow, newRoot, doSave, rootItem, doGroup, doUnGroup } = this.props;
     return (
       <div>
         <Flex>
@@ -51,6 +53,8 @@ export class Layout extends React.Component {
           <Box className={styles.btn} onClick={doDelete}>Delete</Box>
           <Box className={styles.btn} onClick={toColum}>Col</Box>
           <Box className={styles.btn} onClick={toRow}>Row</Box>
+          <Box className={styles.btn} onClick={doGroup}>Group</Box>
+          <Box className={styles.btn} onClick={doUnGroup}>UnGroup</Box>
         </Flex>
         <Flex>
           <Box auto>
@@ -116,6 +120,7 @@ export default compose(
   withStreams({
     rootItem$: [ROOT_ITEM_STREAM, { init: null }],
     activeItem$: [ACTIVE_ITEM_STREAM, { init: null }],
+    selectedItems$: [ITEM_SELECTION_STREAM, { init: [] }],
   }),
   withHandlers({
     setRootItem: ({ rootItem$ }) => (rootItem) => rootItem$.set(rootItem),
@@ -130,5 +135,7 @@ export default compose(
     toRow: handlers.toRow,
     doSave: handlers.doSave,
     doLoad: handlers.doLoad,
+    doGroup: handlers.doGroup,
+    doUnGroup: handlers.doUnGroup,
   }),
 )(Layout);

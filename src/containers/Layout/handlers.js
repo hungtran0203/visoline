@@ -5,6 +5,7 @@ import _ from 'lodash';
 import * as storage from 'libs/storage';
 import styles from './styles.scss';
 import classnames from 'classnames';
+import * as listHelper from 'libs/immutable/list';
 
 export const initBox = ({ parentId }) => {
   return fromJS({
@@ -105,4 +106,63 @@ export const toRow = ({ activeItem$ }) => () => {
   const itemIm = storage.getItem(activeItem);
   const newItem = itemIm.set('type', 'Box');
   storage.updateItem(newItem);
+};
+
+export const doGroup = ({ activeItem$, selectedItems$ }) => () => {
+  const activeItem = activeItem$.get();
+  const selectedItems = selectedItems$.get() || [];
+  const itemIm = storage.getItem(activeItem);
+  // items must with same parent to be able grouping
+  let canGroup = true;
+  if (itemIm && selectedItems.length) {
+    const parentIm = storage.getParent(itemIm);
+    const groupItemIds = [itemIm.get('id')];
+    if (parentIm) {
+      selectedItems.map(selectedItem => {
+        const selectedItemIm = storage.getItem(selectedItem);
+        const pIm = storage.getParent(selectedItem);
+        if(!pIm || pIm.get('id') !== parentIm.get('id')) {
+          canGroup = false;
+        } else {
+          groupItemIds.push(selectedItemIm.get('id'));
+        }
+      });
+      if (canGroup) {
+        const groupItemIm = initBox({ parentId: parentIm.get('id') }).set('children', fromJS(groupItemIds));
+        // remove groupItems from parent children list
+        let children = parentIm.get('children');
+        children = listHelper.replace(children, groupItemIds[0], groupItemIm.get('id'));
+        children = listHelper.remove(children, groupItemIds);
+        const newParentIm = parentIm.set('children', children);
+        // init new parent item
+        storage.updateItem(groupItemIm);
+        // update original parent item
+        storage.updateItem(newParentIm);
+        // update groupItems
+        groupItemIds.map(gItemId => {
+          const gItemIm = storage.getItem(gItemId);
+          storage.updateItem(gItemIm.set('parentId', groupItemIm.get('id')));
+        })
+      }  
+    }
+  }
+};
+
+export const doUnGroup = ({ activeItem$ }) => () => {
+  const activeItem = activeItem$.get();
+  const itemIm = storage.getItem(activeItem);
+  if (itemIm) {
+    const parentIm = storage.getParent(itemIm);
+    if (parentIm && itemIm.get('children').toJS().length) {
+      const children = listHelper.replace(parentIm.get('children'), itemIm.get('id'), ...itemIm.get('children').toJS());
+      const newParent = parentIm.set('children', children);
+      storage.updateItem(newParent);
+      itemIm.get('children').map(childId => {
+        const childIm = storage.getItem(childId);
+        const newChildIm = childIm.set('parentId', newParent.get('id'));
+        storage.updateItem(newChildIm);
+      });
+      storage.deleteItem(itemIm);
+    }
+  }
 };

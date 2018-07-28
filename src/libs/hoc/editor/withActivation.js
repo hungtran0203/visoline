@@ -7,7 +7,7 @@ import { CTRL_KEY_STATE } from 'libs/hoc/editor';
 
 export const ACTIVE_ITEM_STREAM = 'activeItem.stream';
 export const ACTIVE_ELEMENT_STREAM = 'activeElement.stream';
-export const MULT_SELECT_ELEMENT_STREAM = 'multSelectElement.stream';
+export const ITEM_SELECTION_STREAM = 'multSelectItem.stream';
 
 const allRefs = {};
 
@@ -17,7 +17,7 @@ export const withActivation = (activationClass='isActivation', isSelectedClass='
       activationId$: [ACTIVE_ITEM_STREAM, { init: null }],
       activationEle$: [ACTIVE_ELEMENT_STREAM, { init: null }],
       ctrlKey$: CTRL_KEY_STATE,
-      selection$: [MULT_SELECT_ELEMENT_STREAM],
+      selection$: [ITEM_SELECTION_STREAM],
     }),
     withStreamProps({ activationId: [ACTIVE_ITEM_STREAM, { init: null }] }),  
     withProps(({ className, item, activationId, selection$ }) => {
@@ -44,12 +44,17 @@ export const withActivation = (activationClass='isActivation', isSelectedClass='
           const selection = selection$.get() || [];
           selection.push(prevItem);
           selection$.set(selection);
+        } else {
+          selection$.set([]);
         }
 
         activationId$.set(itemIm.get('id'));
         return false;
       },
-    
+      onMouseEnter: ({ item }) => () => {
+        // const itemIm = storage.getItem(item);
+        // console.log(storage.buildTree(itemIm));
+      }
     }),
     omitProps(['activationId', 'activationId$', 'activationEle$', 'ctrlKey$', 'selection$']),
   )

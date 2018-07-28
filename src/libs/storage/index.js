@@ -16,7 +16,7 @@ export const getItemId = (itemId) => {
 
 export const getItemFromId = (itemId, toJS=0) => {
   const item = _.get(storage, itemId);
-  invariant(item, `Item (${itemId}) does not exists`);
+  if (!item) return null;
   return toJS ? item.toJS() : item;
 };
 
@@ -103,4 +103,19 @@ export const getSiblings = (item, dir = 1 ) => {
     }  
   }
   return siblings;
+};
+
+export const buildTree = (item) => {
+  const itemIm = getItem(item);
+  if (!itemIm) return null;
+  const tree = {};
+  const children = itemIm.get('children').toJS();
+  let subTree = [];
+  if (children.length) {
+    children.map(child => {
+      subTree.push(buildTree(child));
+    })
+  }
+  tree[itemIm.get('id')] = subTree;
+  return tree;
 };
