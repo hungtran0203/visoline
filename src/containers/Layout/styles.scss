@@ -1,3 +1,11 @@
+:root {
+  --primary-color: blue;
+  --secondary-color: green;
+  --alert-color: red;
+  --info-color: yellow;
+  --success-color: purple;
+}
+
 .container {
   max-width: 800px;
   margin: 40px auto;
@@ -23,7 +31,11 @@
 }
 
 :global(.isActivation) {
-  border: 1px solid blue !important;
+  border: 1px solid var(--primary-color) !important;
+}
+
+:global(.isSelected) {
+  border: 1px solid var(--secondary-color) !important;
 }
 
 .btn {

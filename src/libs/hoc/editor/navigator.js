@@ -1,5 +1,6 @@
 import { KEYCODES } from 'libs/constants';
 import * as storage from 'libs/storage';
+import { getStream } from 'libs/hoc';
 /*
   all navigation action define here
 */
@@ -72,20 +73,34 @@ const matching = (event) => {
   return res;
 };
 
+export const CTRL_KEY_STATE = 'navigator.ctrlKey.state';
+
 export class Navigator {
   constructor(activation$) {
     this.activation$ = activation$;
     document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('keyup', this.onKeyUp);
   }
 
   onKeyDown = (event) => {
     const { altKey, charCode, ctrlKey, keyCode, shiftKey } = event;
+    if(altKey) {
+      getStream(CTRL_KEY_STATE).set(altKey);
+    }
+
     const shortcodes = matching(event);
     shortcodes.map(handlerName => {
       if (typeof handlers[handlerName] === 'function') {
         handlers[handlerName](this.activation$)(event);
       }
     })
+  }
+
+  onKeyUp = (event) => {
+    const { altKey, charCode, ctrlKey, keyCode, shiftKey } = event;
+    if ([KEYCODES.ALT, KEYCODES.CTRL].indexOf(keyCode) >= 0) {
+      getStream(CTRL_KEY_STATE).set(false);
+    }
   }
 
 }
