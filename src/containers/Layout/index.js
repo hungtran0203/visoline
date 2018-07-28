@@ -33,14 +33,19 @@ const RootItemComponent = compose(
 export class Layout extends React.Component {
   componentWillMount() {
     this._nav = new Navigator(this.props.activeItem$);
+    const { doLoad } = this.props;
+    doLoad();
   }
 
   render() {
-    const { doPush, doInsert, doDelete, toColum, toRow, newRoot, rootItem } = this.props;
+    const { doPush, doInsert, doDelete, toColum, toRow, newRoot, doSave, rootItem } = this.props;
     return (
       <div>
         <Flex>
           <Box className={styles.btn} onClick={newRoot}>New</Box>
+          <Box className={styles.btn} onClick={doSave}>Save</Box>
+        </Flex>
+        <Flex>
           <Box className={styles.btn} onClick={doPush}>Span</Box>
           <Box className={styles.btn} onClick={doInsert}>Insert</Box>
           <Box className={styles.btn} onClick={doDelete}>Delete</Box>
@@ -123,5 +128,7 @@ export default compose(
     doDelete: handlers.doDelete,
     toColum: handlers.toColum,
     toRow: handlers.toRow,
+    doSave: handlers.doSave,
+    doLoad: handlers.doLoad,
   }),
 )(Layout);

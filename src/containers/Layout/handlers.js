@@ -45,6 +45,27 @@ export const deleteBox = (item) => {
   return [newParent];
 };
 
+export const doSave = ({ rootItem$ }) => () => {
+  const data = storage.toJS();
+  localStorage.setItem('visoline.storage', JSON.stringify(data));
+  // save rootItem
+  localStorage.setItem('visoline.rootItemId', storage.getItem(rootItem$.get()).get('id'));
+};
+
+export const doLoad = ({ rootItem$ }) => () => {
+  // load storage
+  const data = localStorage.getItem('visoline.storage');
+  if(data) {
+    storage.load(JSON.parse(data));
+  }
+  // load rootItem
+  const rootItemId = localStorage.getItem('visoline.rootItemId');
+  if (rootItemId) {
+    const rootItemIm = storage.getItem(rootItemId);
+    rootItem$.set(rootItemIm);  
+  }
+}
+
 export const newRoot =  ({ setRootItem, setActiveItem }) => () => {
   const root = newRootBox();
   setRootItem(root);

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import invariant from 'invariant';
+import { fromJS } from 'immutable';
 
 const storage = {};
 const subscribers = {};
@@ -9,6 +10,7 @@ export const isItemId = (itemId) => {
 };
 
 export const getItemId = (itemId) => {
+  if ( !itemId ) return null;
   return isItemId(itemId) ? itemId : itemId.get('id');
 }
 
@@ -20,7 +22,18 @@ export const getItemFromId = (itemId, toJS=0) => {
 
 export const getItem = (item, toJS=0) => {
   const itemId = getItemId(item);
+  if (!itemId) return null;
   return getItemFromId(itemId, toJS);
+};
+
+export const toJS = () => {
+  return fromJS(storage).toJS();
+};
+
+export const load = (data) => {
+  Object.keys(data).map(key => {
+    updateItem(fromJS(data[key]));
+  })
 };
 
 export const updateItem = (item) => {
