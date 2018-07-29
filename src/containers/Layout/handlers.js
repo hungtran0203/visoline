@@ -166,3 +166,12 @@ export const doUnGroup = ({ activeItem$ }) => () => {
     }
   }
 };
+
+export const changeBackground = ({ activeItem$ }) => (color) => {
+  const activeItem = activeItem$.get();
+  if (activeItem) {
+    const itemIm = storage.getItem(activeItem);
+    const newItemIm = itemIm.setIn(['style', 'backgroundColor'], color.hex);
+    storage.updateItem(newItemIm);
+  }
+};
