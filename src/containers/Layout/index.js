@@ -12,12 +12,16 @@ import * as storage from 'libs/storage';
 import * as handlers from './handlers';
 import * as selectors from './selectors';
 
+import testStyles from './test.scss';
+
+
 import { withActivation, ACTIVE_ELEMENT_STREAM, ACTIVE_ITEM_STREAM, ITEM_SELECTION_STREAM,
   Navigator,
 } from 'libs/hoc/editor';
 import { withItemWatcher, withItemBuilder, getItemBuilder } from 'libs/hoc/builder';
 import CSSStyleInspector from 'components/CSSStyleInspector';
 import ColorPicker from 'components/ColorPicker';
+import RatioBox from 'components/RatioBox';
 
 const { Flex, Box } = Components;
 
@@ -82,6 +86,15 @@ export class Layout extends React.Component {
     } = this.props;
     return (
       <div>
+        <div className={testStyles.container}>
+          <div className={classnames(testStyles.item, testStyles.item1)}>
+            <RatioBox ratio="4:3">
+              <img src="https://www.hotelquickly.com/11f85cdd1bc80d98f00c22698cd5883a.jpg" />
+            </RatioBox>
+          </div>
+          <div className={classnames(testStyles.item, testStyles.item2)}>7 8 9</div>
+          <div className={classnames(testStyles.item, testStyles.item5)}>5</div>
+        </div>
         <Flex>
           <Box className={styles.btn} onClick={newRoot}>New</Box>
           <Box className={styles.btn} onClick={doSave}>Save</Box>
