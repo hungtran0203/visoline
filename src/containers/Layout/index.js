@@ -14,6 +14,7 @@ import * as selectors from './selectors';
 
 import testStyles from './test.scss';
 
+import { DATA_STREAM, ROOT_ITEM_STREAM } from 'constants';
 
 import { withActivation, ACTIVE_ELEMENT_STREAM, ACTIVE_ITEM_STREAM, ITEM_SELECTION_STREAM,
   Navigator,
@@ -22,11 +23,10 @@ import { withItemWatcher, withItemBuilder, getItemBuilder } from 'libs/hoc/build
 import CSSStyleInspector from 'components/CSSStyleInspector';
 import ColorPicker from 'components/ColorPicker';
 import RatioBox from 'components/RatioBox';
+import StorageExplorer from 'components/StorageExplorer';
 
 const { Flex, Box } = Components;
 
-const DATA_STREAM = 'data.stream';
-const ROOT_ITEM_STREAM = 'data.root.stream';
 
 const withEditorHoc = compose(
   withStreamProps({
@@ -72,6 +72,7 @@ const RootItemComponent = compose(
   )
 )(({ itemBuilder, item }) => itemBuilder()(item));
 
+
 export class Layout extends React.Component {
   componentWillMount() {
     this._nav = new Navigator(this.props.activeItem$);
@@ -86,15 +87,20 @@ export class Layout extends React.Component {
     } = this.props;
     return (
       <div>
-        <div className={testStyles.container}>
-          <div className={classnames(testStyles.item, testStyles.item1)}>
-            <RatioBox ratio="4:3">
-              <img src="https://www.hotelquickly.com/11f85cdd1bc80d98f00c22698cd5883a.jpg" />
-            </RatioBox>
+        <Flex justify="space-between">
+          <div className={testStyles.container}>
+            <div className={classnames(testStyles.item, testStyles.item1)}>
+              <RatioBox ratio="4:3">
+                <img src="https://www.hotelquickly.com/11f85cdd1bc80d98f00c22698cd5883a.jpg" />
+              </RatioBox>
+            </div>
+            <div className={classnames(testStyles.item, testStyles.item2)}>7 8 9</div>
+            <div className={classnames(testStyles.item, testStyles.item5)}>5</div>
           </div>
-          <div className={classnames(testStyles.item, testStyles.item2)}>7 8 9</div>
-          <div className={classnames(testStyles.item, testStyles.item5)}>5</div>
-        </div>
+          <Box w={300}>
+            <StorageExplorer />
+          </Box>
+        </Flex>          
         <Flex>
           <Box className={styles.btn} onClick={newRoot}>New</Box>
           <Box className={styles.btn} onClick={doSave}>Save</Box>

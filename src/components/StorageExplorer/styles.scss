@@ -1,0 +1,12 @@
+@import '../../styles/variables.scss';
+
+.container {
+  padding: 5px 10px;
+  border: solid 1px var(--border-color);
+  margin-bottom: 5px;
+  cursor: pointer;
+
+  &.isActive {
+    background-color: var(--active-color);
+  }
+}

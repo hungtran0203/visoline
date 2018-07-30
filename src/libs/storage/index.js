@@ -119,3 +119,10 @@ export const buildTree = (item) => {
   tree[itemIm.get('id')] = subTree;
   return tree;
 };
+
+export const getItems = () => Object.keys(storage);
+
+export const isRootItem = (item) => {
+  const itemIm = getItem(item);
+  return itemIm && !getParent(itemIm);
+}
