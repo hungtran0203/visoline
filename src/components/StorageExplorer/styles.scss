@@ -1,12 +1,83 @@
 @import '../../styles/variables.scss';
 
 .container {
-  padding: 5px 10px;
-  border: solid 1px var(--border-color);
-  margin-bottom: 5px;
   cursor: pointer;
+  border-top: solid 1px #c5c5c5;
+  & .node {
+    &:nth-child(2n) {
+      background: #e8e8e8;
+    }
+    &:nth-child(2n+1) {
+      background: #eeedee;
+    }
+  }
+  & .panelSummary {
+    padding-right: 10px;
+    & .icon {
+      font-size: 20px;
+      &.primary {
+        color: var(--success-color);
+      }
+      &.muted {
+        color: var(--muted-color);
+      }
+    }
+    & .text {
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    & .prefixSpan {
+      flex: 0 0 30px;
+    }
+    & .append {
+      display: none;
+    }
+    &:hover {
+      & .append {
+        display: block;
+      }
+    }
+    & .expandIcon {
+      flex: 0 0 24px;
+      color: var(--muted-color);
+    }
+    &.isActive {
+      background-color: #5f91e0;
+      color: var(--white-color);
+      & .expandIcon {
+        color: var(--white-color);
+      }
+    }      
+  }
 
+}
+
+.row {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  &:nth-child(2n) {
+    background: #e8e8e8;
+  }
+  &:nth-child(2n+1) {
+    background: #eeedee;
+  }
+}
+
+.rootItem {
+  padding-inline-start: 20px;
   &.isActive {
-    background-color: var(--active-color);
+    background-color: #5f91e0;
+    color: var(--white-color);  
+  }
+}
+
+.wrapper {
+  & .header {
+    padding: 0 10px;
+    border-bottom: solid 1px var(--border-color);
+    border-top: solid 1px var(--border-color);
   }
 }

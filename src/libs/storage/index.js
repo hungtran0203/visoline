@@ -88,6 +88,13 @@ export const getChild = (item, nChild = 0 ) => {
   }
 };
 
+export const getChildren = (item) => {
+  const itemIm = getItem(item);
+  if (itemIm) {
+    return itemIm.get('children').toJS();
+  }  
+}
+
 export const getSiblings = (item, dir = 1 ) => {
   const itemIm = getItem(item);
   const parentIm = getParent(item);

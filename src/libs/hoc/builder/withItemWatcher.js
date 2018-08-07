@@ -10,7 +10,7 @@ const PROPS = {
 
 const disposers = new WeakMap();
 
-export const withItemWatcher = () => compose(
+export const withItemWatcher = (itemName='item') => compose(
   withHandlers({ [PROPS.SUBSCRIBE]: subscribe }),
   withState(PROPS.ITEM_VALUE, PROPS.UPDATE_ITEM, ''),
   lifecycle({
@@ -27,6 +27,6 @@ export const withItemWatcher = () => compose(
       }
     },
   }),
-  useChangedProps(['item', PROPS.ITEM_VALUE]),
+  useChangedProps([itemName, PROPS.ITEM_VALUE]),
   omitProps(Object.values(PROPS)),
 );

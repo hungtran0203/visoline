@@ -14,7 +14,7 @@
 }
 
 
-.box {
+.box, :global(.defaultBox) {
   border: 1px dashed black;
   min-height: 40px;
   min-width: 40px;
