@@ -3,3 +3,4 @@ export { getItemBuilder } from './getItemBuilder';
 export { withItemWatcher } from './withItemWatcher';
 export * from './withItemImOrNothing';
 export * from './withRootItem';
+export * from './withItem';

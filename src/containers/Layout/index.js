@@ -24,6 +24,7 @@ import CSSStyleInspector from 'components/CSSStyleInspector';
 import ColorPicker from 'components/ColorPicker';
 import RatioBox from 'components/RatioBox';
 import StorageExplorer from 'components/StorageExplorer';
+import PropsSelectors from 'components/PropsSelectors';
 
 const { Flex, Box } = Components;
 
@@ -97,6 +98,9 @@ export class Layout extends React.Component {
             <div className={classnames(testStyles.item, testStyles.item2)}>7 8 9</div>
             <div className={classnames(testStyles.item, testStyles.item5)}>5</div>
           </div>
+          <Box w={300}>
+            <PropsSelectors />
+          </Box>
           <Box w={300}>
             <StorageExplorer />
           </Box>
