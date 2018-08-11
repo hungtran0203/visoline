@@ -22,6 +22,7 @@ import { Set } from 'immutable';
 import withProps from 'recompose/withProps';
 import EditableText from 'components/EditableText';
 import withPropsOnChange from 'recompose/withPropsOnChange';
+import loader from './loader';
 
 const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
 const SHOW_PAGE_LIST_STREAM = 'tree.pagelist.show';
@@ -222,11 +223,17 @@ const PropsSelectorsPanel = compose(
     showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
   }),
   branch(({ showPageList }) => !showPageList, renderNothing),
+  withHandlers({
+    doSave: loader['doSave']
+  }),
   withNewRootHandler('addPage'),
-)(({ addPage }) => (
+)(({ addPage, doSave }) => (
   <Header>
     <div>PropsSelectors</div>
-    <div onClick={addPage}><Icon>add</Icon></div>
+    <Flex>
+      <div onClick={doSave}><Icon>save</Icon></div>
+      <div onClick={addPage}><Icon>add</Icon></div>
+    </Flex>
   </Header>
 
 ));
