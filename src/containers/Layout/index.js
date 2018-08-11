@@ -11,7 +11,6 @@ import _ from 'lodash';
 import * as storage from 'libs/storage';
 import * as handlers from './handlers';
 import * as selectors from './selectors';
-
 import testStyles from './test.scss';
 
 import { DATA_STREAM, ROOT_ITEM_STREAM } from 'constants';
@@ -25,6 +24,8 @@ import ColorPicker from 'components/ColorPicker';
 import RatioBox from 'components/RatioBox';
 import StorageExplorer from 'components/StorageExplorer';
 import PropsSelectors from 'components/PropsSelectors';
+
+import Page from 'containers/Page';
 
 const { Flex, Box } = Components;
 
@@ -83,7 +84,7 @@ export class Layout extends React.Component {
 
   render() {
     const { doPush, doInsert, doDelete, toColum, toRow, newRoot,
-      doSave, rootItem, doGroup, doUnGroup,
+      doSave, rootItem, doGroup, doUnGroup, doAddEnh,
       changeBackground,
     } = this.props;
     return (
@@ -95,8 +96,7 @@ export class Layout extends React.Component {
                 <img src="https://www.hotelquickly.com/11f85cdd1bc80d98f00c22698cd5883a.jpg" />
               </RatioBox>
             </div>
-            <div className={classnames(testStyles.item, testStyles.item2)}>7 8 9</div>
-            <div className={classnames(testStyles.item, testStyles.item5)}>5</div>
+            <Page />
           </div>
           <Box w={300}>
             <PropsSelectors />
@@ -117,6 +117,7 @@ export class Layout extends React.Component {
           <Box className={styles.btn} onClick={toRow}>Row</Box>
           <Box className={styles.btn} onClick={doGroup}>Group</Box>
           <Box className={styles.btn} onClick={doUnGroup}>UnGroup</Box>
+          <Box className={styles.btn} onClick={doAddEnh}>AddEnh</Box>
         </Flex>
         <Flex>
           <ColorModifier />
@@ -188,6 +189,7 @@ export default compose(
     doLoad: handlers.doLoad,
     doGroup: handlers.doGroup,
     doUnGroup: handlers.doUnGroup,
+    doAddEnh: handlers.doAddEnh,
     changeBackground: handlers.changeBackground,
   }),
 )(Layout);

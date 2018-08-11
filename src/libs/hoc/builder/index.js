@@ -4,3 +4,4 @@ export { withItemWatcher } from './withItemWatcher';
 export * from './withItemImOrNothing';
 export * from './withRootItem';
 export * from './withItem';
+export * from './withItemEnhancer';

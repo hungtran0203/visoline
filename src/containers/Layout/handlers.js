@@ -6,6 +6,7 @@ import * as storage from 'libs/storage';
 import styles from './styles.scss';
 import classnames from 'classnames';
 import * as listHelper from 'libs/immutable/list';
+import * as Enhancers from 'libs/enhancer';
 
 export const initBox = ({ parentId }) => {
   return fromJS({
@@ -175,3 +176,21 @@ export const changeBackground = ({ activeItem$ }) => (color) => {
     storage.updateItem(newItemIm);
   }
 };
+
+export const doAddEnh = ({ activeItem$ }) => () => {
+  const activeItem = activeItem$.get();
+  if (activeItem) {
+    const itemIm = storage.getItem(activeItem);
+    const enhancers = itemIm.get('enhancers', fromJS([]));
+    const Enhancer = Enhancers.withHandlers;
+    const newEnhancer = new Enhancer({
+      options: {
+        props: {
+          onClick: 'doAnything',
+        },
+      },
+    });
+    const newItemIm = itemIm.set('enhancers', enhancers.push(newEnhancer.toIm()));
+    storage.updateItem(newItemIm);
+  }  
+}
