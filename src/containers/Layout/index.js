@@ -26,6 +26,7 @@ import StorageExplorer from 'components/StorageExplorer';
 import PropsSelectors from 'components/PropsSelectors';
 
 import Page from 'containers/Page';
+import EnhancerExplorer from 'components/EnhancerExplorer';
 
 const { Flex, Box } = Components;
 
@@ -90,21 +91,24 @@ export class Layout extends React.Component {
     return (
       <div>
         <Flex justify="space-between">
-          <div className={testStyles.container}>
-            <div className={classnames(testStyles.item, testStyles.item1)}>
-              <RatioBox ratio="4:3">
-                <img src="https://www.hotelquickly.com/11f85cdd1bc80d98f00c22698cd5883a.jpg" />
-              </RatioBox>
-            </div>
-            <Page />
+          <Page />
+          <div className={classnames(testStyles.item, testStyles.item1)}>
+            <RatioBox ratio="4:3">
+              <img src="https://www.hotelquickly.com/11f85cdd1bc80d98f00c22698cd5883a.jpg" />
+            </RatioBox>
           </div>
-          <Box w={300}>
-            <PropsSelectors />
-          </Box>
+        </Flex>          
+        <Flex justify="space-between">
           <Box w={300}>
             <StorageExplorer />
           </Box>
-        </Flex>          
+          <Box w={300}>
+            <EnhancerExplorer />
+          </Box>
+          <Box w={300}>
+            <PropsSelectors />
+          </Box>
+        </Flex>
         <Flex>
           <Box className={styles.btn} onClick={newRoot}>New</Box>
           <Box className={styles.btn} onClick={doSave}>Save</Box>

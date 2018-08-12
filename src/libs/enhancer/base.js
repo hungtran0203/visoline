@@ -36,6 +36,10 @@ export class Enhancer {
     return this.enhancer || rEnhancers[this.get('enhancer')];
   }
 
+  getName() {
+    return this.name;
+  }
+
   getInputProps() {
     return null;
   }

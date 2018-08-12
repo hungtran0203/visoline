@@ -1,5 +1,8 @@
 import { compose, branch, withProps, renderNothing } from 'recompose';
 import * as storage from 'libs/storage';
+import { Enhancer } from 'libs/enhancer';
+import _ from 'lodash';
+
 /*
   wrapper of immutablet object
 */
@@ -54,6 +57,19 @@ class Item {
     const parentId = this.getParentId();
     if (parentId) {
       return new Item(parentId);
+    }
+    return null;
+  }
+
+  getEnhancers(format='object') {
+    const enhancers = this.get('enhancers');
+    switch(format) {
+      case 'im':
+        return enhancers;
+      case 'object':
+        return _.compact(enhancers.map(enh => {
+          return Enhancer.fromIm(enh);
+        }).toJS());
     }
     return null;
   }
