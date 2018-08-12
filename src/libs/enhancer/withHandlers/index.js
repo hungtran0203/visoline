@@ -56,7 +56,7 @@ export class withHandlers extends Enhancer {
 
   addHandler(propName, propSelector) {
     const opts = this.getOptions('raw');
-    _.set(opts, propName, propSelector);
+    _.set(opts, `props.${propName}`, propSelector);
     const activeItem$ = getStream(ACTIVE_ITEM_STREAM);
     const activeEnhancer$ = getStream(ACTIVE_ENHANCER_STREAM);
     

@@ -70,14 +70,32 @@ const ToolBarAddBtn = compose(
   )
 });
 
+const ToolBarRemoveBtn = compose(
+  withStreams({
+    addingPropState$: [ADDING_PROP_STATE_STREAM, { init: false }],
+  }),
+  withHandlers({
+    onClick: ({ addingPropState$ }) => () => {
+      addingPropState$.set(true);
+    }
+  })
+)((props) => {
+  const handlers = _.pick(props, ['onClick']);
+  return (
+    <Icon {...handlers} >remove</Icon>
+  )
+});
+
 const ToolBar = () => (
   <Flex>
     <ToolBarAddBtn />
+    <ToolBarRemoveBtn />
   </Flex>
 );
 
 export const ConfigureUI = ({ enh }) => {
   const opts = enh.getOptions('raw');
+  console.log('opts', opts, enh.toIm());
   const props = _.get(opts, 'props');
   const options = {};
   return (

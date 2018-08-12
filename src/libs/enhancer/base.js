@@ -70,7 +70,9 @@ export class Enhancer {
       const enhancerName = _.get(data, 'enhancer');
       let Enh;
       if (Enh = enhancers[enhancerName]) {
-        return new Enh(data.config);
+        const rtn = new Enh(data.config);
+        rtn.set('id', data.id);
+        return rtn;
       }
     }
   }

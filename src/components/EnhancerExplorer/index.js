@@ -279,9 +279,21 @@ const ActiveEnhancerExplorer = compose(
   return enh.getConfigureUI();
 });
 
+const EnhancersToolBar = () => {
+  return (
+    <Flex>
+      <Icon>add</Icon>
+      <Icon>remove</Icon>
+      <Icon>arrow_upward</Icon>
+      <Icon>arrow_downward</Icon>
+    </Flex>
+  )
+}
+
 export const EnhancerExplorer = ({ children, ratio }) => (
   <div className={styles.wrapper}>
     <EnhancersPanel />
+    <EnhancersToolBar />
     <EnhancerListSelection />
     <ActiveEnhancerPanel />
     <ActiveEnhancerExplorer />
