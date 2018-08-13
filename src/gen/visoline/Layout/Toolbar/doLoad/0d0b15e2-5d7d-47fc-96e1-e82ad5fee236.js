@@ -1,4 +1,4 @@
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 
 export const doLoad = ({ rootItem$ }) => () => {
   // load storage

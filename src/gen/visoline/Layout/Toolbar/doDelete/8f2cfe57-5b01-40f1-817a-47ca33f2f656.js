@@ -1,4 +1,4 @@
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 
 export const deleteBox = (item) => {
   const itemIm = storage.isItemId(item) ? storage.getItemFromId(item) : item;

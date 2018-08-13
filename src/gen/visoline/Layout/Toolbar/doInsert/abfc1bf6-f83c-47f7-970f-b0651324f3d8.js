@@ -1,4 +1,4 @@
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 import invariant from 'invariant';
 import { fromJS } from 'immutable';
 import uuid from 'uuid';

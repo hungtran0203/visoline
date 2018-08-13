@@ -1,7 +1,7 @@
 import { compose, withProps, withHandlers } from 'recompose';
 import classnames from 'classnames';
 import _ from 'lodash';
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 import { omitProps, withStreams, withStreamProps } from 'libs/hoc';
 import { CTRL_KEY_STATE } from 'libs/hoc/editor';
 

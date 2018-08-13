@@ -1,4 +1,4 @@
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 
 export const doSave = ({ rootItem$ }) => () => {
   const data = storage.toJS();

@@ -1,20 +1,18 @@
-
+import Storage from './Storage';
 import { Enhancer } from 'libs/enhancer';
 import formatters from './formatter';
 import BaseItem from './base';
-import HasMany from './relations/HasMany';
-import EnhancerItem from './enhancer';
 
 /*
   wrapper of immutable object
 */
-export class Item extends BaseItem {
+export class Enhancer extends BaseItem {
   constructor(item) {
     super(item);
     this.formatters = formatters(this.constructor);
-
+    this.domain = 'enhancer';
+    this.storage = Storage.domain(this.domain);
     // define additional relations
-    this.enhancers = new HasMany({ relOrig: this, relName: 'enhancers', relClass: EnhancerItem });
   }
 
   getEnhancers(format='object') {

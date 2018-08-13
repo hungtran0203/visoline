@@ -8,7 +8,7 @@ import { compose, withState, branch, withHandlers,
 import KEYCODES from 'libs/constants/keycodes';
 import { withComposedHandlers, useChangedProps, withStreams } from 'libs/hoc';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 
 const InputFieldUI = (props) => {
   return (

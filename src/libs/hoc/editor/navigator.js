@@ -1,5 +1,5 @@
 import { KEYCODES } from 'libs/constants';
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 import { getStream } from 'libs/hoc';
 /*
   all navigation action define here

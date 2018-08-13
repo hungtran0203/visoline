@@ -8,7 +8,7 @@ import { fromJS } from 'immutable';
 import uuid from 'uuid';
 import invariant from 'invariant';
 import _ from 'lodash';
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 import * as handlers from './handlers';
 import * as selectors from './selectors';
 import testStyles from './test.scss';

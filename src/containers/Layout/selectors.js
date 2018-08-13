@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 import uuid from 'uuid';
 import invariant from 'invariant';
 import _ from 'lodash';
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 import styles from './styles.scss';
 import classnames from 'classnames';
 import * as listHelper from 'libs/immutable/list';

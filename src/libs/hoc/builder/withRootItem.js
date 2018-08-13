@@ -2,7 +2,7 @@ import { compose, withHandlers } from 'recompose';
 import { withStreams, withStreamProps } from 'libs/hoc';
 import { ROOT_ITEM_STREAM } from 'constants';
 import { withItemWatcher } from 'libs/hoc/builder';
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 import uuid from 'uuid';
 import { fromJS } from 'immutable';
 import classnames from 'classnames';

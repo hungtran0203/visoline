@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './styles.scss';
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 import classnames from 'classnames';
 import _ from 'lodash';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';

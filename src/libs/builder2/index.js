@@ -7,7 +7,7 @@ import { compose, lifecycle, withHandlers, withProps, withState, mapProps } from
 import invariant from 'invariant';
 import { useChangedProps, omitProps } from 'libs/hoc';
 import { List } from 'immutable';
-import * as storage from './storage';
+import storage from './storage';
 export { storage };
 
 export const isFactory = (factory) => {

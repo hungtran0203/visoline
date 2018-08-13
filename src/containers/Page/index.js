@@ -7,7 +7,7 @@ import { fromJS } from 'immutable';
 import uuid from 'uuid';
 import invariant from 'invariant';
 import _ from 'lodash';
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 
 import { DATA_STREAM, ROOT_ITEM_STREAM } from 'constants';
 

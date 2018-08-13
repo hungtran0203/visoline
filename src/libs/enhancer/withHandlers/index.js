@@ -7,7 +7,7 @@ import { lookup } from 'libs/propsSelectors';
 import { ConfigureUI } from './ConfigureUI';
 import { getStream } from 'libs/hoc/stream';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
-import * as storage from 'libs/storage';
+import storage from 'libs/storage';
 
 const ACTIVE_ENHANCER_STREAM = 'enhancer.active.item';
 
