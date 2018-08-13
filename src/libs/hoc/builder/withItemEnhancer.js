@@ -1,6 +1,6 @@
 import React from 'react';
 import {  compose } from 'recompose';
-import { getItem } from 'libs/storage';
+import storage from 'libs/storage';
 import classnames from 'classnames';
 import { Enhancer } from 'libs/enhancer';
 import _ from 'lodash';
@@ -9,7 +9,7 @@ export const withItemEnhancer = () => BaseComponent => {
   return class EnhancedComponent extends React.Component {
     getEnhancers() {
       const { item } = this.props;
-      const itemIm = getItem(item);
+      const itemIm = storage.getItem(item);
       const enhancerList = itemIm.get('enhancers');
       if (enhancerList) {
         const hocs = _.compact(enhancerList.map(en => {

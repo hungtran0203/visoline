@@ -1,8 +1,8 @@
 import {  withProps } from 'recompose';
-import { getItem } from 'libs/storage';
+import storage from 'libs/storage';
 import classnames from 'classnames';
 
 export const withClassNameBuilder = () => withProps(({ item, className }) => {
-  const itemIm = getItem(item);
+  const itemIm = storage.getItem(item);
   return { className: classnames(className, itemIm.get('className')) };
 });
