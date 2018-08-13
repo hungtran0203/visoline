@@ -36,14 +36,45 @@ export const load = (data) => {
   })
 };
 
+const transactionStack = [];
+
+export const transactionStart = () => {
+  transactionStack.push({});
+};
+
+export const transactionEnd = () => {
+  const updatedItemIds = transactionStack.pop();
+  if (updatedItemIds) {
+    Object.keys(updatedItemIds).map(key => {
+      const [item, oldVal] = updatedItemIds[key];
+      if(oldVal !== item) {
+        const itemId = getItemId(item);
+        const listeners = subscribers[itemId];
+        if(Array.isArray(listeners)) {
+          listeners.map(listener => listener(item, oldVal))
+        }  
+      }
+    })
+  }
+};
+
+const isInTransaction = () => {
+  return !!transactionStack.length;
+}
+
 export const updateItem = (item) => {
   const itemId = item.get('id');
   const oldVal = _.get(storage, itemId);
   if(oldVal !== item) {
     _.set(storage, itemId, item);
-    const listeners = subscribers[itemId];
-    if(Array.isArray(listeners)) {
-      listeners.map(listener => listener(item, oldVal))
+    if(isInTransaction()) {
+      const updatedItemIds = transactionStack[transactionStack.length - 1];
+      updatedItemIds[itemId] = [item, oldVal];
+    } else {
+      const listeners = subscribers[itemId];
+      if(Array.isArray(listeners)) {
+        listeners.map(listener => listener(item, oldVal))
+      }  
     }
   }
 };
