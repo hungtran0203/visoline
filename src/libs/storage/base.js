@@ -7,6 +7,11 @@ import { FORMAT_JSON, FORMAT_IM, FORMAT_IT, FORMAT_ID} from './constants';
   wrapper of immutable object
 */
 export class BaseItem {
+  static FORMAT_JSON = FORMAT_JSON;
+  static FORMAT_IM = FORMAT_IM;
+  static FORMAT_IT = FORMAT_IT;
+  static FORMAT_ID = FORMAT_ID;
+  
   constructor(item) {
     this.domain = 'item';
     this.storage = Storage.domain(this.domain);

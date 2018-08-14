@@ -1,18 +1,21 @@
-import {  withProps } from 'recompose';
-import storage from 'libs/storage';
+import {  compose, withProps } from 'recompose';
 import reactCSS from 'reactcss';
+import { withItemIm } from 'libs/hoc/builder';
 
-export const withStyleBuilder = () => withProps(({ item }) => {
-  const itemIm = storage.getItem(item);
-  const style = itemIm.get('style');
-  if (style) {
-    return {
-      style: reactCSS({
-        default: {
-          item: style.toJS(),
-        }
-      }).item,
+export const withStyleBuilder = () => compose(
+  withItemIm(),
+  withProps(({ itemIm }) => {
+  if(itemIm) {
+    const style = itemIm.get('style');
+    if (style) {
+      return {
+        style: reactCSS({
+          default: {
+            item: style.toJS(),
+          }
+        }).item,
+      }
     }
   }
-  return {};
-});
+  return {};  
+}));

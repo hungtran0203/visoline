@@ -1,9 +1,14 @@
 import _ from 'lodash';
-import {  withProps } from 'recompose';
-import storage from 'libs/storage';
+import {  withProps, compose } from 'recompose';
 import * as Components from 'reflexbox';
+import { withItemIm } from 'libs/hoc/builder';
 
-export const withComponentBuilder = () => withProps(({ item }) => {
-  const itemIm = storage.getItem(item);
-  return { Component: _.get(Components, itemIm.get('type'))};
-});
+export const withComponentBuilder = () => compose(
+  withItemIm(),
+  withProps(({ itemIm }) => {
+    if(itemIm) {
+      return { Component: _.get(Components, itemIm.get('type'))};
+    }
+    return {};
+  }),
+);

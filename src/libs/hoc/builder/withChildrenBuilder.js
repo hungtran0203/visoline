@@ -1,19 +1,21 @@
 import { List } from 'immutable';
-import _ from 'lodash';
 import {  compose, withProps } from 'recompose';
-import storage from 'libs/storage';
 import { getItemBuilder } from './getItemBuilder';
 import { omitProps } from 'libs/hoc';
+import { withItemIt } from 'libs/hoc/builder';
 
 export const withChildrenBuilder = () => compose(
+  withItemIt(),
   getItemBuilder(),
-  withProps(({ item, itemBuilder }) => {
-    const itemIm = storage.getItem(item);
-    const children = itemIm.get('children');
-    if (!List.isList(children)) return { children: null };
-    return { 
-      children: children.toJS().map((itemId) => itemBuilder({ key: itemId })(itemId)),
-    };
+  withProps(({ itemIt, itemBuilder }) => {
+    if(itemIt.isExists()) {
+      const children = itemIt.getChildren();
+      if (!List.isList(children)) return { children: null };
+      return { 
+        children: children.toJS().map((itemId) => itemBuilder({ key: itemId })(itemId)),
+      };  
+    }
+    return { children: null };
   }),
   omitProps(['itemBuilder']),
 );

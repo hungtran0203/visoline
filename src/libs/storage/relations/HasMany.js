@@ -28,7 +28,7 @@ export class HasMany {
   }
 
   toIt() {
-    return this.getRelListIm();
+    return this.getRelListIm().map(im => this.relClass.getInstance(im));
   }
 
   toJS() {
@@ -48,6 +48,11 @@ export class HasMany {
     const relIt = this.getRelIt(rel);
     const relListIm = this.getRelListIm();
     return relListIm.indexOf(relIt.getId());
+  }
+
+  changeTo(newVal) {
+    this.relOwner.set(this.relName, List(newVal.map(val => this.relClass.getInstance(val).toId())));
+    this.relOwner.save();
   }
 
   /*
@@ -90,7 +95,11 @@ export class HasMany {
       const newReListIm = relListIm.delete(index).insert(newIndex, relIt.getId());
       this.relOwner.set(this.relName, newReListIm).save();
     }
-    return this;    
+    return this;
+  }
+
+  clear() {
+    this.relOwner.set(this.relName, EMPTY_LIST).save();
   }
 }
 

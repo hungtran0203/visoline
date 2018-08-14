@@ -18,6 +18,8 @@ import { DATA_STREAM, ROOT_ITEM_STREAM } from 'constants';
 import { withActivation, ACTIVE_ELEMENT_STREAM, ACTIVE_ITEM_STREAM, ITEM_SELECTION_STREAM,
   Navigator,
 } from 'libs/hoc/editor';
+import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
+
 import { withItemWatcher, withItemBuilder, getItemBuilder } from 'libs/hoc/builder';
 import CSSStyleInspector from 'components/CSSStyleInspector';
 import ColorPicker from 'components/ColorPicker';
@@ -32,18 +34,12 @@ const { Flex, Box } = Components;
 
 
 const withEditorHoc = compose(
-  withStreamProps({
-    rootItem: [ROOT_ITEM_STREAM],
-  }),
-  withStreams({
-    rootItem$: [ROOT_ITEM_STREAM, { init: null }],
-    activeItem$: [ACTIVE_ITEM_STREAM, { init: null }],
-    selectedItems$: [ITEM_SELECTION_STREAM, { init: [] }],
-  }),
-  withHandlers({
-    setRootItem: ({ rootItem$ }) => (rootItem) => rootItem$.set(rootItem),
-    setActiveItem: ({ activeItem$ }) => (activeItem) => activeItem$.set(activeItem),
-  }),
+  itemBuilderEnhancers.withRootItem(),
+  itemBuilderEnhancers.withActiveItem$(),
+  itemBuilderEnhancers.withRootItem$(),
+  itemBuilderEnhancers.withSelectedItems$(),
+  itemBuilderEnhancers.setRootItem(),
+  itemBuilderEnhancers.setActiveItem(),
 );
 
 const editorHOC = [

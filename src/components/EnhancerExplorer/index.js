@@ -5,9 +5,11 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
 import { withStreams, withStreamProps } from 'libs/hoc';
-import { withItemWatcher, withItemImOrNothing, withRootItem,
-  withItemIm, withRootItemWatcher, withNewRootHandler,
+import { withItemWatcher, withItemImOrNothing,
+  withItemIm
 } from 'libs/hoc/builder';
+import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
+
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { ROOT_ITEM_STREAM } from 'constants';
 import * as layoutHandlers from 'containers/Layout/handlers';
@@ -227,7 +229,7 @@ const EnhancersPanel = compose(
   withHandlers({
     doSave: loader['doSave']
   }),
-  withNewRootHandler('addPage'),
+  itemBuilderEnhancers.withNewRootHandler('addPage'),
 )(({ addPage, doSave }) => (
   <Header>
     <div>Enhancers</div>

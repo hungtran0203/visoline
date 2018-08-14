@@ -5,7 +5,8 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
 import { withStreams, withStreamProps } from 'libs/hoc';
-import { withItemWatcher, withItemImOrNothing, withRootItem, withRootItemWatcher, withNewRootHandler } from 'libs/hoc/builder';
+import { withItemWatcher, withItemImOrNothing } from 'libs/hoc/builder';
+import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { ROOT_ITEM_STREAM } from 'constants';
 import * as layoutHandlers from 'containers/Layout/handlers';
@@ -209,7 +210,7 @@ const PageListPanel = compose(
     showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
   }),
   branch(({ showPageList }) => !showPageList, renderNothing),
-  withNewRootHandler('addPage'),
+  itemBuilderEnhancers.withNewRootHandler('addPage'),
 )(({ addPage }) => (
   <Header>
     <div>Pages</div>
@@ -219,7 +220,7 @@ const PageListPanel = compose(
 ));
 
 const ActivePagePanel = compose(
-  withRootItemWatcher('item'),
+  itemBuilderEnhancers.withRootItemWatcher('item'),
   withItemImOrNothing,
   withStreams({
     showPageList$: [SHOW_PAGE_LIST_STREAM, { init: true }],

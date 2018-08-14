@@ -1,8 +1,13 @@
-import {  withProps } from 'recompose';
-import storage from 'libs/storage';
+import {  withProps, compose } from 'recompose';
 import classnames from 'classnames';
+import { withItemIm } from 'libs/hoc/builder';
 
-export const withClassNameBuilder = () => withProps(({ item, className }) => {
-  const itemIm = storage.getItem(item);
-  return { className: classnames(className, itemIm.get('className')) };
-});
+export const withClassNameBuilder = () => compose(
+  withItemIm(),
+  withProps(({ itemIm, className }) => {
+    if(itemIm) {
+      return { className: classnames(className, itemIm.get('className')) };
+    }
+    return {};
+  }),
+);
