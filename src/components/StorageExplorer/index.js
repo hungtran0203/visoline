@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
 import { withStreams, withStreamProps } from 'libs/hoc';
 import { withItemWatcher, withItemImOrNothing, withItemItOrNothing, withItemIt } from 'libs/hoc/builder';
-import { withRootItem, withRootItem$ } from 'libs/hoc/builder/item';
+import { withRootItem, withRootItem$, withActiveItem } from 'libs/hoc/builder/item';
 
 import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
@@ -243,15 +243,12 @@ const ActivePagePanel = compose(
 });
 
 const ActivePageExplorer = compose(
-  withRootItem(),
+  withRootItem('item'),
   withItemImOrNothing,
-  withRootItem$(),
   withItemIt(),
-  withItemIt('rootItemIt', 'rootItem'),
   withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new Set() }] }),
   withItemWatcher(),
-)(({ itemIt, itemIm , rootItemIt, expandedNodes, className }) => {
-  const isActive = rootItemIt.isExists() && rootItemIt.getId() === itemIt.getId();
+)(({ itemIt, itemIm, expandedNodes, className }) => {
   return (
     <div className={classnames(styles.container, className)} >
       {buildNodes([], { node: itemIm, expandedNodes, level: 0, excludedSelf: true } )}

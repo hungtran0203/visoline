@@ -6,9 +6,10 @@ import _ from 'lodash';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
 import { withStreams, withStreamProps } from 'libs/hoc';
 import { withItemWatcher, withItemImOrNothing,
-  withItemIm
+  withItemIm, withItemIt,
 } from 'libs/hoc/builder';
 import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
+import EnhancerItem from 'libs/storage/enhancer';
 
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { ROOT_ITEM_STREAM } from 'constants';
@@ -180,6 +181,7 @@ const EnhancerSelection = compose(
   }),
   withItemWatcher(),
 )(({ enh, onClick, activeEnhancer, onSaveName }) => {
+  console.log('enhenhenh', enh);
   // const activeRootIm = storage.getItem(rootItem);
   // const itemIm = storage.getItem(item);
   // const isActive = activeRootIm && activeRootIm.get('id') === itemIm.get('id');
@@ -192,16 +194,34 @@ const EnhancerSelection = compose(
 });
 
 const EnhancerListSelection = compose(
+  itemBuilderEnhancers.withActiveItem('item'),
   withStreamProps({
     showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
-    item: [ACTIVE_ITEM_STREAM, { init: null }],
   }),
   // withItemImOrNothing(),
   branch(({ item }) => !item, renderNothing),
-  withItemIm(),
+  withItemIt(),
   branch(({ showPageList }) => !showPageList, renderNothing),
-)(({ itemIm }) => {
-  const enahancers = itemIm.getEnhancers();
+)(({ itemIt }) => {
+  const enahancers = itemIt.enhancers.toIm();
+  // fix data
+  if(enahancers.size) {
+    let fixed = false;
+    const enhancerIds = enahancers.map(enh => {
+      console.log('eee', enh);
+      if(enh && enh.get('id')) {
+        EnhancerItem.getInstance(enh).save().storage.doSave();
+        fixed = true;
+        return enh.get('id');
+      }
+      return enh;
+    });
+    if(fixed) {
+      itemIt.enhancers.changeTo(enhancerIds);
+      itemIt.storage.doSave();  
+    }
+  }
+  // fix data  
   return (
     <Box className={classnames(styles.pageSelection)}>
       {

@@ -4,9 +4,11 @@ import { fromJS } from 'immutable';
 
 const storages = new Map();
 class Storage {
-  static domain(dm) {
+  static domain(dm, opt) {
     if (!storages.has(dm)) {
-      storages.set(dm, new Storage(dm));
+      const st = new Storage(dm, opt);
+      st.doLoad();
+      storages.set(dm, st);
     }
     return storages.get(dm);
   }
@@ -14,10 +16,27 @@ class Storage {
   transactionStack = [];
   storage = {};
   subscribers = {};
-  constructor(domain) {
+  storageKey = 'visoline.storage';
+
+  constructor(domain, opt) {
     this.domain = domain;
+    Object.assign(this, _.pick(opt, ['storageKey']));
   }
   
+  doSave = () => {
+    const data = this.toJS();
+    localStorage.setItem(this.storageKey, JSON.stringify(data));
+  };
+  
+  doLoad = () => {
+    // load storage
+    const data = localStorage.getItem(this.storageKey);
+    if(data) {
+      this.load(JSON.parse(data));
+    }
+  }
+  
+
   isItemId = (itemId) => {
     return typeof itemId === 'string';
   }

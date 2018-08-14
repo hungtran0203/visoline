@@ -51,7 +51,7 @@ export class HasMany {
   }
 
   changeTo(newVal) {
-    this.relOwner.set(this.relName, List(newVal.map(val => this.relClass.getInstance(val).toId())));
+    this.relOwner.set(this.relName, List(newVal));
     this.relOwner.save();
   }
 
