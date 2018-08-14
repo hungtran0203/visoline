@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './styles.scss';
-import storage from 'libs/storage';
 import classnames from 'classnames';
 import _ from 'lodash';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
 import { withStreams, withStreamProps } from 'libs/hoc';
-import { withItemWatcher, withItemImOrNothing } from 'libs/hoc/builder';
+import { withItemWatcher, withItemImOrNothing, withItemItOrNothing, withItemIt } from 'libs/hoc/builder';
+import { withRootItem, withRootItem$ } from 'libs/hoc/builder/item';
+
 import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { ROOT_ITEM_STREAM } from 'constants';
@@ -22,6 +23,7 @@ import { Set } from 'immutable';
 import withProps from 'recompose/withProps';
 import EditableText from 'components/EditableText';
 import withPropsOnChange from 'recompose/withPropsOnChange';
+import Item from 'libs/storage/item';
 
 const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
 const SHOW_PAGE_LIST_STREAM = 'tree.pagelist.show';
@@ -36,12 +38,12 @@ const PrefixSpan = ({ children, className }) => {
 
 const ExpandIcon = compose(
   withStreams({ expandedNodes$: [EXPANDED_NODES_STREAM, { init: new Set() }] }),
+  withItemIt(),
   withHandlers({
-    onClick: ({ item, expandedNodes$ }) => () => {
-      const itemIm = storage.getItem(item);
-      if (itemIm) {
+    onClick: ({ itemIt, expandedNodes$ }) => () => {
+      if (itemIt.isExists()) {
         let expandedNodes = expandedNodes$.get();
-        const itemId = itemIm.get('id');
+        const itemId = itemIt.getId();
         if (expandedNodes.has(itemId)) {
           expandedNodes = expandedNodes.delete(itemId)
         } else {
@@ -52,9 +54,8 @@ const ExpandIcon = compose(
     },
   }),
   withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new Set() }] }),
-  withProps(({ expandedNodes, item }) => {
-    const itemIm = storage.getItem(item);
-    return { expanded: expandedNodes.has(itemIm.get('id')) };
+  withProps(({ expandedNodes, itemIt }) => {
+    return { expanded: expandedNodes.has(itemIt.getId()) };
   }),
 )(({ onClick, className, expanded }) => {
   return (
@@ -81,37 +82,37 @@ const PanelSummary = compose(
     activeItem$: [ACTIVE_ITEM_STREAM, { init: null }],
   }),
   withState('expanded', 'setExpanded', false),
+  withItemIt(),
   withHandlers({
     onClick: ({ activeItem$, item }) => () => activeItem$.set(item),
     toggleExpand: ({ setExpanded, expanded }) => () => setExpanded(!expanded),
-    onSaveName: ({ item }) => (name) => {
-      const itemIm = storage.getItem(item);
-      if (itemIm) {
-        storage.updateItem(itemIm.set('name', name));
+    onSaveName: ({ itemIt }) => (name) => {
+      if (itemIt.isExists()) {
+        itemIt.set('name', name).save();
       }
     },
   }),
   withItemWatcher(),
 )(({ item, activeItem, level, onSaveName, onClick }) => {
-  const itemIm = storage.getItem(item);
-  const activeItemIm = storage.getItem(activeItem);
-  const isActive = activeItemIm && activeItemIm.get('id') === itemIm.get('id');
-  const children = storage.getChildren(itemIm);
+  const itemIt = Item.getInstance(item);
+  const activeItemIt = Item.getInstance(activeItem);
+  const isActive = activeItemIt.isExists() && activeItemIt.getId() === itemIt.getId();
+  const children = itemIt.children.toIm();
   return (
     <Flex className={classnames(styles.panelSummary, { [styles.isActive]: isActive })} align="center">
-      <LevelPrefix level={children.length ? level : level + 1} />
+      <LevelPrefix level={children.size ? level : level + 1} />
       {
-        children.length ?
+        children.size ?
           <ExpandIcon item={item}/> :
           <PrefixSpan><Icon className={classnames(styles.icon, styles.primary)} >crop_din</Icon></PrefixSpan>
       }
       { 
-        children.length ?
+        children.size ?
           <PrefixSpan><Icon className={classnames(styles.icon, styles.primary)} >folder</Icon></PrefixSpan> :
           null
       }
       <Box className={classnames(styles.text)} onClick={onClick} auto>
-        <EditableText value={itemIm.get('name', itemIm.get('id'))} onSave={onSaveName}/>
+        <EditableText value={itemIt.getOneOf(['name', 'id'])} onSave={onSaveName}/>
       </Box>
       <PrefixSpan className={classnames(styles.append)}><Icon className={classnames(styles.icon, styles.muted)}>lock</Icon></PrefixSpan>
     </Flex>
@@ -137,41 +138,37 @@ const ItemExplorer = compose(
 });
 
 const buildNodes = (acc, { node, level = 0, expandedNodes, excludedSelf } ) => {
-  const itemIm = storage.getItem(node);
+  const itemIt = Item.getInstance(node);
   if (!excludedSelf) {
     acc.push((
-      <div key={itemIm.get('id')} className={styles.node}><ItemExplorer item={itemIm} level={level} /></div>
+      <div key={itemIt.getId()} className={styles.node}><ItemExplorer item={itemIt.toIm()} level={level} /></div>
     ))  
   }
-  const children = storage.getChildren(node);
-  if (children && (expandedNodes.has(itemIm.get('id')) || level === 0)) {
-    children.map((child => buildNodes(acc, { node: child, expandedNodes, level: level + 1 })))
+  const childrenIm = itemIt.children.toIm();
+  if (childrenIm && (expandedNodes.has(itemIt.getId()) || level === 0)) {
+    childrenIm.map((child => buildNodes(acc, { node: child, expandedNodes, level: level + 1 })))
   }
   return acc;
 }
 
 const PageSelection = compose(
-  withItemImOrNothing,
-  withStreamProps({
-    rootItem: [ROOT_ITEM_STREAM],
-  }),
-  withStreams({
-    rootItem$: [ROOT_ITEM_STREAM, { init: null }],
-  }),
+  withItemItOrNothing,
+  withRootItem(),
+  withRootItem$(),
+  withItemIt(),
+  withItemIt('rootItemIt', 'rootItem'),
   withHandlers({
     onClick: ({ rootItem$, item }) => () => rootItem$.set(item),
-    onSaveName: ({ itemIm }) => (name) => {
-      storage.updateItem(itemIm.set('name', name));
+    onSaveName: ({ itemIt }) => (name) => {
+      itemIt.set('name').save();
     },
   }),
   withItemWatcher(),
-)(({ item, onClick, rootItem, onSaveName }) => {
-  const activeRootIm = storage.getItem(rootItem);
-  const itemIm = storage.getItem(item);
-  const isActive = activeRootIm && activeRootIm.get('id') === itemIm.get('id');
+)(({ itemIt, onClick, rootItemIt, onSaveName }) => {
+  const isActive = rootItemIt.isExists() && rootItemIt.getId() === itemIt.getId();
   return (
     <div className={classnames(styles.row, styles.rootItem, { [styles.isActive]: isActive })} onClick={onClick}>
-      <EditableText value={itemIm.get('name', itemIm.get('id'))} onSave={onSaveName}/>
+      <EditableText value={itemIt.getOneOf(['name', 'id'])} onSave={onSaveName}/>
     </div>
   )
 });
@@ -181,15 +178,13 @@ const PageListSelection = compose(
     showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
   }),
   branch(({ showPageList }) => !showPageList, renderNothing),
-  withStreams({
-    rootItem$: [ROOT_ITEM_STREAM, { init: null }],
-  }),
+  withRootItem$(),
 )(() => {
   return (
     <Box className={classnames(styles.pageSelection)}>
       {
-        storage.getItems().map(itemId => {
-          if (!storage.isRootItem(itemId)) return null;
+        Item.all().map(itemId => {
+          if (!Item.getInstance(itemId).isRootItem()) return null;
           return (
             <PageSelection key={itemId} item={itemId}/>
           )
@@ -248,18 +243,15 @@ const ActivePagePanel = compose(
 });
 
 const ActivePageExplorer = compose(
-  withStreamProps({
-    item: [ROOT_ITEM_STREAM],
-  }),
+  withRootItem(),
   withItemImOrNothing,
-  withStreams({
-    rootItem$: [ROOT_ITEM_STREAM],
-  }),
+  withRootItem$(),
+  withItemIt(),
+  withItemIt('rootItemIt', 'rootItem'),
   withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new Set() }] }),
   withItemWatcher(),
-)(({ itemIm , rootItem, expandedNodes, className }) => {
-  const activeRootIm = storage.getItem(rootItem);
-  const isActive = activeRootIm && activeRootIm.get('id') === itemIm.get('id');
+)(({ itemIt, itemIm , rootItemIt, expandedNodes, className }) => {
+  const isActive = rootItemIt.isExists() && rootItemIt.getId() === itemIt.getId();
   return (
     <div className={classnames(styles.container, className)} >
       {buildNodes([], { node: itemIm, expandedNodes, level: 0, excludedSelf: true } )}

@@ -22,3 +22,8 @@ export const withItemImOrNothing = compose(
   withItemIm(),
   branch(({ itemIm }) => !itemIm, renderNothing),
 );
+
+export const withItemItOrNothing = compose(
+  withItemIt(),
+  branch(({ itemIt }) => !itemIt.getId(), renderNothing),
+);

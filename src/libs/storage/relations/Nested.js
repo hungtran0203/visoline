@@ -10,10 +10,10 @@ export class Nested {
   relLowerName = '';
   relClass = null;
 
-  constructor({ relOrig, relUpperName, relLowerName, relClass }) {
-    Object.assign(this, { relOrig, relUpperName, relLowerName, relClass });
-    this[relUpperName] = new BelongsTo({ relOrig, relName: relUpperName, relClass });
-    this[relLowerName] = new HasMany({ relOrig, relName: relLowerName, relClass });
+  constructor({ relOwner, relUpperName, relLowerName, relClass }) {
+    Object.assign(this, { relOwner, relUpperName, relLowerName, relClass });
+    this[relUpperName] = new BelongsTo({ relOwner, relName: relUpperName, relClass });
+    this[relLowerName] = new HasMany({ relOwner, relName: relLowerName, relClass });
   }
 
   getUpperRel() {

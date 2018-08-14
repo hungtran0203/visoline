@@ -8,7 +8,7 @@ export const doUnGroup = ({ activeItem$ }) => () => {
     const parentIt = itemIt.parent.toIt();
     const childrenIt = itemIt.children.toIt();
     if (parentIt.isExists() && childrenIt.length) {
-      const children = listHelper.replace(parentIt.getChildren(Item.FORMAT_IM), itemIt.getId(), ...childrenIt.map(childIt => childIt.toJS()));
+      const children = listHelper.replace(parentIt.children.toIm(), itemIt.getId(), ...childrenIt.map(childIt => childIt.toJS()));
       parentIt.children.changeTo(children);
       childrenIt.map(childIt => childIt.parent.changeTo(parentIt.getId()));
       itemIt.children.clear();

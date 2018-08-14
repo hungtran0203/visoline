@@ -1,6 +1,6 @@
 import Storage from './Storage';
 import _ from 'lodash';
-import formatters from './format';
+import formatters from './formatter';
 import { FORMAT_JSON, FORMAT_IM, FORMAT_IT, FORMAT_ID} from './constants';
 
 /*
@@ -74,7 +74,7 @@ export class BaseItem {
   getChildIndex() {
     const parentIt = this.getParent(FORMAT_IT);
     if (parentIt) {
-      const childrenIm = parentIt.getChildren();
+      const childrenIm = parentIt.children.toIm();
       if (childrenIm) {
         const index = childrenIm.indexOf(this.getId());
         return index;
@@ -91,27 +91,22 @@ export class BaseItem {
     const Item = this.constructor;
     if (parentId) {
       const parentIt = new Item(parentId);
-      return formatters.formatIt(parentIt, format);
+      return this.formatters.formatIt(parentIt, format);
     }
     return null;
-  }
-
-  getChildren(format=FORMAT_IM) {
-    const childrenIm = this.get('children');
-    return formatters.formatImCollection(childrenIm, format);
   }
 
   getSiblings(dir = 1, format=FORMAT_JSON) {
     const parentIt = this.getParent(FORMAT_IT);
     let siblings = [];
     if (parentIt) {
-      const childrenIm = parentIt.getChildren();
+      const childrenIm = parentIt.children.toIm();
       if (childrenIm) {
         const index = this.getChildIndex();
         if (index >= 0) {
           const range = dir > 0 ? [ index + 1, index + dir + 1 ] : [ index + dir, index ];
           siblings = childrenIm.slice(...range);
-          return formatters.formatImCollection(siblings, format);
+          return this.formatters.formatImCollection(siblings, format);
         }
       }  
     }
@@ -137,7 +132,7 @@ export class BaseItem {
     const Item = this.constructor;
     const childIt = new Item(child);
     childIt.set('parentId', this.getId()).save();
-    const childrenIm = this.getChildren().push(childIt.getId());
+    const childrenIm = this.children.toIm().push(childIt.getId());
     this.set('children', childrenIm).save();
     return this;
   }
@@ -147,7 +142,7 @@ export class BaseItem {
     const childIt = new Item(child);
     if (childIt.isExists() && childIt.getParentId() === this.getId()) {
       const childIndex = childIt.getChildIndex();
-      const childrenIm = this.getChildren().remove(childIndex);
+      const childrenIm = this.children.toIm().remove(childIndex);
       this.set('children', childrenIm).save();
     }
   }
@@ -157,7 +152,7 @@ export class BaseItem {
     this.storage.transactionStart();
     const oldParentIt = this.getParent(FORMAT_IT);
     if (oldParentIt) {
-      const childrenIm = oldParentIt.getChildren();
+      const childrenIm = oldParentIt.children.toIm();
       if (childrenIm) {
         const index = this.getChildIndex();
         const newChildrenIm = childrenIm.delete(index);
@@ -170,7 +165,7 @@ export class BaseItem {
     if(newParentId) {
       const newParentIt = new Item(newParentId);
       if (newParentIt.isExists()) {
-        const newChildrenIm = newParentIt.getChildren().push(this.getId());
+        const newChildrenIm = newParentIt.children.toIm().push(this.getId());
         newParentIt.set('children', newChildrenIm);
         newParentIt.save();
       }
@@ -182,7 +177,7 @@ export class BaseItem {
   moveUp(distance=1) {
     const parentIt = this.getParent(FORMAT_IT);
     if (parentIt) {
-      const childrenIm = parentIt.getChildren();
+      const childrenIm = parentIt.children.toIm();
       if (childrenIm) {
         const index = this.getChildIndex();
         const newIndex = index + distance;
@@ -197,7 +192,7 @@ export class BaseItem {
   moveDown(distance=1) {
     const parentIt = this.getParent(FORMAT_IT);
     if (parentIt) {
-      const childrenIm = parentIt.getChildren();
+      const childrenIm = parentIt.children.toIm();
       if (childrenIm) {
         const index = this.getChildIndex();
         const newIndex = index - distance;
@@ -215,7 +210,7 @@ export class BaseItem {
     this.changeParent(null);
     // delete children
     if(rec) {
-      const childrenIt = this.getChildren(FORMAT_IT);
+      const childrenIt = this.children.toIt();
       if(childrenIt) {
         childrenIt.map(childIt => childIt.delete(rec));
       }
@@ -226,3 +221,5 @@ export class BaseItem {
     return this;
   }
 }
+
+export default BaseItem;

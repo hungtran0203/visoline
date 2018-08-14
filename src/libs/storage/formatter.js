@@ -2,7 +2,7 @@ import { List } from 'immutable';
 import { FORMAT_JSON, FORMAT_IM, FORMAT_IT, FORMAT_ID} from './constants';
 
 export const formatter = (Item) => ({
-  formatIt = (itemIt, format) => {
+  formatIt: (itemIt, format) => {
     switch(format) {
       case FORMAT_JSON:
         return itemIt.toJS();
@@ -14,7 +14,7 @@ export const formatter = (Item) => ({
         return itemIt;
     }  
   },
-  formatItCollection = (collectionIt, format) => {
+  formatItCollection: (collectionIt, format) => {
     switch(format) {
       case FORMAT_JSON:
         return collectionIt.map(itemIt => itemIt.toJS());
@@ -32,7 +32,7 @@ export const formatter = (Item) => ({
         return collectionIt;
     }  
   },
-  formatIm = (itemIm, format) => {
+  formatIm: (itemIm, format) => {
     switch(format) {
       case FORMAT_JSON:
         return itemIm.toJS();
@@ -46,7 +46,7 @@ export const formatter = (Item) => ({
         return itemIm;
     }  
   },
-  formatImCollection = (collectionIm, format) => {
+  formatImCollection: (collectionIm, format) => {
     switch(format) {
       case FORMAT_JSON:
         return collectionIm.toJS();
@@ -66,7 +66,7 @@ export const formatter = (Item) => ({
         return collectionIm;
     }  
   },
-  formatJs = (itemJs, format) => {
+  formatJs: (itemJs, format) => {
     switch(format) {
       case FORMAT_JSON:
         return itemJs;
@@ -80,7 +80,7 @@ export const formatter = (Item) => ({
         return itemJs;
     }  
   },
-  formatJsCollection = (collectionJs, format) => {
+  formatJsCollection: (collectionJs, format) => {
     switch(format) {
       case FORMAT_JSON:
         return collectionJs;

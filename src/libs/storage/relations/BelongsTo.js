@@ -6,8 +6,8 @@ export class BelongsTo {
   relName = '';
   relClass = null;
 
-  constructor({ relOrig, relName, relClass }) {
-    Object.assign(this, { relOrig, relName, relClass });
+  constructor({ relOwner, relName, relClass }) {
+    Object.assign(this, { relOwner, relName, relClass });
   }
 
   getRelIt() {

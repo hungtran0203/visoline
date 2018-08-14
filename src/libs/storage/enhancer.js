@@ -2,11 +2,11 @@ import Storage from './Storage';
 import { Enhancer } from 'libs/enhancer';
 import formatters from './formatter';
 import BaseItem from './base';
-
+import _ from 'lodash';
 /*
   wrapper of immutable object
 */
-export class Enhancer extends BaseItem {
+export class EnhancerItem extends BaseItem {
   constructor(item) {
     super(item);
     this.formatters = formatters(this.constructor);
@@ -29,3 +29,5 @@ export class Enhancer extends BaseItem {
     }
   }
 }
+
+export default EnhancerItem;

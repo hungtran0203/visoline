@@ -9,7 +9,7 @@ export const withChildrenBuilder = () => compose(
   getItemBuilder(),
   withProps(({ itemIt, itemBuilder }) => {
     if(itemIt.isExists()) {
-      const children = itemIt.getChildren();
+      const children = itemIt.children.toIm();
       if (!List.isList(children)) return { children: null };
       return { 
         children: children.toJS().map((itemId) => itemBuilder({ key: itemId })(itemId)),

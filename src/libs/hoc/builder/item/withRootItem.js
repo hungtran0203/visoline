@@ -1,7 +1,7 @@
 import { ROOT_ITEM_STREAM } from 'constants';
 import { withHandlers, compose } from 'recompose';
 import { withStreamProps, withStreams } from 'libs/hoc';
-import { withItemWatcher } from 'libs/hoc/withItemWatcher';
+import { withItemWatcher } from 'libs/hoc/builder';
 import Item from 'libs/storage/item';
 
 const OPTIONS = { init: null };
