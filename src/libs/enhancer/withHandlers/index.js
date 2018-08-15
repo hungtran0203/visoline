@@ -3,6 +3,8 @@ import { Enhancer } from 'libs/enhancer/base';
 import { withHandlers as rWithHandlers } from 'recompose';
 import _ from 'lodash';
 import uuid from 'uuid';
+import { toJS } from 'immutable';
+
 import { lookup } from 'libs/propsSelectors';
 import { ConfigureUI } from './ConfigureUI';
 import { getStream } from 'libs/hoc/stream';
@@ -16,9 +18,8 @@ export class withHandlers extends Enhancer {
   enhancer = rWithHandlers;
   schema = null;
 
-  constructor(config) {
-    super(config);
-    this.set('enhancer', this.name);
+  constructor(dataIm) {
+    super(dataIm);
   }
 
   getInputProps() {
@@ -42,7 +43,7 @@ export class withHandlers extends Enhancer {
       case 'raw':
         return opts;
       case 'object':
-        const props = _.get(opts, 'props');
+        const props = toJS(opts.get('props'));
         const options = {};
         Object.keys(props).map(propName => {
           const handler = lookup(props[propName]);

@@ -42,6 +42,14 @@ export class Item extends BaseItem {
     return storage.getItems();
   }
 
+  static doSave() {
+    return Storage.domain(DOMAIN).dosave();
+  }
+
+  static doLoad() {
+    return Storage.domain(DOMAIN).doLoad();
+  }
+  
   constructor(item) {
     super(item);
     this.formatters = formatters(this.constructor);

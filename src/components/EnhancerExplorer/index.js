@@ -9,7 +9,9 @@ import { withItemWatcher, withItemImOrNothing,
   withItemIm, withItemIt,
 } from 'libs/hoc/builder';
 import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
+import * as enhancerBuilderEnhancers from 'libs/hoc/builder/enhancer';
 import EnhancerItem from 'libs/storage/enhancer';
+import Item from 'libs/storage/item';
 
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { ROOT_ITEM_STREAM } from 'constants';
@@ -173,6 +175,7 @@ const EnhancerSelection = compose(
   withStreams({
     activeEnhancer$: [ACTIVE_ENHANCER_STREAM, { init: null }],
   }),
+  enhancerBuilderEnhancers.withEnhancerIt(),
   withHandlers({
     onClick: ({ activeEnhancer$, enh }) => () => activeEnhancer$.set(enh),
     onSaveName: ({ itemIm }) => (name) => {
@@ -180,15 +183,14 @@ const EnhancerSelection = compose(
     },
   }),
   withItemWatcher(),
-)(({ enh, onClick, activeEnhancer, onSaveName }) => {
-  console.log('enhenhenh', enh);
+)(({ enhIt, onClick, activeEnhancer, onSaveName }) => {
   // const activeRootIm = storage.getItem(rootItem);
   // const itemIm = storage.getItem(item);
   // const isActive = activeRootIm && activeRootIm.get('id') === itemIm.get('id');
-  const isActive = activeEnhancer === enh;
+  const isActive = activeEnhancer === enhIt.getId();
   return (
     <div className={classnames(styles.row, styles.rootItem, { [styles.isActive]: isActive })} onClick={onClick}>
-      <EditableText value={enh.getName()} onSave={onSaveName}/>
+      <EditableText value={enhIt.get('name')} onSave={onSaveName}/>
     </div>
   )
 });
@@ -203,29 +205,33 @@ const EnhancerListSelection = compose(
   withItemIt(),
   branch(({ showPageList }) => !showPageList, renderNothing),
 )(({ itemIt }) => {
-  const enahancers = itemIt.enhancers.toIm();
+  const enahancers = itemIt.enhancers.toIt();
+  console.log('enahancersenahancers', enahancers.size);
   // fix data
   if(enahancers.size) {
     let fixed = false;
     const enhancerIds = enahancers.map(enh => {
-      console.log('eee', enh);
-      if(enh && enh.get('id')) {
-        EnhancerItem.getInstance(enh).save().storage.doSave();
-        fixed = true;
-        return enh.get('id');
-      }
+      // if(!enh.isExists()) {
+      //   fixed = true;
+      //   return null;
+      // }
+      // else if(enh && enh.get('id')) {
+      //   EnhancerItem.getInstance(enh).save().storage.doSave();
+      //   fixed = true;
+      //   return enh.get('id');
+      // }
       return enh;
     });
-    if(fixed) {
-      itemIt.enhancers.changeTo(enhancerIds);
-      itemIt.storage.doSave();  
+    if(fixed || enhancerIds.size) {
+      // itemIt.enhancers.changeTo(_.compact(enhancerIds));
+      // itemIt.storage.doSave();  
     }
   }
   // fix data  
   return (
     <Box className={classnames(styles.pageSelection)}>
       {
-        enahancers.map((enh, index) => {
+        itemIt.enhancers.toId().map((enh, index) => {
           return (
             <EnhancerSelection key={index} enh={enh}/>
           )
@@ -297,20 +303,43 @@ const ActiveEnhancerExplorer = compose(
     enh: [ACTIVE_ENHANCER_STREAM],
   }),
   branch(({ enh }) => !enh, renderNothing),
-)(({ enh , rootItem, expandedNodes, className }) => {
-  return enh.getConfigureUI();
+  enhancerBuilderEnhancers.withEnhancerIt(),
+)(({ enhIt , rootItem, expandedNodes, className }) => {
+  return enhIt.getImplement().getConfigureUI();
 });
 
-const EnhancersToolBar = () => {
+const EnhancersToolBar = compose(
+  itemBuilderEnhancers.withActiveItem$(),
+  withHandlers({
+    doAdd: ({ activeItem$ }) => () => {
+      const activeItem = activeItem$.get();
+      if (activeItem) {
+        const itemIt = Item.getInstance(activeItem);
+        const newEnhancerIt = EnhancerItem.newInstance({
+          name: 'withHandlers',
+          enhancer: 'withHandlers',
+          options: {
+            props: {
+              onClick: 'doAnything',
+            },            
+          }
+        });
+        console.log('newEnhancerIt', newEnhancerIt.data);
+        newEnhancerIt.save();
+        itemIt.enhancers.push(newEnhancerIt);
+      }  
+    },
+  }),
+)(({ doAdd }) => {
   return (
     <Flex>
-      <Icon>add</Icon>
+      <Icon onClick={doAdd}>add</Icon>
       <Icon>remove</Icon>
       <Icon>arrow_upward</Icon>
       <Icon>arrow_downward</Icon>
     </Flex>
   )
-}
+});
 
 export const EnhancerExplorer = ({ children, ratio }) => (
   <div className={styles.wrapper}>

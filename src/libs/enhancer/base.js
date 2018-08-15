@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import ajv from 'ajv';
-import { fromJS } from 'immutable';
+import { fromJS, isImmutable } from 'immutable';
 import * as rEnhancers from 'recompose';
 import * as enhancers from './index';
 
@@ -8,9 +8,9 @@ export class Enhancer {
   name = '';
   config = null;
   schema = null;
-  data = {};
-  constructor(config) {
-    this.data.config = config;
+  dataIm = fromJS({});
+  constructor(dataIm) {
+    this.dataIm = dataIm;
   }
 
   validate() {
@@ -24,11 +24,11 @@ export class Enhancer {
   }
 
   get(prop, unsetVal) {
-    return _.get(this.data, prop, unsetVal);
+    return this.dataIm.get(prop, unsetVal);
   }
 
   set(prop, val) {
-    _.set(this.data, prop, val);
+    this.dataIm = this.dataIm.set(prop, val);
     return this;
   }
 
@@ -37,7 +37,7 @@ export class Enhancer {
   }
 
   getName() {
-    return this.name;
+    return this.get('name');
   }
 
   getInputProps() {
@@ -49,7 +49,7 @@ export class Enhancer {
   }
 
   getOptions() {
-    return this.get('config.options', {});
+    return this.get('options', fromJS({}));
   }
 
   build() {
@@ -61,19 +61,17 @@ export class Enhancer {
   }
 
   toIm() {
-    return fromJS(this.data);
+    return this.dataIm;
   }
 
   static fromIm(im) {
-    if (im && _.get(im, 'toJS')) {
-      const data = im.toJS();
-      const enhancerName = _.get(data, 'enhancer');
+    if (_.isObject(im)) {
+      const enhancerName = im.get('enhancer');
       let Enh;
       if (Enh = enhancers[enhancerName]) {
-        const rtn = new Enh(data.config);
-        rtn.set('id', data.id);
+        const rtn = new Enh(im);
         return rtn;
-      }
+      }  
     }
   }
 }

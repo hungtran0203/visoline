@@ -35,6 +35,10 @@ export class HasMany {
     return this.getRelListIm().toJS();
   }
 
+  toId() {
+    return this.toJS();
+  }
+
   set(path, value) {
     this.data = this.data.set(path, value);
     return this;

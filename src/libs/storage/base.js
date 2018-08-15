@@ -12,8 +12,8 @@ export class BaseItem {
   static FORMAT_IT = FORMAT_IT;
   static FORMAT_ID = FORMAT_ID;
   
-  constructor(item) {
-    this.domain = 'item';
+  constructor(item, domain) {
+    this.domain = domain || 'item';
     this.storage = Storage.domain(this.domain);
     this.data = this.storage.getItem(item);
     this.formatters = formatters(this.constructor);

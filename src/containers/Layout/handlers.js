@@ -7,6 +7,7 @@ import styles from './styles.scss';
 import classnames from 'classnames';
 import * as listHelper from 'libs/immutable/list';
 import * as Enhancers from 'libs/enhancer';
+import EnhancerItem from 'libs/storage/enhancer';
 
 export const initBox = ({ parentId }) => {
   return fromJS({
@@ -50,6 +51,7 @@ export const deleteBox = (item) => {
 export const doSave = ({ rootItem$ }) => () => {
   const data = storage.toJS();
   localStorage.setItem('visoline.storage', JSON.stringify(data));
+  EnhancerItem.doSave();
   // save rootItem
   localStorage.setItem('visoline.rootItemId', storage.getItem(rootItem$.get()).get('id'));
 };
@@ -60,6 +62,8 @@ export const doLoad = ({ rootItem$ }) => () => {
   if(data) {
     storage.load(JSON.parse(data));
   }
+
+  EnhancerItem.doLoad();
   // load rootItem
   const rootItemId = localStorage.getItem('visoline.rootItemId');
   if (rootItemId) {

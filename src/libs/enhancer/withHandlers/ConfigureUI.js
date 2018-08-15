@@ -95,18 +95,18 @@ const ToolBar = () => (
 
 export const ConfigureUI = ({ enh }) => {
   const opts = enh.getOptions('raw');
-  console.log('opts', opts, enh.toIm());
-  const props = _.get(opts, 'props');
+  const props = opts.get('props');
+  console.log('opts', opts, enh.toIm(), props);
   const options = {};
   return (
     <div>
       <ToolBar />
       {
-        Object.keys(props).map(propName => {
+        props.map((propVal, propName) => {
           return (
             <Flex key={propName} justify="space-between">
               <div>{propName}</div>
-              <div>{props[propName]}</div>
+              <div>{propVal}</div>
             </Flex>
           )
         })
