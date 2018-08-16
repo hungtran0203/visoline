@@ -94,9 +94,9 @@ const PanelSummary = compose(
     },
     openInEditor: ({ itemIm }) => () => {
       const path = itemIm.getPath();
-      console.log('path', path);
+      // console.log('path', path);
       const endpointUrl = `${EDITOR_URL}/api/v1/ide/openTextSource?path=${path}&name=${itemIm.getId()}`;
-      console.log('endpointUrl', endpointUrl);
+      // console.log('endpointUrl', endpointUrl);
       fetch(endpointUrl)
         .then(() => console.log('ok'));
     },

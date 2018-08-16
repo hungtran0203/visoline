@@ -57,7 +57,6 @@ export const withClassNameBuilder = () => withProps(({ item, className }) => {
 
 export const withStyleBuilder = () => withProps(({ item }) => {
   const itemIm = storage.getItem(item);
-  console.log('dmasmsdmsdm', itemIm.get('style'));
   const style = itemIm.get('style');
   return { style: style ? style.toJS() : style };
 });

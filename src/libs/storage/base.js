@@ -24,8 +24,17 @@ export class BaseItem {
     return this;
   }
 
+  setIn(path, value) {
+    this.data = this.data.setIn(path, value);
+    return this;
+  }
+
   get(path, unsetVal) {
     return this.data.get(path, unsetVal);
+  }
+
+  getIn(path, unsetVal) {
+    return this.data.getIn(path, unsetVal);
   }
 
   subscribe(listener) {

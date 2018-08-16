@@ -5,15 +5,15 @@ import _ from 'lodash';
 export const withEnhancerIm = (mapEnhImToPropName = 'enhIm', enhPropName='enh' ) => compose(
   withProps((props) => {
     if (!_.has(props, mapEnhImToPropName)) {
-      return { [mapEnhImToPropName]: (new EnhancerItem(props[enhPropName])).toIm() };
+      return { [mapEnhImToPropName]: (EnhancerItem.getInstance(props[enhPropName])).toIm() };
     }
   }),
 );
 
-export const withEnhancerIt = (mapEnhImToPropName = 'enhIt', enhPropName='enh' ) => compose(
+export const withEnhancerIt = (mapEnhItToPropName = 'enhIt', enhPropName='enh' ) => compose(
   withProps((props) => {
-    if (!_.has(props, mapEnhImToPropName)) {
-      return { [mapEnhImToPropName]: new EnhancerItem(props[enhPropName]) };
+    if (!_.has(props, mapEnhItToPropName)) {
+      return { [mapEnhItToPropName]: EnhancerItem.getInstance(props[enhPropName]) };
     }
   }),
 );

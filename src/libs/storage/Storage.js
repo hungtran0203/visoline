@@ -116,8 +116,8 @@ class Storage {
     this.subscribers[itemId] = [];
   }
 
-  subscribe = ({ item }) => (listener) => {
-    const itemId = this.getItemId(item);
+  subscribe = (props) => (listener, itemName='item') => {
+    const itemId = this.getItemId(props[itemName]);
     this.subscribers[itemId] = this.subscribers[itemId] || [];
     this.subscribers[itemId].push(listener);
     const disposer = () => {

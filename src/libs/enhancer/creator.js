@@ -3,7 +3,6 @@ import Enhancer from './base';
 import * as lookups from './index';
 
 const checkSubclass = (B, A) => {
-  console.log(B, typeof B);
   return typeof B === 'function' && B.prototype instanceof A || B === A;
 };
 

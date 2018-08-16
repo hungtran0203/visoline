@@ -5,7 +5,7 @@ import _ from 'lodash';
 export const withItemIm = (mapItemImToPropName = 'itemIm', itemPropName='item' ) => compose(
   withProps((props) => {
     if (!_.has(props, mapItemImToPropName)) {
-      return { [mapItemImToPropName]: (new Item(props[itemPropName])).toIm() };
+      return { [mapItemImToPropName]: (Item.getInstance(props[itemPropName])).toIm() };
     }
   }),
 );
@@ -13,7 +13,7 @@ export const withItemIm = (mapItemImToPropName = 'itemIm', itemPropName='item' )
 export const withItemIt = (mapItemImToPropName = 'itemIt', itemPropName='item' ) => compose(
   withProps((props) => {
     if (!_.has(props, mapItemImToPropName)) {
-      return { [mapItemImToPropName]: new Item(props[itemPropName]) };
+      return { [mapItemImToPropName]: Item.getInstance(props[itemPropName]) };
     }
   }),
 );

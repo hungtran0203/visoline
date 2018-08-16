@@ -1,7 +1,6 @@
 import { compose, lifecycle, withHandlers, withState, withPropsOnChange } from 'recompose';
-import storage from 'libs/storage';
 import { useChangedProps, omitProps } from 'libs/hoc';
-
+import Storage from 'libs/storage/Storage';
 const PROPS = {
   SUBSCRIBE: '$$addListener',
   UPDATE_ITEM: '$$updateItem',
@@ -10,14 +9,14 @@ const PROPS = {
 
 const disposers = new WeakMap();
 
-export const withItemWatcher = (itemName='item') => compose(
-  withHandlers({ [PROPS.SUBSCRIBE]: storage.subscribe }),
+export const withItemWatcher = (itemName='item', domain='item') => compose(
+  withHandlers({ [PROPS.SUBSCRIBE]: Storage.domain(domain).subscribe }),
   withState(PROPS.ITEM_VALUE, PROPS.UPDATE_ITEM, ''),
   lifecycle({
     componentWillMount() {
       const disposer = this.props[PROPS.SUBSCRIBE]((newVal, oldVal) => {
         this.props[PROPS.UPDATE_ITEM](newVal);
-      });
+      }, itemName);
       disposers.set(this, disposer);
     },
     componentWillUnmount() {

@@ -10,7 +10,7 @@ const DOMAIN = 'enhancer';
 /*
   wrapper of immutable object
 */
-const storage = Storage.domain(this.domain, { storageKey: 'visoline.db.enhancers' });
+const storage = Storage.domain(DOMAIN, { storageKey: 'visoline.db.enhancers' });
 export class EnhancerItem extends BaseItem {
   constructor(item) {
     super(item, DOMAIN);

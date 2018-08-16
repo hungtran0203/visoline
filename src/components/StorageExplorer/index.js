@@ -227,7 +227,6 @@ const ActivePagePanel = compose(
     togglePageList: ({ showPageList$ }) => () => showPageList$.set(!showPageList$.get()),
   })
 )(({ itemIm, togglePageList, showPageList }) => {
-  console.log('tititi', itemIm.get('name'));
   return (
     <Header>
       <div>{itemIm.get('name', itemIm.get('id'))}</div>

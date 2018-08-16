@@ -119,7 +119,6 @@ const InputField = compose(
       const newValue = event.target.value;
       changeValueStr(newValue);
       onChangeAttr(newValue);
-      console.log('restrestrest', rest, newValue);
       return false;
     },
   }),

@@ -206,7 +206,6 @@ const EnhancerListSelection = compose(
   branch(({ showPageList }) => !showPageList, renderNothing),
 )(({ itemIt }) => {
   const enahancers = itemIt.enhancers.toIt();
-  console.log('enahancersenahancers', enahancers.size);
   // fix data
   if(enahancers.size) {
     let fixed = false;
@@ -283,7 +282,6 @@ const ActiveEnhancerPanel = compose(
     togglePageList: ({ showPageList$ }) => () => showPageList$.set(!showPageList$.get()),
   })
 )(({ itemIm, togglePageList, showPageList }) => {
-  console.log('tititi', itemIm.get('name'));
   return (
     <Header>
       <div>Enhancer Config</div>
@@ -324,7 +322,6 @@ const EnhancersToolBar = compose(
             },            
           }
         });
-        console.log('newEnhancerIt', newEnhancerIt.data);
         newEnhancerIt.save();
         itemIt.enhancers.push(newEnhancerIt);
       }  

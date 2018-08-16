@@ -2,9 +2,12 @@ import React from 'react';
 import { Flex, Box } from 'reflexbox';
 import _ from 'lodash';
 import Icon from '@material-ui/core/Icon';
-import { compose, withHandlers, branch, renderNothing, withState } from 'recompose';
+import { compose, withHandlers, branch, renderNothing, withState, withProps } from 'recompose';
 import { withStreamProps, withStreams } from 'libs/hoc';
 import EditableText from 'components/EditableText';
+import { withEnhancerIt } from 'libs/hoc/builder/enhancer';
+import { withItemWatcher } from 'libs/hoc/builder';
+import { fromJS } from 'immutable';
 
 const ADDING_PROP_STATE_STREAM = 'enhancer.config.state.addingProp';
 const EDDITING_PROPNAME_VALUE_STREAM = 'enhancer.config.value.editing.propName';
@@ -19,15 +22,19 @@ const NewPropRow = compose(
   withStreams({
     propName$: [EDDITING_PROPNAME_VALUE_STREAM, { init: '' }],
     propSelector$: [EDDITING_PROPSELECTOR_VALUE_STREAM, { init: '' }],
+    addingPropState$: [ADDING_PROP_STATE_STREAM, { init: false }],
   }),
   branch(({ addingPropState }) => !addingPropState, renderNothing),
+  withEnhancerIt(),
   withHandlers({
-    saveRow: ({ propName$, propSelector$, enh }) => () => {
+    saveRow: ({ propName$, propSelector$, enhIt, addingPropState$ }) => () => {
       const propName = propName$.get();
       const propSelector = propSelector$.get();
       if (propName && propSelector) {
-        console.log(propName, propSelector);
-        enh.addHandler(propName, propSelector);
+        enhIt.setIn(['options', 'props', propName], propSelector).save();
+        addingPropState$.set(false);
+        propName$.set('');
+        propSelector$.set('');
       }
     }
   }),
@@ -93,25 +100,26 @@ const ToolBar = () => (
   </Flex>
 );
 
-export const ConfigureUI = ({ enh }) => {
-  const opts = enh.getOptions('raw');
-  const props = opts.get('props');
-  console.log('opts', opts, enh.toIm(), props);
-  const options = {};
-  return (
-    <div>
-      <ToolBar />
-      {
-        props.map((propVal, propName) => {
-          return (
-            <Flex key={propName} justify="space-between">
-              <div>{propName}</div>
-              <div>{propVal}</div>
-            </Flex>
-          )
-        })
-      }
-      <NewPropRow enh={enh} />
-    </div>
-  )
-}
+export const ConfigureUI = compose(
+  withProps(({ enh }) => ({ enhIm: enh.toIm() })),
+  withItemWatcher('enhIm', 'enhancer'),
+)(
+  ({ enhIm }) => {
+    return (
+      <div>
+        <ToolBar />
+        {
+          enhIm.getIn(['options', 'props'], fromJS({})).toSeq().map((propVal, propName) => {
+            return (
+              <Flex key={propName} justify="space-between">
+                <div>{propName}</div>
+                <div>{propVal}</div>
+              </Flex>
+            )
+          }).toList().toJSON()
+        }
+        <NewPropRow enh={enhIm} />
+      </div>
+    )
+  }
+);
