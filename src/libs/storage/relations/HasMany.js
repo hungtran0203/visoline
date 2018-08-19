@@ -80,7 +80,7 @@ export class HasMany {
   remove(rel) {
     const relIt = this.getRelIt(rel);
     if (relIt.isExists()) {
-      const relIndex = relIt.indexOf(rel);
+      const relIndex = this.indexOf(rel);
       if (relIndex >= 0) {
         const relListIm = this.getRelListIm().remove(relIndex);
         this.relOwner.set(this.relName, relListIm).save();

@@ -13,7 +13,6 @@ import * as enhancerBuilderEnhancers from 'libs/hoc/builder/enhancer';
 import EnhancerItem from 'libs/storage/enhancer';
 import Item from 'libs/storage/item';
 
-import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { ROOT_ITEM_STREAM } from 'constants';
 import * as layoutHandlers from 'containers/Layout/handlers';
 
@@ -33,7 +32,6 @@ import loader from './loader';
 const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
 const SHOW_PAGE_LIST_STREAM = 'tree.pagelist.show';
 const EDITOR_URL = 'http://localhost:3001';
-const ACTIVE_ENHANCER_STREAM = 'enhancer.active.item';
 
 const PrefixSpan = ({ children, className, ...rest }) => {
   return (
@@ -81,14 +79,10 @@ const LEVEL_PREFIX_WIDTH = 24;
 const LevelPrefix = ({ level }) => ( level ? <div style={{ flex: `0 0 ${level * LEVEL_PREFIX_WIDTH}px`}}/> : null)
 
 const PanelSummary = compose(
-  withStreamProps({
-    rootItem: [ROOT_ITEM_STREAM],
-    activeItem: [ACTIVE_ITEM_STREAM, { init: null }],
-  }),
-  withStreams({
-    rootItem$: [ROOT_ITEM_STREAM, { init: null }],
-    activeItem$: [ACTIVE_ITEM_STREAM, { init: null }],
-  }),
+  itemBuilderEnhancers.withActiveItem(),
+  itemBuilderEnhancers.withActiveItem$(),
+  itemBuilderEnhancers.withRootItem(),
+  itemBuilderEnhancers.withRootItem$(),
   withState('expanded', 'setExpanded', false),
   withItemIm(),
   withHandlers({
@@ -169,24 +163,17 @@ const buildNodes = (acc, { node, level = 0, expandedNodes, excludedSelf } ) => {
 }
 
 const EnhancerSelection = compose(
-  withStreamProps({
-    activeEnhancer: [ACTIVE_ENHANCER_STREAM],
-  }),
-  withStreams({
-    activeEnhancer$: [ACTIVE_ENHANCER_STREAM, { init: null }],
-  }),
+  enhancerBuilderEnhancers.withActiveEnhancer(),
+  enhancerBuilderEnhancers.withActiveEnhancer$(),
   enhancerBuilderEnhancers.withEnhancerIt(),
   withHandlers({
     onClick: ({ activeEnhancer$, enh }) => () => activeEnhancer$.set(enh),
-    onSaveName: ({ itemIm }) => (name) => {
-      storage.updateItem(itemIm.set('name', name));
+    onSaveName: ({ enhIt }) => (name) => {
+      enhIt.set('name', name).save();
     },
   }),
-  withItemWatcher(),
+  enhancerBuilderEnhancers.withEnhancerWatcher(),
 )(({ enhIt, onClick, activeEnhancer, onSaveName }) => {
-  // const activeRootIm = storage.getItem(rootItem);
-  // const itemIm = storage.getItem(item);
-  // const isActive = activeRootIm && activeRootIm.get('id') === itemIm.get('id');
   const isActive = activeEnhancer === enhIt.getId();
   return (
     <div className={classnames(styles.row, styles.rootItem, { [styles.isActive]: isActive })} onClick={onClick}>
@@ -200,8 +187,8 @@ const EnhancerListSelection = compose(
   withStreamProps({
     showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
   }),
-  // withItemImOrNothing(),
-  branch(({ item }) => !item, renderNothing),
+  withItemImOrNothing,
+  withItemWatcher(),
   withItemIt(),
   branch(({ showPageList }) => !showPageList, renderNothing),
 )(({ itemIt }) => {
@@ -267,9 +254,7 @@ const EnhancersPanel = compose(
 ));
 
 const ActiveEnhancerPanel = compose(
-  withStreamProps({
-    item: [ACTIVE_ITEM_STREAM, { init: null }],
-  }),
+  itemBuilderEnhancers.withActiveItem('item'),  
   withItemWatcher(),
   withItemImOrNothing,
   withStreams({
@@ -297,9 +282,7 @@ const ActiveEnhancerPanel = compose(
 });
 
 const ActiveEnhancerExplorer = compose(
-  withStreamProps({
-    enh: [ACTIVE_ENHANCER_STREAM],
-  }),
+  enhancerBuilderEnhancers.withActiveEnhancer('enh'),
   branch(({ enh }) => !enh, renderNothing),
   enhancerBuilderEnhancers.withEnhancerIt(),
 )(({ enhIt , rootItem, expandedNodes, className }) => {
@@ -308,6 +291,18 @@ const ActiveEnhancerExplorer = compose(
 
 const EnhancersToolBar = compose(
   itemBuilderEnhancers.withActiveItem$(),
+  enhancerBuilderEnhancers.withActiveEnhancer$(),
+  withHandlers({
+    doMove: ({ activeItem$, activeEnhancer$ }) => (distance) => {
+      const activeItem = activeItem$.get();
+      if (activeItem) {
+        const itemIt = Item.getInstance(activeItem);
+        const enhIm = activeEnhancer$.get();
+        const enhIt = EnhancerItem.getInstance(enhIm);
+        itemIt.enhancers.move(enhIm, distance);
+      }  
+    },
+  }),
   withHandlers({
     doAdd: ({ activeItem$ }) => () => {
       const activeItem = activeItem$.get();
@@ -316,24 +311,32 @@ const EnhancersToolBar = compose(
         const newEnhancerIt = EnhancerItem.newInstance({
           name: 'withHandlers',
           enhancer: 'withHandlers',
-          options: {
-            props: {
-              onClick: 'doAnything',
-            },            
-          }
+          options: {},
         });
         newEnhancerIt.save();
         itemIt.enhancers.push(newEnhancerIt);
       }  
     },
+    doRemove: ({ activeItem$, activeEnhancer$ }) => () => {
+      const activeItem = activeItem$.get();
+      if (activeItem) {
+        const itemIt = Item.getInstance(activeItem);
+        const enhIm = activeEnhancer$.get();
+        const enhIt = EnhancerItem.getInstance(enhIm);
+        itemIt.enhancers.remove(enhIm);
+        enhIt.delete();
+      }
+    },
+    doMoveUp: ({ doMove }) => () => doMove(-1),
+    doMoveDown: ({ doMove }) => () => doMove(1),
   }),
-)(({ doAdd }) => {
+)(({ doAdd, doRemove, doMoveUp, doMoveDown }) => {
   return (
     <Flex>
       <Icon onClick={doAdd}>add</Icon>
-      <Icon>remove</Icon>
-      <Icon>arrow_upward</Icon>
-      <Icon>arrow_downward</Icon>
+      <Icon onClick={doRemove}>remove</Icon>
+      <Icon onClick={doMoveUp}>arrow_upward</Icon>
+      <Icon onClick={doMoveDown}>arrow_downward</Icon>
     </Flex>
   )
 });

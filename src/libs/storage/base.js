@@ -215,15 +215,6 @@ export class BaseItem {
 
   delete(rec=true) {
     this.storage.transactionStart();
-    // update parent
-    this.changeParent(null);
-    // delete children
-    if(rec) {
-      const childrenIt = this.children.toIt();
-      if(childrenIt) {
-        childrenIt.map(childIt => childIt.delete(rec));
-      }
-    }
     // delete this item
     this.storage.deleteItem(this.toIm());
     this.storage.transactionEnd();

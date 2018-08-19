@@ -79,6 +79,23 @@ export class Item extends BaseItem {
         return null;
     }
   }
+
+  delete(rec=true) {
+    this.storage.transactionStart();
+    // update parent
+    this.parent.changeTo(null);
+    // delete children
+    if(rec) {
+      const childrenIt = this.children.toIt();
+      if(childrenIt) {
+        childrenIt.map(childIt => childIt.delete(rec));
+      }
+    }
+    // delete this item
+    this.storage.deleteItem(this.toIm());
+    this.storage.transactionEnd();
+    return this;
+  }  
 }
 
 export default Item;

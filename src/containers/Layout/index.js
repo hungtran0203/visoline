@@ -26,6 +26,7 @@ import ColorPicker from 'components/ColorPicker';
 import RatioBox from 'components/RatioBox';
 import StorageExplorer from 'components/StorageExplorer';
 import PropsSelectors from 'components/PropsSelectors';
+import EnhancerSelector from 'components/EnhancerSelector';
 
 import Page from 'containers/Page';
 import EnhancerExplorer from 'components/EnhancerExplorer';
@@ -102,7 +103,7 @@ export class Layout extends React.Component {
             <EnhancerExplorer />
           </Box>
           <Box w={300}>
-            <PropsSelectors />
+            <EnhancerSelector />
           </Box>
         </Flex>
         <Flex>
