@@ -3,32 +3,36 @@ import { Flex, Box } from 'reflexbox';
 import styles from './styles.scss';
 import classnames from 'classnames';
 import { compose, withState, branch, withHandlers,
-  renderComponent, withStateHandlers, withProps,
+  renderComponent, withProps, withPropsOnChange,
 } from 'recompose';
 import KEYCODES from 'libs/constants/keycodes';
-import { withComposedHandlers, useChangedProps, withStreams } from 'libs/hoc';
+import { withComposedHandlers, useChangedProps, withStreams, omitProps } from 'libs/hoc';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
-import storage from 'libs/storage';
+import _ from 'lodash';
 
-const InputFieldUI = (props) => {
+const InputFieldUI = compose(
+  omitProps(['changeValueStr', 'newValue', 'changedValues', 'onDoneEdit', 'onStartEdit', 'onSave', 'isEditing', 'toggleEditing', 'setNewValue']),
+)((props) => {
   return (
     <Box auto>
       <input {...props} className={classnames(styles.input, styles.text, props.className)}/>
     </Box>
   );
-};
+});
 
 const InputField = compose(
-  withStateHandlers(
-    ({ value }) => ({ newValue: value }),
-    {
-      changeValueStr: ({ newValue }) => (value) => {
-        return { newValue: value };
-      },
-    },
-  ),
+  withProps(() => ({ changedValues: [] })),
+  withState('newValue', 'setNewValue'),
+  withHandlers(() => {
+    return ({
+      changeValueStr: ({ changedValues, newValue, setNewValue }) => (value) => {
+        changedValues[0] = value;
+        setNewValue(value);
+      },      
+    })
+  }),
   withComposedHandlers({
-    onChange: ({ newValue, changeValueStr }) => (event) => {
+    onChange: ({ changeValueStr }) => (event) => {
       const newValue = event.target.value;
       changeValueStr(newValue);
       return false;
@@ -53,7 +57,9 @@ const InputField = compose(
   withProps({
     autoFocus: true,
   }),
-  useChangedProps(['value', 'newValue']),
+  withProps(({ changedValues, value }) => ({
+    value: changedValues.length ? changedValues[0] : value,
+  })),
 )(InputFieldUI);
 
 export const EditableText = compose(
