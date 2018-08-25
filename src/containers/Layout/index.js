@@ -11,6 +11,7 @@ import _ from 'lodash';
 import storage from 'libs/storage';
 import * as handlers from './handlers';
 import * as selectors from './selectors';
+import 'libs/loader';
 import testStyles from './test.scss';
 
 import { DATA_STREAM, ROOT_ITEM_STREAM } from 'constants';

@@ -8,3 +8,5 @@ export const doSave = ({ rootItem$ }) => () => {
     localStorage.setItem('visoline.rootItemId', storage.getItem(rootItem$.get()).get('id'));
   }
 };
+
+export default doSave;

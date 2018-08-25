@@ -9,7 +9,8 @@ import { withStyleBuilder } from './withStyleBuilder';
 import { withChildrenBuilder } from './withChildrenBuilder';
 
 const BaseItemComponent = ({ Component, ...rest }) =>{
-  return <Component {...rest} />;
+  const props = _.omit(rest, ['item', 'itemIm', 'itemIt']);
+  return <Component {...props} />;
 } 
 
 export const withItemBuilder = (extendedHOC) => withContext(
@@ -24,7 +25,6 @@ export const withItemBuilder = (extendedHOC) => withContext(
         withComponentBuilder(),
         withChildrenBuilder(),
       )(BaseItemComponent);
-
       return <Component item={item} {...extraProps} />;
     },
   }),

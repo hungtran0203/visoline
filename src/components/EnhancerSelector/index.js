@@ -23,8 +23,7 @@ import withProps from 'recompose/withProps';
 import EditableText from 'components/EditableText';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import loader from './loader';
-
-console.log('ssssss', loader);
+import { getDirectory, getLoaderStore } from 'libs/loader';
 
 const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
 const SHOW_PAGE_LIST_STREAM = 'tree.pagelist.show';
@@ -126,6 +125,52 @@ const PanelSummary = compose(
   )
 });
 
+
+const NodeSelection = compose(
+  withStreamProps({ activeNode: 'activeNode.stream' }),
+  withStreams({ activeNode$: 'activeNode.stream' }),
+  withProps(({ uid, paths }) => ({
+    name: getLoaderStore().getIn([uid, 'name'], ''),
+    nodeId: uid,
+    level: paths.length,
+    icon: 'crop_din',
+  })),
+  withProps(({ activeNode, nodeId }) => ({
+    isActive: activeNode === nodeId,
+  })),
+  withHandlers({
+    onClick: ({ activeNode$, nodeId }) => () => activeNode$.set(nodeId),
+    onSaveName: ({ itemIm }) => (name) => {
+      if (itemIm) {
+        itemIm.set('name', name).save();
+      }
+    },
+    openInEditor: ({ uid }) => () => {
+      const nodeData = getLoaderStore().get(uid);
+      const filename = nodeData.get('entry', 'index');
+      const ns = nodeData.get('ns');
+      if(ns) {
+        const endpointUrl = `${EDITOR_URL}/api/v1/ide/openTextSource?path=${ns}&name=${filename}`;
+        fetch(endpointUrl);
+      }
+    },
+  }),
+)(({ nodeId, isActive, level, onSaveName, onClick, openInEditor, name, icon }) => {
+  return (
+    <Flex className={classnames(styles.panelSummary, { [styles.isActive]: isActive })} align="center">
+      <LevelPrefix level={ level + 1} />
+      <PrefixSpan><Icon className={classnames(styles.icon, styles.primary)} >{icon}</Icon></PrefixSpan>
+      <Box className={classnames(styles.text)} onClick={onClick} auto>
+        <EditableText value={name} onSave={onSaveName}/>
+      </Box>
+      <PrefixSpan className={classnames(styles.append)}><Icon className={classnames(styles.icon, styles.muted)}>lock</Icon></PrefixSpan>
+      <PrefixSpan className={classnames(styles.append)} onClick={openInEditor}>
+        <Icon className={classnames(styles.icon, styles.muted)}>edit</Icon>
+      </PrefixSpan>
+    </Flex>
+  )
+});
+
 const ItemExplorer = compose(
 )(({ node, paths }) => {
   return (
@@ -137,7 +182,6 @@ const ItemExplorer = compose(
 
 const buildNodes = (acc, { node, paths = [], expandedNodes } ) => {
   const nodeId = `${paths.length}${paths.join('.')}`;
-  // const itemIm = storage.getItem(node);
   if (paths.length) {
     acc.push((
       <div key={nodeId} className={styles.node}>
@@ -145,9 +189,20 @@ const buildNodes = (acc, { node, paths = [], expandedNodes } ) => {
       </div>
     ))  
   }
-  const children = Object.keys(node);
-  if (children && ((expandedNodes.has(nodeId) || paths.length === 0))) {
-    children.map((childName => buildNodes(acc, { node: node[childName], expandedNodes, paths: [...paths, childName] })))
+  if (((expandedNodes.has(nodeId) || paths.length === 0))) {
+    node.map((childNode, childName) => {
+      if(typeof childName === 'symbol') {
+        childNode.map(uid => {
+          acc.push((
+            <div key={uid} className={styles.node}>
+              <NodeSelection uid={uid} paths={paths} />
+            </div>
+          ));
+        })
+      } else {
+        buildNodes(acc, { node: childNode, expandedNodes, paths: [...paths, childName] });
+      }
+    });
   }
   return acc;
 }
@@ -195,7 +250,6 @@ const PropsSelectorsPanel = compose(
   <Header>
     <div>Enhancer Selector</div>
   </Header>
-
 ));
 
 const ActivePagePanel = compose(
@@ -213,7 +267,10 @@ const ActivePagePanel = compose(
 )(({ itemIm, togglePageList, showPageList }) => {
   return (
     <Header>
-      <div>{itemIm.get('name', itemIm.get('id'))}</div>
+      <Flex>
+        <Icon>add</Icon>
+        <Icon>remove</Icon>
+      </Flex>
       <div onClick={togglePageList}>
         {
           !!showPageList ?
@@ -240,7 +297,7 @@ const ActivePageExplorer = compose(
   const isActive = activeRootIm && activeRootIm.get('id') === itemIm.get('id');
   return (
     <div className={classnames(styles.container, className)} >
-      {buildNodes([], { node: loader, expandedNodes } )}
+      {buildNodes([], { node: getDirectory(), expandedNodes } )}
     </div>    
   )
 });
