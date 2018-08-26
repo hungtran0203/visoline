@@ -18,12 +18,12 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Flex, Box } from 'reflexbox';
-import { Set } from 'immutable';
+import { Set, fromJS } from 'immutable';
 import withProps from 'recompose/withProps';
 import EditableText from 'components/EditableText';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import loader from './loader';
-import { getDirectory, getLoaderStore } from 'libs/loader';
+import { getDirectory, getLoaderStore, addType, getMetaObject } from 'libs/loader';
 
 const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
 const SHOW_PAGE_LIST_STREAM = 'tree.pagelist.show';
@@ -75,7 +75,7 @@ const PanelSummary = compose(
   withStreams({ activeNode$: 'activeNode.stream' }),
   withProps(({ node, paths }) => ({
     name: paths[paths.length - 1],
-    nodeId: `${paths.length}${paths.join('.')}`,
+    nodeId: paths.join('.'),
     isLeaf: !_.keys(node).length,
     level: paths.length,
   })),
@@ -140,18 +140,26 @@ const NodeSelection = compose(
   })),
   withHandlers({
     onClick: ({ activeNode$, nodeId }) => () => activeNode$.set(nodeId),
-    onSaveName: ({ itemIm }) => (name) => {
-      if (itemIm) {
-        itemIm.set('name', name).save();
-      }
+    onSaveName: ({ uid }) => (name) => {
+      const nodeData = getLoaderStore().get(uid);
+      getLoaderStore().setIn([uid, 'name'], name);
     },
     openInEditor: ({ uid }) => () => {
       const nodeData = getLoaderStore().get(uid);
       const filename = nodeData.get('entry', 'index');
       const ns = nodeData.get('ns');
       if(ns) {
-        const endpointUrl = `${EDITOR_URL}/api/v1/ide/openTextSource?path=${ns}&name=${filename}`;
-        fetch(endpointUrl);
+        const endpointUrl = `${EDITOR_URL}/api/v1/ide/openTextSource`;
+        fetch(endpointUrl, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: JSON.stringify({
+            path: ns,
+            name: filename
+          }),
+        });
       }
     },
   }),
@@ -171,6 +179,32 @@ const NodeSelection = compose(
   )
 });
 
+const NodeSelectionInfo = compose(
+  withStreamProps({ nodeId: 'activeNode.stream' }),
+  withProps(({ nodeId }) => ({
+    nodeIm: getLoaderStore().get(nodeId)
+  })),
+  branch(({ nodeIm }) => !nodeIm, renderNothing),
+)(
+  ({ nodeIm }) => {
+    return (
+      <div>
+        <div>Options</div>
+        {
+          nodeIm.map((value, key) => {
+            return (
+              <Flex key={key} className={classnames(styles.row, styles.kvRow)}>
+                <Box w={0.4} className={styles.key}>{key}</Box>
+                <Box w={0.6} className={styles.value}>{value}</Box>
+              </Flex>
+            )
+          }).toList().toArray()
+        }
+      </div>
+    )
+  }
+);
+
 const ItemExplorer = compose(
 )(({ node, paths }) => {
   return (
@@ -181,7 +215,7 @@ const ItemExplorer = compose(
 });
 
 const buildNodes = (acc, { node, paths = [], expandedNodes } ) => {
-  const nodeId = `${paths.length}${paths.join('.')}`;
+  const nodeId = paths.join('.');
   if (paths.length) {
     acc.push((
       <div key={nodeId} className={styles.node}>
@@ -252,24 +286,60 @@ const PropsSelectorsPanel = compose(
   </Header>
 ));
 
+const updateMeta = (nsArr) => {
+  if(nsArr.length) {
+    const endpointUrl = `${EDITOR_URL}/api/v1/ide/updateMeta`;
+    fetch(endpointUrl, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({
+        ns: nsArr.join('.'),
+        meta: getMetaObject(nsArr),
+      }),
+    });
+  }
+};
+
 const ActivePagePanel = compose(
   itemBuilderEnhancers.withRootItemWatcher('item'),
   withItemImOrNothing,
   withStreams({
     showPageList$: [SHOW_PAGE_LIST_STREAM, { init: true }],
   }),
+  withStreams({
+    directory$: ['directory.stream', { init: getDirectory() }],
+  }),
   withStreamProps({
     showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
   }),
+  withStreams({ activeNode$: 'activeNode.stream' }),
   withHandlers({
     togglePageList: ({ showPageList$ }) => () => showPageList$.set(!showPageList$.get()),
+    doAdd: ({ activeNode$, directory$ }) => () => {
+      const name = 'New';
+      const activeNode = activeNode$.get();
+      const ns = activeNode.split('.');
+      directory$.set(addType(name, ns, 'enhancer'));
+
+      // sync with server
+      updateMeta(ns);
+    },
+    doAddFolder: ({ directory$, activeNode$ }) => () => {
+      const name = 'New';
+      const directory = directory$.get();
+      const activeNode = activeNode$.get();
+      directory$.set(directory.setIn([...activeNode.split('.'), name], fromJS({})));
+    },
   })
-)(({ itemIm, togglePageList, showPageList }) => {
+)(({ itemIm, togglePageList, showPageList, doAdd, doAddFolder }) => {
   return (
     <Header>
       <Flex>
-        <Icon>add</Icon>
+        <div onClick={doAdd}><Icon>add</Icon></div>
         <Icon>remove</Icon>
+        <div onClick={doAddFolder}><Icon>folder_open</Icon></div>
       </Flex>
       <div onClick={togglePageList}>
         {
@@ -286,18 +356,22 @@ const ActivePageExplorer = compose(
   withStreamProps({
     item: [ROOT_ITEM_STREAM],
   }),
+  withStreamProps({
+    directory: ['directory.stream', { init: getDirectory() }],
+  }),
   withItemImOrNothing,
   withStreams({
     rootItem$: [ROOT_ITEM_STREAM],
   }),
   withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new Set() }] }),
   withItemWatcher(),
-)(({ itemIm , rootItem, expandedNodes, className }) => {
+)(({ itemIm , rootItem, expandedNodes, className, directory }) => {
+  console.log('rrrrrrrr', directory);
   const activeRootIm = storage.getItem(rootItem);
   const isActive = activeRootIm && activeRootIm.get('id') === itemIm.get('id');
   return (
     <div className={classnames(styles.container, className)} >
-      {buildNodes([], { node: getDirectory(), expandedNodes } )}
+      {buildNodes([], { node: directory, expandedNodes } )}
     </div>    
   )
 });
@@ -307,6 +381,7 @@ export const StorageExplorer = ({ children, ratio }) => (
     <PropsSelectorsPanel />
     <ActivePagePanel />
     <ActivePageExplorer />
+    <NodeSelectionInfo />
   </div>
 );
 
