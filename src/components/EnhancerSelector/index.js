@@ -4,7 +4,7 @@ import storage from 'libs/storage';
 import classnames from 'classnames';
 import _ from 'lodash';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
-import { withStreams, withStreamProps } from 'libs/hoc';
+import { withStreams, withStreamProps, omitProps } from 'libs/hoc';
 import { withItemWatcher, withItemIm, withItemImOrNothing } from 'libs/hoc/builder';
 import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
@@ -23,7 +23,10 @@ import withProps from 'recompose/withProps';
 import EditableText from 'components/EditableText';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import loader from './loader';
-import { getDirectory, getLoaderStore, addType, getMetaObject } from 'libs/loader';
+import 'libs/loader';
+import DirectoryModel from 'libs/loader/model';
+import MetaModel from 'libs/loader/meta';
+import { withModel } from 'libs/model/hoc';
 
 const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
 const SHOW_PAGE_LIST_STREAM = 'tree.pagelist.show';
@@ -125,12 +128,12 @@ const PanelSummary = compose(
   )
 });
 
-
 const NodeSelection = compose(
   withStreamProps({ activeNode: 'activeNode.stream' }),
   withStreams({ activeNode$: 'activeNode.stream' }),
-  withProps(({ uid, paths }) => ({
-    name: getLoaderStore().getIn([uid, 'name'], ''),
+  withModel({ srcProp: 'uid', model: MetaModel, dstProp: 'metaIt', watching: true }),
+  withProps(({ uid, metaIt, paths }) => ({
+    name: metaIt.get('name'),
     nodeId: uid,
     level: paths.length,
     icon: 'crop_din',
@@ -140,15 +143,15 @@ const NodeSelection = compose(
   })),
   withHandlers({
     onClick: ({ activeNode$, nodeId }) => () => activeNode$.set(nodeId),
-    onSaveName: ({ uid }) => (name) => {
-      const nodeData = getLoaderStore().get(uid);
-      getLoaderStore().setIn([uid, 'name'], name);
+    onSaveName: ({ metaIt }) => (name) => {
+      metaIt.set('name', name).save();
+      updateMeta(metaIt);
     },
     openInEditor: ({ uid }) => () => {
-      const nodeData = getLoaderStore().get(uid);
-      const filename = nodeData.get('entry', 'index');
-      const ns = nodeData.get('ns');
-      if(ns) {
+      const metaIt = MetaModel.getInstance(uid);
+      const filename = metaIt.get('entry', 'index');
+      const path = metaIt.getPath();
+      if(path) {
         const endpointUrl = `${EDITOR_URL}/api/v1/ide/openTextSource`;
         fetch(endpointUrl, {
           method: 'POST',
@@ -156,7 +159,7 @@ const NodeSelection = compose(
             "Content-Type": "application/json; charset=utf-8",
           },
           body: JSON.stringify({
-            path: ns,
+            path,
             name: filename
           }),
         });
@@ -179,23 +182,59 @@ const NodeSelection = compose(
   )
 });
 
+const config = {
+  type: 'readonly',
+  name: { editable: true },
+  entry: { editable: true },
+  export: { editable: true },
+  directoryId: 'hidden',
+};
+
+const ValueComponent = compose(
+  branch(
+    ({ prop }) => {
+      return _.get(config, prop) === 'editable' || _.get(config, `${prop}.editable`) === true;
+    },
+    renderComponent(compose(
+      withHandlers({
+        onSave: ({ prop, nodeIt }) => (value) => {
+          nodeIt.set(prop, value).save();
+          updateMeta(nodeIt);
+        }
+      }),
+      omitProps(['nodeIt', 'prop']),
+    )(EditableText)),
+  ),
+  branch(
+    ({ prop }) => {
+      return _.get(config, prop) === 'hidden';
+    },
+    renderNothing,
+  )
+)(
+  (props) => {
+    return <div>{props.value}</div>
+  }
+);
+
 const NodeSelectionInfo = compose(
   withStreamProps({ nodeId: 'activeNode.stream' }),
-  withProps(({ nodeId }) => ({
-    nodeIm: getLoaderStore().get(nodeId)
-  })),
-  branch(({ nodeIm }) => !nodeIm, renderNothing),
+  branch(({ nodeId }) => !nodeId, renderNothing),
+  withModel({ srcProp: 'nodeId', model: MetaModel, dstProp: 'nodeIt', watching: true }),
 )(
-  ({ nodeIm }) => {
+  ({ nodeIt, nodeId }) => {
     return (
       <div>
         <div>Options</div>
         {
-          nodeIm.map((value, key) => {
+          nodeIt.toIm().map((value, key) => {
             return (
               <Flex key={key} className={classnames(styles.row, styles.kvRow)}>
                 <Box w={0.4} className={styles.key}>{key}</Box>
-                <Box w={0.6} className={styles.value}>{value}</Box>
+
+                <Box w={0.6} className={styles.value}>
+                  <ValueComponent prop={key} value={value} nodeIt={nodeIt}/>
+                </Box>
               </Flex>
             )
           }).toList().toArray()
@@ -224,18 +263,15 @@ const buildNodes = (acc, { node, paths = [], expandedNodes } ) => {
     ))  
   }
   if (((expandedNodes.has(nodeId) || paths.length === 0))) {
-    node.map((childNode, childName) => {
-      if(typeof childName === 'symbol') {
-        childNode.map(uid => {
-          acc.push((
-            <div key={uid} className={styles.node}>
-              <NodeSelection uid={uid} paths={paths} />
-            </div>
-          ));
-        })
-      } else {
-        buildNodes(acc, { node: childNode, expandedNodes, paths: [...paths, childName] });
-      }
+    node.children.toIt().map((childNode) => {
+      buildNodes(acc, { node: childNode, expandedNodes, paths: [...paths, childNode.get('name')] });
+    });
+    node.meta.toIt().map((meta) => {
+      acc.push((
+        <div key={meta.getId()} className={styles.node}>
+          <NodeSelection uid={meta.getId()} paths={paths} />
+        </div>
+      ));
     });
   }
   return acc;
@@ -286,8 +322,10 @@ const PropsSelectorsPanel = compose(
   </Header>
 ));
 
-const updateMeta = (nsArr) => {
-  if(nsArr.length) {
+const updateMeta = (metaIt) => {
+  const dir = metaIt.directory.toIt();
+  const path = metaIt.getPath();
+  if(path) {
     const endpointUrl = `${EDITOR_URL}/api/v1/ide/updateMeta`;
     fetch(endpointUrl, {
       method: 'POST',
@@ -295,8 +333,8 @@ const updateMeta = (nsArr) => {
         "Content-Type": "application/json; charset=utf-8",
       },
       body: JSON.stringify({
-        ns: nsArr.join('.'),
-        meta: getMetaObject(nsArr),
+        ns: path,
+        meta: dir.meta.toIt().map(it => it.toJS()).toJS(),
       }),
     });
   }
@@ -309,7 +347,7 @@ const ActivePagePanel = compose(
     showPageList$: [SHOW_PAGE_LIST_STREAM, { init: true }],
   }),
   withStreams({
-    directory$: ['directory.stream', { init: getDirectory() }],
+    directory$: ['directory.stream', { init: DirectoryModel.findRoot() }],
   }),
   withStreamProps({
     showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
@@ -320,17 +358,20 @@ const ActivePagePanel = compose(
     doAdd: ({ activeNode$, directory$ }) => () => {
       const name = 'New';
       const activeNode = activeNode$.get();
-      const ns = activeNode.split('.');
-      directory$.set(addType(name, ns, 'enhancer'));
-
-      // sync with server
-      updateMeta(ns);
+      const activeNodeIt = DirectoryModel.getInstance(activeNode);
+      // const ns = activeNode.split('.');
+      if (activeNodeIt) {
+        const metaIt = MetaModel.new({ name, type: 'enhancer' });
+        metaIt.directory.changeTo(activeNodeIt);
+        activeNodeIt.meta.add(metaIt);
+        updateMeta(metaIt);
+      }
     },
     doAddFolder: ({ directory$, activeNode$ }) => () => {
       const name = 'New';
-      const directory = directory$.get();
-      const activeNode = activeNode$.get();
-      directory$.set(directory.setIn([...activeNode.split('.'), name], fromJS({})));
+      // const directory = directory$.get();
+      // const activeNode = activeNode$.get();
+      // directory$.set(directory.setIn([...activeNode.split('.'), name], fromJS({})));
     },
   })
 )(({ itemIm, togglePageList, showPageList, doAdd, doAddFolder }) => {
@@ -357,7 +398,7 @@ const ActivePageExplorer = compose(
     item: [ROOT_ITEM_STREAM],
   }),
   withStreamProps({
-    directory: ['directory.stream', { init: getDirectory() }],
+    directory: ['directory.stream', { init: DirectoryModel.findRoot() }],
   }),
   withItemImOrNothing,
   withStreams({
@@ -366,7 +407,6 @@ const ActivePageExplorer = compose(
   withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new Set() }] }),
   withItemWatcher(),
 )(({ itemIm , rootItem, expandedNodes, className, directory }) => {
-  console.log('rrrrrrrr', directory);
   const activeRootIm = storage.getItem(rootItem);
   const isActive = activeRootIm && activeRootIm.get('id') === itemIm.get('id');
   return (

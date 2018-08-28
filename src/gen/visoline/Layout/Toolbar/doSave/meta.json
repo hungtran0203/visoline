@@ -1,6 +1,6 @@
 [
   {
-    "uid": "8e19ff29-1edb-4118-b1ee-63b6a446f4e9",
+    "id": "8e19ff29-1edb-4118-b1ee-63b6a446f4e9",
     "name": "doSave",
     "entry": "index",
     "export": "default",
