@@ -78,8 +78,8 @@ const PanelSummary = compose(
   withStreams({ activeNode$: 'activeNode.stream' }),
   withProps(({ node, paths }) => ({
     name: paths[paths.length - 1],
-    nodeId: paths.join('.'),
-    isLeaf: !_.keys(node).length,
+    nodeId: node.getId(),
+    isLeaf: !node.children.toJS().length,
     level: paths.length,
   })),
   withProps(({ activeNode, nodeId }) => ({
@@ -254,7 +254,7 @@ const ItemExplorer = compose(
 });
 
 const buildNodes = (acc, { node, paths = [], expandedNodes } ) => {
-  const nodeId = paths.join('.');
+  const nodeId = node.getId();
   if (paths.length) {
     acc.push((
       <div key={nodeId} className={styles.node}>
@@ -359,19 +359,23 @@ const ActivePagePanel = compose(
       const name = 'New';
       const activeNode = activeNode$.get();
       const activeNodeIt = DirectoryModel.getInstance(activeNode);
-      // const ns = activeNode.split('.');
       if (activeNodeIt) {
         const metaIt = MetaModel.new({ name, type: 'enhancer' });
         metaIt.directory.changeTo(activeNodeIt);
-        activeNodeIt.meta.add(metaIt);
+        console.log('bbbb', activeNodeIt.meta.toJS(), activeNode);
+        activeNodeIt.meta.addUnique(metaIt);
+        console.log('activeNodeIt', activeNodeIt.meta.toJS());
         updateMeta(metaIt);
       }
     },
     doAddFolder: ({ directory$, activeNode$ }) => () => {
       const name = 'New';
-      // const directory = directory$.get();
-      // const activeNode = activeNode$.get();
-      // directory$.set(directory.setIn([...activeNode.split('.'), name], fromJS({})));
+      const directory = directory$.get();
+      const activeNode = activeNode$.get();
+      const activeNodeIt = DirectoryModel.getInstance(activeNode);
+      const newDirIt = DirectoryModel.new({name});
+      newDirIt.parent.changeTo(activeNodeIt);
+      activeNodeIt.children.addUnique(newDirIt);
     },
   })
 )(({ itemIm, togglePageList, showPageList, doAdd, doAddFolder }) => {

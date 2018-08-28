@@ -14,7 +14,6 @@ export const withModel = ({ srcProp='id', model: Model, dstProp, watching=false 
     const id = props[srcProp];
     if(id && Model && dstProp) {
       const modelIt = Model.getInstance(id);
-      console.log('modelIt', modelIt);
       return {
         [dstProp]: ((modelIt && modelIt.isExists()) ? modelIt : null),
       }
