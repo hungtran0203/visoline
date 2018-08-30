@@ -79,7 +79,6 @@ const PanelSummary = compose(
   withProps(({ node, paths }) => ({
     name: paths[paths.length - 1],
     nodeId: node.getId(),
-    isLeaf: !node.children.toJS().length,
     level: paths.length,
   })),
   withProps(({ activeNode, nodeId }) => ({
@@ -103,20 +102,12 @@ const PanelSummary = compose(
     },
   }),
   withItemWatcher(),
-)(({ nodeId, isActive, level, onSaveName, onClick, openInEditor, name, isLeaf }) => {
+)(({ nodeId, isActive, level, onSaveName, onClick, openInEditor, name }) => {
   return (
     <Flex className={classnames(styles.panelSummary, { [styles.isActive]: isActive })} align="center">
-      <LevelPrefix level={!isLeaf ? level : level + 1} />
-      {
-        !isLeaf ?
-          <ExpandIcon nodeId={nodeId}/> :
-          <PrefixSpan><Icon className={classnames(styles.icon, styles.primary)} >crop_din</Icon></PrefixSpan>
-      }
-      { 
-        !isLeaf ?
-          <PrefixSpan><Icon className={classnames(styles.icon, styles.primary)} >folder</Icon></PrefixSpan> :
-          null
-      }
+      <LevelPrefix level={level} />
+      <ExpandIcon nodeId={nodeId}/>
+      <PrefixSpan><Icon className={classnames(styles.icon, styles.primary)} >folder</Icon></PrefixSpan>
       <Box className={classnames(styles.text)} onClick={onClick} auto>
         <EditableText value={name} onSave={onSaveName}/>
       </Box>
