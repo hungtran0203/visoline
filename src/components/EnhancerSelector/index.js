@@ -207,6 +207,7 @@ const ValueComponent = compose(
   )
 )(
   (props) => {
+    console.log('mamsdmasd', props.value);
     return <div>{props.value}</div>
   }
 );
@@ -221,17 +222,18 @@ const NodeSelectionInfo = compose(
       <div>
         <div>Options</div>
         {
-          nodeIt.toIm().map((value, key) => {
+          Object.keys(config).map((key) => {
+            console.log('nodeIt.get(key)', nodeIt.get(key), key);
             return (
               <Flex key={key} className={classnames(styles.row, styles.kvRow)}>
                 <Box w={0.4} className={styles.key}>{key}</Box>
 
                 <Box w={0.6} className={styles.value}>
-                  <ValueComponent prop={key} value={value} nodeIt={nodeIt}/>
+                  <ValueComponent prop={key} value={nodeIt.get(key) || '*'} nodeIt={nodeIt}/>
                 </Box>
               </Flex>
             )
-          }).toList().toArray()
+          })
         }
       </div>
     )

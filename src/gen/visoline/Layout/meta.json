@@ -4,12 +4,14 @@
     "type": "enhancer",
     "name": "doSomething",
     "entry": "doSomething",
-    "directoryId": "38184f0b-ae0b-492e-bec7-6e22a3b661a4"
+    "directoryId": "02f83560-2981-45f7-9be2-ea669689497d"
   },
   {
     "name": "doNew",
     "type": "enhancer",
     "id": "034f614a-2d26-4dab-957e-31e738a0b0c0",
-    "directoryId": "38184f0b-ae0b-492e-bec7-6e22a3b661a4"
+    "directoryId": "02f83560-2981-45f7-9be2-ea669689497d",
+    "entry": "doNew",
+    "export": "default"
   }
 ]
