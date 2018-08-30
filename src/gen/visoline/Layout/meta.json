@@ -1,1 +1,15 @@
-[{"id":"29211fc8-250b-4822-92c4-1cbb5e1b481b","type":"enhancer","name":"doSomething","entry":"doSomething","directoryId":"192c15cf-6d09-4a97-9d29-b5b9961bca92"},{"name":"New","type":"enhancer","id":"034f614a-2d26-4dab-957e-31e738a0b0c0","directoryId":"192c15cf-6d09-4a97-9d29-b5b9961bca92"}]
+[
+  {
+    "id": "29211fc8-250b-4822-92c4-1cbb5e1b481b",
+    "type": "enhancer",
+    "name": "doSomething",
+    "entry": "doSomething",
+    "directoryId": "38184f0b-ae0b-492e-bec7-6e22a3b661a4"
+  },
+  {
+    "name": "doNew",
+    "type": "enhancer",
+    "id": "034f614a-2d26-4dab-957e-31e738a0b0c0",
+    "directoryId": "38184f0b-ae0b-492e-bec7-6e22a3b661a4"
+  }
+]

@@ -76,9 +76,12 @@ const PanelSummary = compose(
   withState('expanded', 'setExpanded', false),
   withStreamProps({ activeNode: 'activeNode.stream' }),
   withStreams({ activeNode$: 'activeNode.stream' }),
-  withProps(({ node, paths }) => ({
-    name: paths[paths.length - 1],
-    nodeId: node.getId(),
+  withProps(({ node }) => ({
+    nodeId: node.get('id'),
+  })),
+  withModel({ srcProp: 'nodeId', model: DirectoryModel, dstProp: 'nodeIt', watching: true}),
+  withProps(({ nodeIt, paths }) => ({
+    name: nodeIt.get('name'),
     level: paths.length,
   })),
   withProps(({ activeNode, nodeId }) => ({
@@ -87,9 +90,10 @@ const PanelSummary = compose(
   withHandlers({
     onClick: ({ activeNode$, nodeId }) => () => activeNode$.set(nodeId),
     toggleExpand: ({ setExpanded, expanded }) => () => setExpanded(!expanded),
-    onSaveName: ({ itemIm }) => (name) => {
-      if (itemIm) {
-        itemIm.set('name', name).save();
+    onSaveName: ({ nodeIt }) => (name) => {
+      if (nodeIt) {
+        renameDirectory(nodeIt, name);
+        nodeIt.set('name', name).save();
       }
     },
     openInEditor: ({ paths }) => () => {
@@ -101,7 +105,6 @@ const PanelSummary = compose(
         .then(() => console.log('ok'));
     },
   }),
-  withItemWatcher(),
 )(({ nodeId, isActive, level, onSaveName, onClick, openInEditor, name }) => {
   return (
     <Flex className={classnames(styles.panelSummary, { [styles.isActive]: isActive })} align="center">
@@ -331,6 +334,23 @@ const updateMeta = (metaIt) => {
   }
 };
 
+const renameDirectory = (directoryIt, newName) => {
+  const oldDir = directoryIt.getPaths().map(it => it.get('name'));
+  const newDir = _.take(oldDir, oldDir.length - 1)
+  newDir.push(newName);
+  const endpointUrl = `${EDITOR_URL}/api/v1/ide/renameDir`;
+  fetch(endpointUrl, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify({
+      oldDir,
+      newDir,
+    }),
+  });
+};
+
 const ActivePagePanel = compose(
   itemBuilderEnhancers.withRootItemWatcher('item'),
   withItemImOrNothing,
@@ -353,10 +373,17 @@ const ActivePagePanel = compose(
       if (activeNodeIt) {
         const metaIt = MetaModel.new({ name, type: 'enhancer' });
         metaIt.directory.changeTo(activeNodeIt);
-        console.log('bbbb', activeNodeIt.meta.toJS(), activeNode);
         activeNodeIt.meta.addUnique(metaIt);
-        console.log('activeNodeIt', activeNodeIt.meta.toJS());
         updateMeta(metaIt);
+      }
+    },
+    doRemove: ({ activeNode$ }) => () => {
+      const activeNode = activeNode$.get();
+      const activeNodeIt = MetaModel.getInstance(activeNode);
+      if (activeNodeIt && activeNodeIt.isExists()) {
+        activeNodeIt.directory.toIt().meta.remove(activeNodeIt);
+        activeNodeIt.delete()
+        updateMeta(activeNodeIt);
       }
     },
     doAddFolder: ({ directory$, activeNode$ }) => () => {
@@ -369,12 +396,12 @@ const ActivePagePanel = compose(
       activeNodeIt.children.addUnique(newDirIt);
     },
   })
-)(({ itemIm, togglePageList, showPageList, doAdd, doAddFolder }) => {
+)(({ itemIm, togglePageList, showPageList, doAdd, doAddFolder, doRemove }) => {
   return (
     <Header>
       <Flex>
         <div onClick={doAdd}><Icon>add</Icon></div>
-        <Icon>remove</Icon>
+        <div onClick={doRemove}><Icon>remove</Icon></div>
         <div onClick={doAddFolder}><Icon>folder_open</Icon></div>
       </Flex>
       <div onClick={togglePageList}>
