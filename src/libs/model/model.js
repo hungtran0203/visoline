@@ -46,6 +46,14 @@ export class Model {
     return null;
   }
 
+  static onSizeChange(listener) {
+    return storage.onSizing(this.COLNAME, listener);
+  }
+
+  static size() {
+    return storage.size(this.COLNAME);
+  }
+
   constructor(item) {
     this.data = storage.getItem(this.constructor.COLNAME, item);
     if(this.data === storage.NOT_EXIST) {

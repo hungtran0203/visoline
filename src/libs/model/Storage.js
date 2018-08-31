@@ -4,6 +4,7 @@ import { fromJS, Map as IMap } from 'immutable';
 
 const storages = new Map();
 const subscribers = new Map();
+const reSizeSymbol = Symbol('RESIZE');
 export const NOT_EXIST = Symbol('NOT_EXIST');
 
 const getCollection = (colName) => {
@@ -56,13 +57,18 @@ export const updateItem = (colName, item) => {
   const itemId = getItemId(item);
   const collection = getCollection(colName);
   const oldVal = _.get(collection, itemId);
+  const isNew = !_.has(collection, itemId);
+  const subscribers = getSubscribers(colName);
   if(oldVal !== item) {
-    const subscribers = getSubscribers(colName);
     _.set(collection, itemId, item);
     const listeners = subscribers[itemId];
     if(Array.isArray(listeners)) {
       listeners.map(listener => listener(item, oldVal))
     }  
+  }
+  if(isNew) {
+    const newSize = size(colName);
+    if (subscribers[reSizeSymbol]) subscribers[reSizeSymbol].map(listener => listener(newSize));
   }
 };
 
@@ -72,6 +78,10 @@ export const deleteItem = (colName, item) => {
   const subscribers = getSubscribers(colName);
   delete collection[itemId];
   subscribers[itemId] = [];
+
+  // size change, trigger event
+  const newSize = size(colName);
+  if (subscribers[reSizeSymbol]) subscribers[reSizeSymbol].map(listener => listener(newSize));
 };
 
 export const find = (colName, condition) => {
@@ -83,3 +93,18 @@ export const findAll = (colName, condition) => {
   const collection = getCollection(colName);
   return _.filter(collection, condition);
 };
+
+export const onSizing = (colName, listener) => {
+  const subscribers = getSubscribers(colName);
+  subscribers[reSizeSymbol] = subscribers[reSizeSymbol] || [];
+  subscribers[reSizeSymbol].push(listener);
+  const disposer = () => {
+    subscribers[reSizeSymbol].splice(subscribers[reSizeSymbol].indexOf(listener), 1);
+  };
+  return disposer;  
+};
+
+export const size = (colName) => {
+  const collection = getCollection(colName);
+  return Object.keys(collection).length;
+}

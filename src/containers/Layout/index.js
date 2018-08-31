@@ -26,11 +26,11 @@ import CSSStyleInspector from 'components/CSSStyleInspector';
 import ColorPicker from 'components/ColorPicker';
 import RatioBox from 'components/RatioBox';
 import StorageExplorer from 'components/StorageExplorer';
-import PropsSelectors from 'components/PropsSelectors';
+// import PropsSelectors from 'components/PropsSelectors';
 import EnhancerSelector from 'components/EnhancerSelector';
 
 import Page from 'containers/Page';
-import EnhancerExplorer from 'components/EnhancerExplorer';
+// import EnhancerExplorer from 'components/EnhancerExplorer';
 
 const { Flex, Box } = Components;
 
@@ -99,9 +99,6 @@ export class Layout extends React.Component {
         <Flex justify="space-between">
           <Box w={300}>
             <StorageExplorer />
-          </Box>
-          <Box w={300}>
-            <EnhancerExplorer />
           </Box>
           <Box w={300}>
             <EnhancerSelector />

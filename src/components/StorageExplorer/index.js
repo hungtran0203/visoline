@@ -25,6 +25,9 @@ import EditableText from 'components/EditableText';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import Item from 'libs/storage/item';
 
+import PageListPanel from './components/PageListPanel';
+import PageList from './components/PageList';
+
 const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
 const SHOW_PAGE_LIST_STREAM = 'tree.pagelist.show';
 
@@ -74,11 +77,9 @@ const LevelPrefix = ({ level }) => ( level ? <div style={{ flex: `0 0 ${level * 
 
 const PanelSummary = compose(
   withStreamProps({
-    rootItem: [ROOT_ITEM_STREAM],
     activeItem: [ACTIVE_ITEM_STREAM, { init: null }],
   }),
   withStreams({
-    rootItem$: [ROOT_ITEM_STREAM, { init: null }],
     activeItem$: [ACTIVE_ITEM_STREAM, { init: null }],
   }),
   withState('expanded', 'setExpanded', false),
@@ -120,9 +121,6 @@ const PanelSummary = compose(
 });
 
 const ItemExplorer = compose(
-  withStreamProps({
-    rootItem: [ROOT_ITEM_STREAM],
-  }),
   withStreams({
     rootItem$: [ROOT_ITEM_STREAM, { init: null }],
   }),
@@ -151,68 +149,11 @@ const buildNodes = (acc, { node, level = 0, expandedNodes, excludedSelf } ) => {
   return acc;
 }
 
-const PageSelection = compose(
-  withItemItOrNothing,
-  withRootItem(),
-  withRootItem$(),
-  withItemIt(),
-  withItemIt('rootItemIt', 'rootItem'),
-  withHandlers({
-    onClick: ({ rootItem$, item }) => () => rootItem$.set(item),
-    onSaveName: ({ itemIt }) => (name) => {
-      itemIt.set('name').save();
-    },
-  }),
-  withItemWatcher(),
-)(({ itemIt, onClick, rootItemIt, onSaveName }) => {
-  const isActive = rootItemIt.isExists() && rootItemIt.getId() === itemIt.getId();
-  return (
-    <div className={classnames(styles.row, styles.rootItem, { [styles.isActive]: isActive })} onClick={onClick}>
-      <EditableText value={itemIt.getOneOf(['name', 'id'])} onSave={onSaveName}/>
-    </div>
-  )
-});
-
-const PageListSelection = compose(
-  withStreamProps({
-    showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
-  }),
-  branch(({ showPageList }) => !showPageList, renderNothing),
-  withRootItem$(),
-)(() => {
-  return (
-    <Box className={classnames(styles.pageSelection)}>
-      {
-        Item.all().map(itemId => {
-          if (!Item.getInstance(itemId).isRootItem()) return null;
-          return (
-            <PageSelection key={itemId} item={itemId}/>
-          )
-        })
-      }
-    </Box>
-  )
-});
-
 const Header = ({ children }) => (
   <Flex justify="space-between" className={classnames(styles.row, styles.header)}>
     {children}
   </Flex>
-)
-
-const PageListPanel = compose(
-  withStreamProps({
-    showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
-  }),
-  branch(({ showPageList }) => !showPageList, renderNothing),
-  itemBuilderEnhancers.withNewRootHandler('addPage'),
-)(({ addPage }) => (
-  <Header>
-    <div>Pages</div>
-    <div onClick={addPage}><Icon>add</Icon></div>
-  </Header>
-
-));
+);
 
 const ActivePagePanel = compose(
   itemBuilderEnhancers.withRootItemWatcher('item'),
@@ -258,7 +199,7 @@ const ActivePageExplorer = compose(
 export const StorageExplorer = ({ children, ratio }) => (
   <div className={styles.wrapper}>
     <PageListPanel />
-    <PageListSelection />
+    <PageList />
     <ActivePagePanel />
     <ActivePageExplorer />
   </div>

@@ -9,6 +9,8 @@ import * as listHelper from 'libs/immutable/list';
 import * as Enhancers from 'libs/enhancer';
 import EnhancerItem from 'libs/storage/enhancer';
 
+import BoxModel from 'libs/editor/model/box';
+
 export const initBox = ({ parentId }) => {
   return fromJS({
     id: uuid(),
@@ -73,7 +75,9 @@ export const doLoad = ({ rootItem$ }) => () => {
 }
 
 export const newRoot =  ({ setRootItem, setActiveItem }) => () => {
-  const root = newRootBox();
+  // const root = newRootBox();
+  const root = BoxModel.new({ type: 'Box' });
+  root.save();
   setRootItem(root);
   setActiveItem(root);
   return root;

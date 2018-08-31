@@ -1,0 +1,36 @@
+import React from 'react';
+import Icon from '@material-ui/core/Icon';
+import PageListItem from '../PageListItem';
+import classnames from 'classnames';
+
+import { compose, branch, renderNothing } from 'recompose';
+import { withStreamProps } from 'libs/hoc';
+
+import BoxModel from 'libs/editor/model/box';
+import { withModelSize } from 'libs/model/hoc';
+
+import { SHOW_PAGE_LIST_STREAM } from '../../constants';
+import styles from '../../styles.scss';
+
+export const PageList = compose(
+  withStreamProps({
+    showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
+  }),
+  branch(({ showPageList }) => !showPageList, renderNothing),
+  // withRootItem$(),
+  withModelSize({ model: BoxModel, dstProp: 'boxCount' }),
+)(({ boxCount }) => {
+  return (
+    <div className={classnames(styles.pageSelection)}>
+      {
+        BoxModel.findAll((boxIm) => !BoxModel.getInstance(boxIm).parent.toId()).map(pageIt => {
+          return (
+            <PageListItem key={pageIt.getId()} pageId={pageIt.getId()}/>
+          )
+        })
+      }
+    </div>
+  )
+});
+
+export default PageList;
