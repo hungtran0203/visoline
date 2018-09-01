@@ -13,6 +13,7 @@ import * as handlers from './handlers';
 import * as selectors from './selectors';
 import 'libs/loader';
 import testStyles from './test.scss';
+import InsertButton from 'components/StorageExplorer/components/Toolbar/InsertButton';
 
 import { DATA_STREAM, ROOT_ITEM_STREAM } from 'constants';
 
@@ -110,7 +111,7 @@ export class Layout extends React.Component {
         </Flex>
         <Flex>
           <Box className={styles.btn} onClick={doPush}>Span</Box>
-          <Box className={styles.btn} onClick={doInsert}>Insert</Box>
+          <InsertButton />
           <Box className={styles.btn} onClick={doDelete}>Delete</Box>
           <Box className={styles.btn} onClick={toColum}>Col</Box>
           <Box className={styles.btn} onClick={toRow}>Row</Box>

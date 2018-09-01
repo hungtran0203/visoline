@@ -15,7 +15,7 @@ const PageListPanel = compose(
   branch(({ showPageList }) => !showPageList, renderNothing),
   withHandlers({
     addPage: () => () => {
-      const newPage = BoxModel.new({ name: 'NewPage', type: 'Box' });
+      const newPage = BoxModel.new({ name: 'New Page', type: 'Box' });
       newPage.save();
     }
   })
