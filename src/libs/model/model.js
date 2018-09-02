@@ -62,6 +62,11 @@ export class Model {
     // this.formatters = formatters(this.constructor);
   }
 
+  sync() {
+    this.data = storage.getItem(this.constructor.COLNAME, this.getId());
+    return this;
+  }
+
   set(path, value) {
     this.data = this.data.set(path, value);
     return this;

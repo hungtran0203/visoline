@@ -91,6 +91,7 @@ export class HasMany {
     const relIt = this.getRelIt(rel);
     if (relIt.isExists()) {
       const relIndex = this.indexOf(rel);
+      console.log('rrr', relIndex);
       if (relIndex >= 0) {
         const relListIm = this.getRelListIm().remove(relIndex);
         this.relOwner.set(this.relName, relListIm).save();

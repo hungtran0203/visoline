@@ -1,4 +1,4 @@
-import { withProps } from 'recompose';
+import { withProps, withHandlers } from 'recompose';
 import _ from 'lodash';
 
 const toArray = (item) => {
@@ -28,5 +28,19 @@ export const withComposedHandlers = (handlers, opts) => withProps(
       return composeProps;
     });
     return composeProps;
+  }
+);
+
+export const composeHandler = ({ handlerName, handlerFn, options }) => withHandlers(
+  (ownerProps) => {
+    const orgHandler = ownerProps[handlerName];
+    // default option
+    const composedHandler = () => (...args) => {
+      if (orgHandler) orgHandler(...args);
+      if (handlerFn) handlerFn(ownerProps)(...args);
+    }
+    return {
+      [handlerName]: composedHandler,
+    }
   }
 );

@@ -9,7 +9,7 @@ import styles from './styles.scss';
 export const InsertButton = compose(
   withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt', watching: true }),
   withHandlers({
-    insertBox: ({ activePageIt }) => () => {
+    onClick: ({ activePageIt }) => () => {
       if (activePageIt) {
         const newBoxIt = BoxModel.new({ type: 'Box', name: 'New' });
         newBoxIt.parent.changeTo(activePageIt);
@@ -21,7 +21,7 @@ export const InsertButton = compose(
     disabled: !activePageIt,
   })),
 )(
-  ({ insertBox }) => <div onClick={insertBox} className={styles.btn} ><Icon>add</Icon>Insert</div>
+  ({ onClick }) => <div onClick={onClick} className={styles.btn} ><Icon>add</Icon>Insert</div>
 );
 
 export default InsertButton;

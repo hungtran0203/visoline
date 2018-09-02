@@ -84,8 +84,8 @@ export class Navigator {
 
   onKeyDown = (event) => {
     const { altKey, charCode, ctrlKey, keyCode, shiftKey } = event;
-    if(altKey) {
-      getStream(CTRL_KEY_STATE).set(altKey);
+    if(altKey || [KEYCODES.LEFT_WINDOW_KEY].includes(keyCode)) {
+      getStream(CTRL_KEY_STATE).set(true);
     }
 
     const shortcodes = matching(event);
@@ -98,7 +98,7 @@ export class Navigator {
 
   onKeyUp = (event) => {
     const { altKey, charCode, ctrlKey, keyCode, shiftKey } = event;
-    if ([KEYCODES.ALT, KEYCODES.CTRL].indexOf(keyCode) >= 0) {
+    if ([KEYCODES.ALT, KEYCODES.CTRL, KEYCODES.LEFT_WINDOW_KEY].indexOf(keyCode) >= 0) {
       getStream(CTRL_KEY_STATE).set(false);
     }
   }

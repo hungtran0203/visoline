@@ -14,6 +14,9 @@ import * as selectors from './selectors';
 import 'libs/loader';
 import testStyles from './test.scss';
 import InsertButton from 'components/StorageExplorer/components/Toolbar/InsertButton';
+import DeleteButton from 'components/StorageExplorer/components/Toolbar/DeleteButton';
+import AppendButton from 'components/StorageExplorer/components/Toolbar/AppendButton';
+import GroupButton from 'components/StorageExplorer/components/Toolbar/GroupButton';
 
 import { DATA_STREAM, ROOT_ITEM_STREAM } from 'constants';
 
@@ -110,12 +113,13 @@ export class Layout extends React.Component {
           <Box className={styles.btn} onClick={doSave}>Save</Box>
         </Flex>
         <Flex>
-          <Box className={styles.btn} onClick={doPush}>Span</Box>
+          <AppendButton />
           <InsertButton />
+          <DeleteButton />
           <Box className={styles.btn} onClick={doDelete}>Delete</Box>
           <Box className={styles.btn} onClick={toColum}>Col</Box>
           <Box className={styles.btn} onClick={toRow}>Row</Box>
-          <Box className={styles.btn} onClick={doGroup}>Group</Box>
+          <GroupButton />
           <Box className={styles.btn} onClick={doUnGroup}>UnGroup</Box>
           <Box className={styles.btn} onClick={doAddEnh}>AddEnh</Box>
         </Flex>
