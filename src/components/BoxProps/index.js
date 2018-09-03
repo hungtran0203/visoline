@@ -23,39 +23,7 @@ import EditableText from 'components/EditableText';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import BoxModel from 'libs/editor/model/box';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
-
-import ReadOnlyRender from './components/ReadOnlyRender';
-import HiddenRender from './components/HiddenRender';
-import EditableRender from './components/EditableRender';
-import EnhancerRender from './components/EnhancerRender';
-
-const ConfigSchema = {
-  type: { type: 'editable' },
-  name: { type: 'editable' },
-  content: { type: 'editable' },
-  className: { type: 'editable' },
-  enhancers: { type: 'enhancer' },
-  style: { type: 'editable' },
-  directoryId: { type: 'hidden' },
-  children: { type: 'hidden' },
-  parentId: { type: 'hidden' },
-  id: { type: 'hidden' },
-};
-
-const TypeMap = {
-  readonly: ReadOnlyRender,
-  hidden: HiddenRender,
-  editable: EditableRender,
-  enhancer: EnhancerRender,
-}
-
-const getPropType = (prop) => {
-  return _.get(ConfigSchema, `${prop}.type`, 'hidden');
-}
-
-const getConfigProps = () => {
-  return Object.keys(ConfigSchema);
-}
+import { getRenderer, getConfigProps } from './ConfigSchema';
 
 const AddProp = compose(
   withStreamProps({ 
@@ -131,7 +99,7 @@ export const BoxProps = compose(
   <div className={styles.wrapper}>
     {
       getConfigProps().map(prop => {
-        const Renderer = _.get(TypeMap, getPropType(prop), TypeMap.hidden);
+        const Renderer = getRenderer(prop);
         const value = activeBoxIt.get(prop);
         return (
           <Renderer key={prop} prop={prop} value={value} boxIt={activeBoxIt} />
