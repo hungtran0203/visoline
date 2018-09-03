@@ -13,8 +13,9 @@ import styles from '../../styles.scss';
 import { withModelSize } from 'libs/model/hoc';
 import BoxModel from 'libs/editor/model/box';
 import BoxSelection from '../BoxSelection';
+import { Set as ISet } from 'immutable';
 
-const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
+import { EXPANDED_NODES_STREAM } from '../../constants';
 
 const buildNodes = (acc, { box, level = 0, expandedNodes, excludedSelf } ) => {
   if (!excludedSelf) {
@@ -31,7 +32,7 @@ const buildNodes = (acc, { box, level = 0, expandedNodes, excludedSelf } ) => {
 
 export const ActivePage = compose(
   withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt', watching: true }),
-  withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new Set() }] }),
+  withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new ISet() }] }),
   withModelSize({ model: BoxModel, dstProp: 'boxCount' }),
   branch(({ activePageIt }) => !activePageIt, renderNothing),
 )(({ activePageIt, expandedNodes, className, boxCount }) => {

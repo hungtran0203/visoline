@@ -60,7 +60,6 @@ const withEditorHoc = compose(
 const RenderActivePage = compose(
   withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt', watching: true }),
 )(({ activePageIt }) => {
-  console.log('activePageItactivePageIt', activePageIt);
   return <RenderPage item={activePageIt}/>
 });
 

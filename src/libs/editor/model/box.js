@@ -1,6 +1,8 @@
 import Model from 'libs/model/model';
 import Nested from 'libs/model/relations/Nested';
+import HasMany from 'libs/model/relations/HasMany';
 import _ from 'lodash';
+import BoxEnhancerModel from './BoxEnhancer';
 
 export class BoxModel extends Model {
   static COLNAME = 'box';
@@ -12,6 +14,8 @@ export class BoxModel extends Model {
     this.parent = parentChildrenRel.getUpperRel();
     this.children = parentChildrenRel.getLowerRel();
     this.parentChildrenRel = parentChildrenRel;
+
+    this.enhancers = new HasMany({ relOwner: this, relName: 'enhancers', relClass: BoxEnhancerModel });
   }
 
   toStorage() {

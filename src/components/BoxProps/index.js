@@ -24,73 +24,7 @@ import withPropsOnChange from 'recompose/withPropsOnChange';
 import BoxModel from 'libs/editor/model/box';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { getRenderer, getConfigProps } from './ConfigSchema';
-
-const AddProp = compose(
-  withStreamProps({ 
-    adding: 'prop.adding',
-    prop: 'prop.prop',
-    value: 'prop.value',
-  }),
-  withStreams({
-    adding$: 'prop.adding',
-    prop$: 'prop.prop',
-    value$: 'prop.value',
-  }),
-  withHandlers({
-    onClick: ({ adding$ }) => () => {
-      adding$.set(true);
-    },
-    completeEdit: ({ prop$, value$, adding$, boxIt }) => () => {
-      if (prop$.get() && value$.get()) {
-        boxIt.set(prop$.get(), value$.get()).save();
-        adding$.set(false);
-        prop$.set('');
-        value$.set('')
-      }
-    },
-  }),
-  composeHandler({
-    handlerName: 'onSaveProp',
-    handlerFn: ({ adding$, prop$ }) => (val) => {
-      prop$.set(val)
-    }
-  }),
-  composeHandler({
-    handlerName: 'onSaveProp',
-    handlerFn: ({ completeEdit }) => () => completeEdit(),
-  }),
-  composeHandler({
-    handlerName: 'onSaveValue',
-    handlerFn: ({ adding$, value$ }) => (val) => {
-      value$.set(val)
-    }
-  }),
-  composeHandler({
-    handlerName: 'onSaveValue',
-    handlerFn: ({ completeEdit }) => () => completeEdit(),
-  }),
-  branch(
-    ({ adding }) => !adding,
-    renderComponent(({ onClick }) => {
-      return (
-        <div onClick={onClick}>
-          <Icon>add</Icon>
-        </div>
-      )
-    })
-  ),
-)(({ prop, value, onSaveProp, onSaveValue }) => {
-  return (
-    <Flex key={prop}>
-      <Box w={0.4}>
-        <EditableText value={prop || 'Prop'} onSave={onSaveProp}/>
-      </Box>
-      <Box w={0.6}>
-        <EditableText value={value || 'Value'} onSave={onSaveValue}/>
-      </Box>
-    </Flex>    
-  )  
-});
+import AddProp from './components/AddProp'
 
 export const BoxProps = compose(
   withModelStreamProp({ srcStream: ACTIVE_ITEM_STREAM, model: BoxModel, dstProp: 'activeBoxIt', watching: true }),
@@ -106,7 +40,7 @@ export const BoxProps = compose(
         )
       })
     }
-    <AddProp boxIt={activeBoxIt} />
+    <AddProp modelIt={activeBoxIt} />
   </div>
 ));
 

@@ -13,10 +13,11 @@ import styles from '../../styles.scss';
 import { withModelSize } from 'libs/model/hoc';
 import BoxModel from 'libs/editor/model/box';
 import { CTRL_KEY_STATE } from 'libs/hoc/editor';
+import { Set as ISet } from 'immutable';
 
 import Header from '../Header';
 
-const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
+import { EXPANDED_NODES_STREAM } from '../../constants';
 
 const PrefixSpan = ({ children, className }) => {
   return (
@@ -27,14 +28,14 @@ const PrefixSpan = ({ children, className }) => {
 }
 
 const ExpandIcon = compose(
-  withStreams({ expandedNodes$: [EXPANDED_NODES_STREAM, { init: new Set() }] }),
+  withStreams({ expandedNodes$: [EXPANDED_NODES_STREAM, { init: new ISet() }] }),
   withHandlers({
     onClick: ({ itemIt, expandedNodes$ }) => () => {
       if (itemIt.isExists()) {
         let expandedNodes = expandedNodes$.get();
         const itemId = itemIt.getId();
         if (expandedNodes.has(itemId)) {
-          expandedNodes = expandedNodes.delete(itemId)
+          expandedNodes = expandedNodes.remove(itemId)
         } else {
           expandedNodes = expandedNodes.add(itemId);
         }
@@ -42,7 +43,7 @@ const ExpandIcon = compose(
       }
     },
   }),
-  withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new Set() }] }),
+  withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new ISet() }] }),
   withProps(({ expandedNodes, itemIt }) => {
     return { expanded: expandedNodes.has(itemIt.getId()) };
   }),
@@ -132,10 +133,23 @@ const BoxSelection = compose(
     handlerName: 'onClick',
     handlerFn: ({ activeBox$, boxIt }) => () => activeBox$.set(boxIt.getId()),
   }),
-)(({ boxIt, level }) => {
+  withStreams({ expandedNodes$: [EXPANDED_NODES_STREAM, { init: new ISet() }] }),
+  withHandlers({
+    onClick: ({ boxIt, expandedNodes$ }) => () => {
+      if (boxIt) {
+        let expandedNodes = expandedNodes$.get();
+        const boxId = boxIt.getId();
+        if (!expandedNodes.has(boxId)) {
+          expandedNodes = expandedNodes.add(boxId);
+          expandedNodes$.set(expandedNodes)
+        }
+      }
+    },
+  }),  
+)(({ boxIt, level, onClick }) => {
   return (
-    <div className={styles.item}>
-      <BoxSummary boxIt={boxIt} level={level}/>
+    <div className={styles.item} >
+      <BoxSummary boxIt={boxIt} level={level} onClick={onClick}/>
     </div>
   )
 });
