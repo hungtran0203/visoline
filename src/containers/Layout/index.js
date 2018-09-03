@@ -11,18 +11,26 @@ import _ from 'lodash';
 import storage from 'libs/storage';
 import * as handlers from './handlers';
 import * as selectors from './selectors';
+import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
+
 import 'libs/loader';
 import testStyles from './test.scss';
 import InsertButton from 'components/StorageExplorer/components/Toolbar/InsertButton';
 import DeleteButton from 'components/StorageExplorer/components/Toolbar/DeleteButton';
 import AppendButton from 'components/StorageExplorer/components/Toolbar/AppendButton';
 import GroupButton from 'components/StorageExplorer/components/Toolbar/GroupButton';
+import RowButton from 'components/StorageExplorer/components/Toolbar/RowButton';
+import ColumnButton from 'components/StorageExplorer/components/Toolbar/ColumnButton';
+
+import RenderPage from './components/RenderPage';
 
 import { DATA_STREAM, ROOT_ITEM_STREAM } from 'constants';
 
 import { withActivation, ACTIVE_ELEMENT_STREAM, ACTIVE_ITEM_STREAM, ITEM_SELECTION_STREAM,
   Navigator,
 } from 'libs/hoc/editor';
+import { ACTIVE_PAGE_STREAM } from 'constants';
+import BoxModel from 'libs/editor/model/box';
 import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
 
 import { withItemWatcher, withItemBuilder, getItemBuilder } from 'libs/hoc/builder';
@@ -30,6 +38,7 @@ import CSSStyleInspector from 'components/CSSStyleInspector';
 import ColorPicker from 'components/ColorPicker';
 import RatioBox from 'components/RatioBox';
 import StorageExplorer from 'components/StorageExplorer';
+import BoxProps from 'components/BoxProps';
 // import PropsSelectors from 'components/PropsSelectors';
 import EnhancerSelector from 'components/EnhancerSelector';
 
@@ -48,35 +57,12 @@ const withEditorHoc = compose(
   itemBuilderEnhancers.setActiveItem(),
 );
 
-const editorHOC = [
-  withActivation(),
-  withItemWatcher(),
-];
-
-const ColorModifier = compose(
-  withEditorHoc,
-  withStreamProps({
-    activeItem: [ACTIVE_ITEM_STREAM, { init: null }],
-  }),
-  branch(({ activeItem }) => !activeItem, renderNothing),
-  withHandlers({
-    onChange: (props) => (color) => {
-      handlers.changeBackground(props)(color);
-    }
-  }),
-  withProps((props) => ({ color: selectors.selectBackground()(props) })),
-  pickProps(['onChange', 'onChangeComplete', 'color']),
-)((props) => <ColorPicker {...props} />);
-
-const RootItemComponent = compose(
-  withItemBuilder(editorHOC),
-  getItemBuilder(),
-  branch(
-    ({ item }) => !item,
-    renderNothing,
-  )
-)(({ itemBuilder, item }) => itemBuilder()(item));
-
+const RenderActivePage = compose(
+  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt', watching: true }),
+)(({ activePageIt }) => {
+  console.log('activePageItactivePageIt', activePageIt);
+  return <RenderPage item={activePageIt}/>
+});
 
 export class Layout extends React.Component {
   componentWillMount() {
@@ -93,16 +79,13 @@ export class Layout extends React.Component {
     return (
       <div>
         <Flex justify="space-between">
-          <Page />
-          <div className={classnames(testStyles.item, testStyles.item1)}>
-            <RatioBox ratio="4:3">
-              <img src="https://www.hotelquickly.com/11f85cdd1bc80d98f00c22698cd5883a.jpg" />
-            </RatioBox>
-          </div>
         </Flex>          
         <Flex justify="space-between">
           <Box w={300}>
             <StorageExplorer />
+          </Box>
+          <Box w={300}>
+            <BoxProps />
           </Box>
           <Box w={300}>
             <EnhancerSelector />
@@ -117,20 +100,17 @@ export class Layout extends React.Component {
           <InsertButton />
           <DeleteButton />
           <Box className={styles.btn} onClick={doDelete}>Delete</Box>
-          <Box className={styles.btn} onClick={toColum}>Col</Box>
-          <Box className={styles.btn} onClick={toRow}>Row</Box>
+          <ColumnButton />
+          <RowButton />
           <GroupButton />
           <Box className={styles.btn} onClick={doUnGroup}>UnGroup</Box>
           <Box className={styles.btn} onClick={doAddEnh}>AddEnh</Box>
         </Flex>
         <Flex>
-          <ColorModifier />
-        </Flex>
-        <Flex>
           <Box auto>
             <div  className={classnames(styles.container)}>
               <Flex>
-                <RootItemComponent item={rootItem} />
+                <RenderActivePage />
               </Flex>
             </div>
           </Box>

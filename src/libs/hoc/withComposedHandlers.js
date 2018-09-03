@@ -35,9 +35,9 @@ export const composeHandler = ({ handlerName, handlerFn, options }) => withHandl
   (ownerProps) => {
     const orgHandler = ownerProps[handlerName];
     // default option
-    const composedHandler = () => (...args) => {
+    const composedHandler = (props) => (...args) => {
       if (orgHandler) orgHandler(...args);
-      if (handlerFn) handlerFn(ownerProps)(...args);
+      if (handlerFn) handlerFn(props)(...args);
     }
     return {
       [handlerName]: composedHandler,

@@ -8,11 +8,16 @@ import { FORMAT_JSON, FORMAT_IM, FORMAT_IT, FORMAT_ID} from './constants';
 /*
   wrapper of immutable object
 */
+
+const instances = new Map();
+
 export class Model {
   static FORMAT_JSON = FORMAT_JSON;
   static FORMAT_IM = FORMAT_IM;
   static FORMAT_IT = FORMAT_IT;
   static FORMAT_ID = FORMAT_ID;
+
+  static Model = true;
 
   static COLNAME = 'item';
   
@@ -27,7 +32,13 @@ export class Model {
   static getInstance(...args) {
     const Class = this;
     const instance = new Class(...args);
-    return instance;
+    if(!instance.getId()) {
+      return instance;
+    }
+    if (!instances.has(instance.getId())) {
+      instances.set(instance.getId(), instance);
+    }
+    return instances.get(instance.getId());
   }
 
   static find(condition) {
@@ -56,6 +67,7 @@ export class Model {
 
   constructor(item) {
     this.data = storage.getItem(this.constructor.COLNAME, item);
+
     if(this.data === storage.NOT_EXIST) {
       this.data = fromJS(_.isObject(item) ? item : {});
     }

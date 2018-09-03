@@ -1,11 +1,15 @@
 import { compose, withProps, branch, renderNothing } from 'recompose';
-import Item from 'libs/storage/item';
+// import Item from 'libs/storage/item';
 import _ from 'lodash';
+import BoxModel from 'libs/editor/model/box';
 
 export const withItemIm = (mapItemImToPropName = 'itemIm', itemPropName='item' ) => compose(
   withProps((props) => {
     if (!_.has(props, mapItemImToPropName)) {
-      return { [mapItemImToPropName]: (Item.getInstance(props[itemPropName])).toIm() };
+      if(_.get(props[itemPropName], 'constructor.Model')) {
+        return { [mapItemImToPropName]: props[itemPropName].toIm() };
+      }
+      return { [mapItemImToPropName]: (BoxModel.getInstance(props[itemPropName])).toIm() };
     }
   }),
 );
@@ -13,7 +17,12 @@ export const withItemIm = (mapItemImToPropName = 'itemIm', itemPropName='item' )
 export const withItemIt = (mapItemImToPropName = 'itemIt', itemPropName='item' ) => compose(
   withProps((props) => {
     if (!_.has(props, mapItemImToPropName)) {
-      return { [mapItemImToPropName]: Item.getInstance(props[itemPropName]) };
+      if(_.get(props[itemPropName], 'constructor.Model')) {
+        return { [mapItemImToPropName]: props[itemPropName] };
+      }
+      const itemIt = BoxModel.getInstance(props[itemPropName]);
+
+      return { [mapItemImToPropName]: itemIt };
     }
   }),
 );
