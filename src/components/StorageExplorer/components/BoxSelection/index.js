@@ -5,7 +5,7 @@ import { ACTIVE_ITEM_STREAM, ACTIVE_ELEMENT_STREAM } from 'libs/hoc/editor';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing, withProps } from 'recompose';
 import { SHOW_PAGE_LIST_STREAM } from '../../constants';
 import { withStreamProps, withStreams, composeHandler } from 'libs/hoc';
-import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
 import EditableText from 'components/EditableText';
 import classnames from 'classnames';
 import { Flex, Box } from 'reflexbox';
@@ -31,13 +31,13 @@ const ExpandIcon = compose(
   withStreams({ expandedNodes$: [EXPANDED_NODES_STREAM, { init: new ISet() }] }),
   withHandlers({
     onClick: ({ itemIt, expandedNodes$ }) => () => {
-      if (itemIt.isExists()) {
+      if (itemIt && itemIt.isExists()) {
         let expandedNodes = expandedNodes$.get();
-        const itemId = itemIt.getId();
-        if (expandedNodes.has(itemId)) {
-          expandedNodes = expandedNodes.remove(itemId)
+        const itemRefId = itemIt.getRefId();
+        if (expandedNodes.has(itemRefId)) {
+          expandedNodes = expandedNodes.remove(itemRefId)
         } else {
-          expandedNodes = expandedNodes.add(itemId);
+          expandedNodes = expandedNodes.add(itemRefId);
         }
         expandedNodes$.set(expandedNodes)
       }
@@ -45,7 +45,7 @@ const ExpandIcon = compose(
   }),
   withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new ISet() }] }),
   withProps(({ expandedNodes, itemIt }) => {
-    return { expanded: expandedNodes.has(itemIt.getId()) };
+    return { expanded: expandedNodes.has(itemIt.getRefId()) };
   }),
 )(({ onClick, className, expanded }) => {
   return (
@@ -63,7 +63,7 @@ const LEVEL_PREFIX_WIDTH = 24;
 const LevelPrefix = ({ level }) => ( level ? <div style={{ flex: `0 0 ${level * LEVEL_PREFIX_WIDTH}px`}}/> : null)
 
 const BoxSummary = compose(
-  withModelStreamProp({ srcStream: ACTIVE_ITEM_STREAM, model: BoxModel, dstProp: 'activeBoxIt', watching: true }),
+  withModelStreamProp({ srcStream: ACTIVE_ITEM_STREAM, dstProp: 'activeBoxIt', watching: true }),
   withStreams({ activeBox$: [ACTIVE_ITEM_STREAM, { init: null }] }),
   withState('expanded', 'setExpanded', false),
   withStreams({
@@ -94,7 +94,7 @@ const BoxSummary = compose(
   }),
   composeHandler({
     handlerName: 'onClick',
-    handlerFn: ({ activeBox$, boxIt }) => () => activeBox$.set(boxIt.getId()),
+    handlerFn: ({ activeBox$, boxIt }) => () => activeBox$.set(boxIt.getRefId()),
   }),  
   withHandlers({
     toggleExpand: ({ setExpanded, expanded }) => () => setExpanded(!expanded),
@@ -103,7 +103,7 @@ const BoxSummary = compose(
     },
   }),
   withProps(({ activeBoxIt, boxIt, selectedBoxes }) => ({
-    isActive: (activeBoxIt && activeBoxIt.getId() === boxIt.getId()) || selectedBoxes.includes(boxIt.getId()),
+    isActive: (activeBoxIt && activeBoxIt.getRefId() === boxIt.getRefId()) || selectedBoxes.includes(boxIt.getRefId()),
   })),
 )(({ boxIt, activeBoxIt, level, onSaveName, onClick, isActive }) => {
   const children = boxIt.children.toIm();
@@ -131,16 +131,16 @@ const BoxSummary = compose(
 const BoxSelection = compose(
   composeHandler({
     handlerName: 'onClick',
-    handlerFn: ({ activeBox$, boxIt }) => () => activeBox$.set(boxIt.getId()),
+    handlerFn: ({ activeBox$, boxIt }) => () => activeBox$.set(boxIt.getRefId()),
   }),
   withStreams({ expandedNodes$: [EXPANDED_NODES_STREAM, { init: new ISet() }] }),
   withHandlers({
     onClick: ({ boxIt, expandedNodes$ }) => () => {
       if (boxIt) {
         let expandedNodes = expandedNodes$.get();
-        const boxId = boxIt.getId();
-        if (!expandedNodes.has(boxId)) {
-          expandedNodes = expandedNodes.add(boxId);
+        const boxRefId = boxIt.getRefId();
+        if (!expandedNodes.has(boxRefId)) {
+          expandedNodes = expandedNodes.add(boxRefId);
           expandedNodes$.set(expandedNodes)
         }
       }

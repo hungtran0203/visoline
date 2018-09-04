@@ -19,8 +19,8 @@ export const PageListItem = compose(
   // withItemIt(),
   // withItemIt('rootItemIt', 'rootItem'),
   withModelStream({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePage$' }),
-  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt' }),
-  withModel({ srcProp: 'pageId', model: BoxModel, dstProp: 'pageIt', watching: true }),
+  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, dstProp: 'activePageIt' }),
+  withModel({ srcProp: 'pageId', dstProp: 'pageIt', watching: true }),
   withHandlers({
     onClick: ({ activePage$, pageId }) => () => activePage$.set(pageId),
     onSaveName: ({ pageIt }) => (name) => {

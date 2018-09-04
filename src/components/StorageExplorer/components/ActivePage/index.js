@@ -5,7 +5,7 @@ import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing, withProps } from 'recompose';
 import { SHOW_PAGE_LIST_STREAM } from '../../constants';
 import { withStreamProps, withStreams } from 'libs/hoc';
-import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
 import EditableText from 'components/EditableText';
 import classnames from 'classnames';
 import { Flex, Box } from 'reflexbox';
@@ -20,18 +20,18 @@ import { EXPANDED_NODES_STREAM } from '../../constants';
 const buildNodes = (acc, { box, level = 0, expandedNodes, excludedSelf } ) => {
   if (!excludedSelf) {
     acc.push((
-      <div key={box.getId()} className={styles.node}><BoxSelection boxIt={box} level={level} /></div>
+      <div key={box.getRefId()} className={styles.node}><BoxSelection boxIt={box} level={level} /></div>
     ))  
   }
   const childrenIt = box.children.toIt();
-  if (childrenIt && (expandedNodes.has(box.getId()) || level === 0)) {
+  if (childrenIt && (expandedNodes.has(box.getRefId()) || level === 0)) {
     childrenIt.map((childIt => buildNodes(acc, { box: childIt, expandedNodes, level: level + 1 })))
   }
   return acc;
 };
 
 export const ActivePage = compose(
-  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt', watching: true }),
+  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, dstProp: 'activePageIt', watching: true }),
   withStreamProps({ expandedNodes: [EXPANDED_NODES_STREAM, { init: new ISet() }] }),
   withModelSize({ model: BoxModel, dstProp: 'boxCount' }),
   branch(({ activePageIt }) => !activePageIt, renderNothing),

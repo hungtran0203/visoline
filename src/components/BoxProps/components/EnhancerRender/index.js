@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
+import { compose, withHandlers, withState, renderComponent, branch, renderNothing, withProps } from 'recompose';
 import EditableText from 'components/EditableText';
 import { Flex, Box } from 'reflexbox';
 import Icon from '@material-ui/core/Icon';
@@ -34,15 +34,35 @@ const EnhancerOptionList = compose(
 );
 
 const BoxEnhancerRender = compose(
+  withStreams({ selectedEnh$: 'activeNode.stream' }),
   withStreams({
     active$: 'render.boxenahcer.active',
   }),
   withHandlers({
     onClick: ({ active$, boxEnhIt }) => () => {
       active$.set(boxEnhIt.getId())
-    }
+    },
+    onSelect: ({ selectedEnh$, boxEnhIt }) => () => {
+      const enhIt = MetaModel.getInstance(selectedEnh$.get());
+      if (enhIt.get('type') === 'enhancer') {
+        enhIt.get('type')
+      }
+      boxEnhIt.enhancer.changeTo(enhIt);
+    },
   }),
+  withProps(({ boxEnhIt }) => ({
+    enhancerIt: boxEnhIt.enhancer.toIt()
+  })),
+  branch(
+    ({ enhancerIt }) => !enhancerIt,
+    renderComponent(({ onSelect }) => (
+      <Flex >
+        <div onClick={onSelect}>Select Enhancer</div>
+      </Flex>
+    ))
+  ),
 )(({ onClick, boxEnhIt }) => {
+  console.log('boxEnhIt.enhancer', boxEnhIt.toJS());
   return (
     <Flex column>
       <Flex justify="space-between" onClick={onClick}>
@@ -78,10 +98,12 @@ const EnhancerList = compose(
   })
 )(
   ({ onAdd, boxIt }) => {
+    console.log('boxIt.enhancers', boxIt.enhancers.toJS());
     return (
       <Flex column>
         {
           boxIt.enhancers.toIt().map((boxEnhIt) => {
+            console.log('boxEnhIt', boxEnhIt);
             return (<BoxEnhancerRender key={boxEnhIt.getId()} boxEnhIt={boxEnhIt}/>)
           })
         }

@@ -1,15 +1,15 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
 import { compose, branch, renderNothing, withHandlers, withProps } from 'recompose';
-import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
 import { ACTIVE_PAGE_STREAM } from 'constants';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import BoxModel from 'libs/editor/model/box';
 import styles from './styles.scss';
 
 export const InsertButton = compose(
-  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt', watching: true }),
-  withModelStreamProp({ srcStream: ACTIVE_ITEM_STREAM, model: BoxModel, dstProp: 'activeBoxIt', watching: true }),
+  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, dstProp: 'activePageIt', watching: true }),
+  withModelStreamProp({ srcStream: ACTIVE_ITEM_STREAM, dstProp: 'activeBoxIt', watching: true }),
   withHandlers({
     onClick: ({ activePageIt, activeBoxIt }) => () => {
       const targetBoxIt = activeBoxIt ? activeBoxIt : activePageIt;

@@ -133,6 +133,10 @@ export class Model {
     return this.get('id');
   }
 
+  getRefId() {
+    return `${this.getId()}@${this.constructor.COLNAME}`;
+  }
+  
   toIm() {
     return this.data;
   }

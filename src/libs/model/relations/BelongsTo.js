@@ -1,3 +1,5 @@
+import register from 'libs/model/register';
+
 /*
   wrapper of immutable object
 */
@@ -11,7 +13,8 @@ export class BelongsTo {
   }
 
   getRelIt() {
-    const relIt = this.relClass.getInstance(this.getRel());
+    console.log('this.getRel()this.getRel()', this.getRel(), this.relOwner.toJS());
+    const relIt = register.resolveById(this.getRel(), this.relClass);
     return relIt;
   }
 
@@ -40,9 +43,9 @@ export class BelongsTo {
   }
 
   changeTo(newVal) {
-    const newOrig = this.relClass.getInstance(newVal);
-    if(newOrig.isExists()) {
-      this.relOwner.set(this.relName, newOrig.getId());
+    const newOrig = register.resolveById(newVal, this.relClass);
+    if(newOrig && newOrig.isExists()) {
+      this.relOwner.set(this.relName, newOrig.getRefId());
       this.relOwner.save();
     }
   }

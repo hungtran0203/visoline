@@ -4,15 +4,13 @@ import { ACTIVE_PAGE_STREAM } from 'constants';
 import { compose, branch, renderNothing, withHandlers } from 'recompose';
 import { SHOW_PAGE_LIST_STREAM } from '../../constants';
 import { withStreamProps, withStreams } from 'libs/hoc';
-import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
-
-import BoxModel from 'libs/editor/model/box';
+import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
 
 import Header from '../Header';
 import { Flex } from 'reflexbox';
 
 export const ActivePagePanel = compose(
-  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt', watching: true }),
+  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, dstProp: 'activePageIt', watching: true }),
   branch(
     ({ activePageIt }) => !activePageIt,
     renderNothing,

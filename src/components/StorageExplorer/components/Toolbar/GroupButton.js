@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
 import { compose, branch, renderNothing, withHandlers, withProps } from 'recompose';
-import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
 import { withStreamProps, withStreams, composeHandler } from 'libs/hoc';
 import { ACTIVE_PAGE_STREAM } from 'constants';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
@@ -10,8 +10,8 @@ import styles from './styles.scss';
 import _ from 'lodash';
 
 export const GroupButton = compose(
-  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt', watching: true }),
-  withModelStreamProp({ srcStream: ACTIVE_ITEM_STREAM, model: BoxModel, dstProp: 'activeBoxIt', watching: true }),
+  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, dstProp: 'activePageIt', watching: true }),
+  withModelStreamProp({ srcStream: ACTIVE_ITEM_STREAM, dstProp: 'activeBoxIt', watching: true }),
   withStreams({ selectedBoxes$: ['box.selected.stream', { init: [] }] }),
 
   withHandlers({

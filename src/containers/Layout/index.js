@@ -11,7 +11,7 @@ import _ from 'lodash';
 import storage from 'libs/storage';
 import * as handlers from './handlers';
 import * as selectors from './selectors';
-import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
 
 import 'libs/loader';
 import testStyles from './test.scss';
@@ -58,7 +58,7 @@ const withEditorHoc = compose(
 );
 
 const RenderActivePage = compose(
-  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePageIt', watching: true }),
+  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, dstProp: 'activePageIt', watching: true }),
 )(({ activePageIt }) => {
   return <RenderPage item={activePageIt}/>
 });

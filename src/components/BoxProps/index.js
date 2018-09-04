@@ -9,7 +9,7 @@ import { withRootItem, withRootItem$, withActiveItem } from 'libs/hoc/builder/it
 
 import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
 import * as layoutHandlers from 'containers/Layout/handlers';
-import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import { withModelStreamProp } from 'libs/model/hoc';
 import Icon from '@material-ui/core/Icon';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';

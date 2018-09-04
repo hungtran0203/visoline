@@ -1,6 +1,8 @@
 import { compose, lifecycle, withState, withProps, withPropsOnChange } from 'recompose';
 import { omitProps, withStreamProps, withStreams } from 'libs/hoc';
 import withHandlers from 'recompose/withHandlers';
+import register from 'libs/model/register';
+
 const PROPS = {
   UPDATE_ITEM: '$$updateItem',
   ITEM_VALUE: '$$itemValue',
@@ -8,13 +10,13 @@ const PROPS = {
   UNSUBSCRIBE: '$$unsubscribe',
 };
 
-
 export const withModel = ({ srcProp='id', model: Model, dstProp, watching=false }) => {
   const hocs = [];
   hocs.push(withPropsOnChange([srcProp], (props) => {
     const id = props[srcProp];
-    if(id && Model && dstProp) {
-      const modelIt = Model.getInstance(id);
+    console.log('id', id);
+    if(id && dstProp) {
+      const modelIt = register.resolveById(id, Model);
       return {
         [dstProp]: ((modelIt && modelIt.isExists()) ? modelIt : null),
       }

@@ -2,6 +2,10 @@ import React from 'react';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
 import EditableText from 'components/EditableText';
 import { Flex, Box } from 'reflexbox';
+import styles from '../../styles.scss';
+import classnames from 'classnames';
+import Column from '../Column';
+import Row from '../Row';
 
 export const EditableRender = compose(
   withHandlers({
@@ -11,12 +15,12 @@ export const EditableRender = compose(
   }),
 )(({ prop, value, onSave }) => {
   return (
-    <Flex key={prop}>
-      <Box w={0.4}>{prop}</Box>
-      <Box w={0.6}>
+    <Row key={prop} >
+      <Column w={0.4} >{prop}</Column>
+      <Column w={0.6} >
         <EditableText value={value} onSave={onSave}/>
-      </Box>
-    </Flex>    
+      </Column>
+    </Row>    
   )
 });
 

@@ -17,7 +17,6 @@ export const PageList = compose(
     showPageList: [SHOW_PAGE_LIST_STREAM, { init: true }],
   }),
   branch(({ showPageList }) => !showPageList, renderNothing),
-  // withRootItem$(),
   withModelSize({ model: BoxModel, dstProp: 'boxCount' }),
 )(({ boxCount }) => {
   return (
@@ -25,7 +24,7 @@ export const PageList = compose(
       {
         BoxModel.findAll((boxIm) => !BoxModel.getInstance(boxIm).parent.toId()).map(pageIt => {
           return (
-            <PageListItem key={pageIt.getId()} pageId={pageIt.getId()}/>
+            <PageListItem key={pageIt.getRefId()} pageId={pageIt.getRefId()}/>
           )
         })
       }

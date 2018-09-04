@@ -4,6 +4,8 @@ import HasMany from 'libs/model/relations/HasMany';
 import _ from 'lodash';
 import BoxEnhancerModel from './BoxEnhancer';
 
+import register from 'libs/model/register';
+
 export class BoxModel extends Model {
   static COLNAME = 'box';
   constructor(...args) {
@@ -22,5 +24,7 @@ export class BoxModel extends Model {
     return _.omit(this.toJS(), ['directoryId']);
   }
 };
+
+register.register(BoxModel.COLNAME, BoxModel);
 
 export default BoxModel;
