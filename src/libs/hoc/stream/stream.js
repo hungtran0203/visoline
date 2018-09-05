@@ -6,10 +6,16 @@ class Stream {
   value = null;
   constructor(opts) {
     this.value = _.get(opts, 'init', null);
+    this.bufferSize = _.get(opts, 'bufferSize', 10);
   }
   next(value) {
     // this.buffers.push(value);
     this.value = value;
+    this.buffers.unshift(value);
+    if (this.buffers.length > this.bufferSize) {
+      this.buffers.splice(this.bufferSize, 1);
+    }
+
     this.subscribers.map(sub => sub(value, this));
   }
   subscribe(handler) {
@@ -19,8 +25,8 @@ class Stream {
       this.subscribers.splice(index, 1);
     };
   }
-  get() {
-    return this.value;
+  get(index=0) {
+    return this.buffers[index];
   }
 
   set = this.next;
