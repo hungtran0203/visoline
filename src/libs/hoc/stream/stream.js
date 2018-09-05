@@ -7,6 +7,7 @@ class Stream {
   constructor(opts) {
     this.value = _.get(opts, 'init', null);
     this.bufferSize = _.get(opts, 'bufferSize', 10);
+    this.buffers.unshift(this.value);
   }
   next(value) {
     // this.buffers.push(value);

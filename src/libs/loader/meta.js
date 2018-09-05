@@ -2,6 +2,7 @@ import Model from 'libs/model/model';
 import { BelongsTo } from '../model/relations/BelongsTo';
 import _ from 'lodash';
 import DirectoryModel from './model';
+import register from 'libs/model/register';
 
 export class MetaModel extends Model {
   static COLNAME = 'meta';
@@ -22,5 +23,7 @@ export class MetaModel extends Model {
     return nsArr.join(sep);
   }
 };
+
+register.register(MetaModel.COLNAME, MetaModel);
 
 export default MetaModel;

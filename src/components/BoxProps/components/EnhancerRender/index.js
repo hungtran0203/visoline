@@ -35,9 +35,7 @@ const EnhancerOptionList = compose(
 
 const BoxEnhancerRender = compose(
   withStreams({ selectedEnh$: 'activeNode.stream' }),
-  withStreams({
-    active$: 'render.boxenahcer.active',
-  }),
+  withStreams({ active$: 'render.boxenahcer.active' }),
   withHandlers({
     onClick: ({ active$, boxEnhIt }) => () => {
       active$.set(boxEnhIt.getId())
@@ -62,7 +60,6 @@ const BoxEnhancerRender = compose(
     ))
   ),
 )(({ onClick, boxEnhIt }) => {
-  console.log('boxEnhIt.enhancer', boxEnhIt.toJS());
   return (
     <Flex column>
       <Flex justify="space-between" onClick={onClick}>
@@ -98,7 +95,6 @@ const EnhancerList = compose(
   })
 )(
   ({ onAdd, boxIt }) => {
-    console.log('boxIt.enhancers', boxIt.enhancers.toJS());
     return (
       <Flex column>
         {
@@ -108,7 +104,10 @@ const EnhancerList = compose(
           })
         }
         <Flex justify="space-between">
-          <div></div>
+          <Box onClick={onAdd}>
+            <Icon>remove</Icon>
+            Remove
+          </Box>
           <Box onClick={onAdd}>
             <Icon>add</Icon>
             Add Enhancer
