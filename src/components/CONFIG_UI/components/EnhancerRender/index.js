@@ -1,3 +1,4 @@
+import register from 'libs/register';
 import React from 'react';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing, withProps } from 'recompose';
 import EditableText from 'components/EditableText';
@@ -7,27 +8,30 @@ import { withStreams, withStreamProps, omitProps, composeHandler } from 'libs/ho
 import MetaModel from 'libs/loader/meta';
 import AddProp from '../AddProp'
 import EditableRender from '../EditableRender'
+import { getRenderer, getConfigProps } from 'libs/ConfigSchema';
 
 const EnhancerOptionList = compose(
   withStreamProps({
     active: 'render.boxenahcer.active',
   }),
   branch(
-    ({ active, boxEnhIt }) => active !== boxEnhIt.getId(),
+    ({ active, model }) => active !== model.getId(),
     renderNothing,
   ),
 )(
-  ({ boxEnhIt }) => {
+  ({ model }) => {
     return (
       <Flex column>
         {
-          boxEnhIt.toIm().map((value, prop) => {
+          getConfigProps(model).map(prop => {
+            const Renderer = getRenderer(model, prop);
+            const value = model.get(prop);
             return (
-              <EditableRender boxIt={boxEnhIt} key={prop} prop={prop} value={value} />
+              <Renderer key={prop} prop={prop} value={value} model={model} />
             )
-          }).toArray()
+          })
         }
-        <AddProp modelIt={boxEnhIt} />
+        <AddProp model={model} />
       </Flex>
     );
   }
@@ -37,19 +41,19 @@ const BoxEnhancerRender = compose(
   withStreams({ selectedEnh$: 'activeNode.stream' }),
   withStreams({ active$: 'render.boxenahcer.active' }),
   withHandlers({
-    onClick: ({ active$, boxEnhIt }) => () => {
-      active$.set(boxEnhIt.getId())
+    onClick: ({ active$, model }) => () => {
+      active$.set(model.getId())
     },
-    onSelect: ({ selectedEnh$, boxEnhIt }) => () => {
+    onSelect: ({ selectedEnh$, model }) => () => {
       const enhIt = MetaModel.getInstance(selectedEnh$.get());
       if (enhIt.get('type') === 'enhancer') {
         enhIt.get('type')
       }
-      boxEnhIt.enhancer.changeTo(enhIt);
+      model.enhancer.changeTo(enhIt);
     },
   }),
-  withProps(({ boxEnhIt }) => ({
-    enhancerIt: boxEnhIt.enhancer.toIt()
+  withProps(({ model }) => ({
+    enhancerIt: model.enhancer.toIt()
   })),
   branch(
     ({ enhancerIt }) => !enhancerIt,
@@ -59,16 +63,16 @@ const BoxEnhancerRender = compose(
       </Flex>
     ))
   ),
-)(({ onClick, boxEnhIt }) => {
+)(({ onClick, model }) => {
   return (
     <Flex column>
       <Flex justify="space-between" onClick={onClick}>
         <Box>
-          {boxEnhIt.enhancer.toIt().get('name')}
+          {model.enhancer.toIt().get('name')}
         </Box>
         <Box><Icon>more_horiz</Icon></Box>
       </Flex>    
-      <EnhancerOptionList boxEnhIt={boxEnhIt} />
+      <EnhancerOptionList model={model} />
     </Flex>    
   )
 });
@@ -79,28 +83,27 @@ const EnhancerList = compose(
     active: 'render.enahcer.active',
   }),
   branch(
-    ({ active, boxIt }) => active !== boxIt.getId(),
+    ({ active, model }) => active !== model.getId(),
     renderNothing,
   ),
   withHandlers({
-    onAdd: ({ selectedEnh$, boxIt }) => () => {
+    onAdd: ({ selectedEnh$, model }) => () => {
       const enhIt = MetaModel.getInstance(selectedEnh$.get());
       if (enhIt.get('type') === 'enhancer') {
         enhIt.get('type')
       }
-      const boxEnhIt = boxIt.enhancers.relClass.new({ enhancerId: enhIt.getId() });
+      const boxEnhIt = model.enhancers.relClass.new({ enhancerId: enhIt.getId() });
       boxEnhIt.save();
-      boxIt.enhancers.push(boxEnhIt);
+      model.enhancers.push(boxEnhIt);
     },    
   })
 )(
-  ({ onAdd, boxIt }) => {
+  ({ onAdd, model }) => {
     return (
       <Flex column>
         {
-          boxIt.enhancers.toIt().map((boxEnhIt) => {
-            console.log('boxEnhIt', boxEnhIt);
-            return (<BoxEnhancerRender key={boxEnhIt.getId()} boxEnhIt={boxEnhIt}/>)
+          model.enhancers.toIt().map((boxEnhIt) => {
+            return (<BoxEnhancerRender key={boxEnhIt.getId()} model={boxEnhIt}/>)
           })
         }
         <Flex justify="space-between">
@@ -123,23 +126,25 @@ export const EnhancerRender = compose(
     active$: 'render.enahcer.active',
   }),
   withHandlers({
-    onSave: ({ prop, boxIt }) => (value) => {
-      boxIt.set(prop, value).save();
+    onSave: ({ prop, model }) => (value) => {
+      model.set(prop, value).save();
     },
-    onClick: ({ active$, boxIt }) => () => {
-      active$.set(boxIt.getId())
+    onClick: ({ active$, model }) => () => {
+      active$.set(model.getId())
     }
   }),
-)(({ prop, value, onSave, onAdd, onClick, boxIt }) => {
+)(({ prop, value, onSave, onAdd, onClick, model }) => {
   return (
     <Flex key={prop} column>
       <Flex justify="space-between" onClick={onClick}>
         <Box>{prop}</Box>
         <Box><Icon>more_horiz</Icon></Box>
       </Flex>
-      <EnhancerList boxIt={boxIt} />
+      <EnhancerList model={model} />
     </Flex>    
   )
 });
 
 export default EnhancerRender;
+
+register('CONFIG_UI').register('enhancer', EnhancerRender);

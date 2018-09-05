@@ -13,7 +13,6 @@ export class BelongsTo {
   }
 
   getRelIt() {
-    console.log('this.getRel()this.getRel()', this.getRel(), this.relOwner.toJS());
     const relIt = register.resolveById(this.getRel(), this.relClass);
     return relIt;
   }

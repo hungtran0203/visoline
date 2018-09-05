@@ -1,8 +1,6 @@
+import register from 'libs/register';
+
 import _ from 'lodash';
-import ReadOnlyRender from './components/ReadOnlyRender';
-import HiddenRender from './components/HiddenRender';
-import EditableRender from './components/EditableRender';
-import EnhancerRender from './components/EnhancerRender';
 
 const ConfigSchema = {
   type: { type: 'editable' },
@@ -17,19 +15,13 @@ const ConfigSchema = {
   id: { type: 'hidden' },
 };
 
-const TypeMap = {
-  readonly: ReadOnlyRender,
-  hidden: HiddenRender,
-  editable: EditableRender,
-  enhancer: EnhancerRender,
-}
-
 const getPropType = (prop) => {
   return _.get(ConfigSchema, `${prop}.type`, 'hidden');
 }
 
 export const getRenderer = (prop) => {
-  return _.get(TypeMap, getPropType(prop), TypeMap.hidden);
+  const defaultRender = register('CONFIG_UI').get('hidden');
+  return register('CONFIG_UI').get(getPropType(prop)) || defaultRender
 }
 
 export const getConfigProps = () => {

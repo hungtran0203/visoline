@@ -5,6 +5,7 @@ import BelongsTo from 'libs/model/relations/BelongsTo';
 import _ from 'lodash';
 import MetaModel from 'libs/loader/meta';
 import register from 'libs/model/register';
+import './BoxEnhancer/configSchema';
 
 export class BoxEnhancerModel extends Model {
   static COLNAME = 'boxEnhancer';

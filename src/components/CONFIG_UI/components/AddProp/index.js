@@ -37,9 +37,9 @@ export const AddProp = compose(
     onClick: ({ adding$ }) => () => {
       adding$.set(true);
     },
-    completeEdit: ({ prop$, value$, adding$, modelIt }) => () => {
+    completeEdit: ({ prop$, value$, adding$, model }) => () => {
       if (prop$.get() && value$.get()) {
-        modelIt.set(prop$.get(), value$.get()).save();
+        model.set(prop$.get(), value$.get()).save();
         adding$.set(false);
         prop$.set('');
         value$.set('')

@@ -23,7 +23,7 @@ import EditableText from 'components/EditableText';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import BoxModel from 'libs/editor/model/box';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
-import { getRenderer, getConfigProps } from './ConfigSchema';
+import { getRenderer, getConfigProps } from 'libs/ConfigSchema';
 import AddProp from './components/AddProp'
 
 export const BoxProps = compose(
@@ -32,11 +32,11 @@ export const BoxProps = compose(
 )(({ activeBoxIt }) => (
   <div className={styles.wrapper}>
     {
-      getConfigProps().map(prop => {
-        const Renderer = getRenderer(prop);
+      getConfigProps(activeBoxIt).map(prop => {
+        const Renderer = getRenderer(activeBoxIt, prop);
         const value = activeBoxIt.get(prop);
         return (
-          <Renderer key={prop} prop={prop} value={value} boxIt={activeBoxIt} />
+          <Renderer key={prop} prop={prop} value={value} model={activeBoxIt} />
         )
       })
     }

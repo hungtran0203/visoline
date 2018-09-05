@@ -1,4 +1,7 @@
 import React from 'react';
+
+import 'components/CONFIG_UI';
+
 import styles from './styles.scss';
 import classnames from 'classnames';
 import * as Components from 'reflexbox';

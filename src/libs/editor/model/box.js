@@ -3,6 +3,7 @@ import Nested from 'libs/model/relations/Nested';
 import HasMany from 'libs/model/relations/HasMany';
 import _ from 'lodash';
 import BoxEnhancerModel from './BoxEnhancer';
+import './box/configSchema';
 
 import register from 'libs/model/register';
 

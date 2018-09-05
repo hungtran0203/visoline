@@ -1,3 +1,4 @@
+import register from 'libs/register';
 import React from 'react';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
 import EditableText from 'components/EditableText';
@@ -9,8 +10,8 @@ import Row from '../Row';
 
 export const EditableRender = compose(
   withHandlers({
-    onSave: ({ prop, boxIt }) => (value) => {
-      boxIt.set(prop, value).save();
+    onSave: ({ prop, model }) => (value) => {
+      model.set(prop, value).save();
     }
   }),
 )(({ prop, value, onSave }) => {
@@ -25,3 +26,5 @@ export const EditableRender = compose(
 });
 
 export default EditableRender;
+
+register('CONFIG_UI').register('editable', EditableRender);
