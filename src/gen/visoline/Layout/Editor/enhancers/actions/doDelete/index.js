@@ -1,4 +1,4 @@
-import BoxModel from 'libs/editor/model/box';
+import BoxModel from 'gen/visoline/model/Box';
 
 export const doDelete = ({ activeItem$ }) => () => {
   const activeItem = activeItem$.get();

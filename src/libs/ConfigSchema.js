@@ -10,7 +10,6 @@ const getPropType = (model, prop) => {
 
 export const getRenderer = (model, prop) => {
   const defaultRender = register('CONFIG_UI').get('hidden');
-  const ConfigSchema = getConfigSchema(model);
   return register('CONFIG_UI').get(getPropType(model, prop)) || defaultRender
 }
 

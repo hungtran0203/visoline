@@ -1,13 +1,11 @@
 import register from 'libs/register';
 import React from 'react';
-import { compose, withHandlers, withState, renderComponent, branch, renderNothing, withProps } from 'recompose';
-import EditableText from 'components/EditableText';
+import { compose, withHandlers, renderComponent, branch, renderNothing, withProps } from 'recompose';
 import { Flex, Box } from 'reflexbox';
 import Icon from '@material-ui/core/Icon';
-import { withStreams, withStreamProps, omitProps, composeHandler } from 'libs/hoc';
-import MetaModel from 'libs/loader/meta';
+import { withStreams, withStreamProps } from 'libs/hoc';
+import MetaModel from 'gen/visoline/model/Meta';
 import AddProp from '../AddProp'
-import EditableRender from '../EditableRender'
 import { getRenderer, getConfigProps } from 'libs/ConfigSchema';
 
 const EnhancerOptionList = compose(

@@ -1,21 +1,15 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
-import { ACTIVE_PAGE_STREAM, ROOT_ITEM_STREAM } from 'constants';
 import { ACTIVE_ITEM_STREAM, ACTIVE_ELEMENT_STREAM } from 'libs/hoc/editor';
-import { compose, withHandlers, withState, renderComponent, branch, renderNothing, withProps } from 'recompose';
-import { SHOW_PAGE_LIST_STREAM } from '../../constants';
+import { compose, withHandlers, withState, withProps } from 'recompose';
 import { withStreamProps, withStreams, composeHandler } from 'libs/hoc';
-import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import { withModelStreamProp } from 'libs/model/hoc';
 import EditableText from 'components/EditableText';
 import classnames from 'classnames';
 import { Flex, Box } from 'reflexbox';
 import styles from '../../styles.scss';
-import { withModelSize } from 'libs/model/hoc';
-import BoxModel from 'libs/editor/model/box';
 import { CTRL_KEY_STATE } from 'libs/hoc/editor';
 import { Set as ISet } from 'immutable';
-
-import Header from '../Header';
 
 import { EXPANDED_NODES_STREAM } from '../../constants';
 

@@ -1,7 +1,7 @@
 import { compose, withProps, branch, renderNothing } from 'recompose';
 // import Item from 'libs/storage/item';
 import _ from 'lodash';
-import BoxModel from 'libs/editor/model/box';
+import BoxModel from 'gen/visoline/model/Box';
 
 export const withItemIm = (mapItemImToPropName = 'itemIm', itemPropName='item' ) => compose(
   withProps((props) => {

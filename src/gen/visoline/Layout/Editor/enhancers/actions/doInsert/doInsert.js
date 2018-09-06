@@ -1,4 +1,4 @@
-import BoxModel from 'libs/editor/model/box';
+import BoxModel from 'gen/visoline/model/Box';
 
 const DEFAULT_BOX_TYPE = 'Box';
 

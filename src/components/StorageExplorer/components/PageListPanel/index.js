@@ -4,8 +4,8 @@ import Icon from '@material-ui/core/Icon';
 import { compose, branch, renderNothing, withHandlers } from 'recompose';
 import { SHOW_PAGE_LIST_STREAM } from '../../constants';
 import { withStreamProps } from 'libs/hoc';
-import BoxModel from 'libs/editor/model/box';
 
+import BoxModel from 'gen/visoline/model/Box';
 import Header from '../Header';
 
 const PageListPanel = compose(

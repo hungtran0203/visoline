@@ -1,0 +1,16 @@
+{
+  "namespace": "MODEL_CONFIG_SCHEMA",
+  "name": "box",
+  "schema": {
+    "type": { "type": "editable" },
+    "name": { "type": "editable" },
+    "content": { "type": "editable" },
+    "className": { "type": "editable" },
+    "enhancers": { "type": "enhancer" },
+    "style": { "type": "editable" },
+    "directoryId": { "type": "hidden" },
+    "children": { "type": "hidden" },
+    "parentId": { "type": "hidden" },
+    "id": { "type": "hidden" }
+  }
+}

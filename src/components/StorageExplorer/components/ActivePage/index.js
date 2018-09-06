@@ -1,17 +1,12 @@
 import React from 'react';
-import Icon from '@material-ui/core/Icon';
-import { ACTIVE_PAGE_STREAM, ROOT_ITEM_STREAM } from 'constants';
-import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
-import { compose, withHandlers, withState, renderComponent, branch, renderNothing, withProps } from 'recompose';
-import { SHOW_PAGE_LIST_STREAM } from '../../constants';
-import { withStreamProps, withStreams } from 'libs/hoc';
-import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
-import EditableText from 'components/EditableText';
+import { ACTIVE_PAGE_STREAM } from 'constants';
+import { compose, branch, renderNothing } from 'recompose';
+import { withStreamProps } from 'libs/hoc';
+import { withModelStreamProp } from 'libs/model/hoc';
 import classnames from 'classnames';
-import { Flex, Box } from 'reflexbox';
 import styles from '../../styles.scss';
 import { withModelSize } from 'libs/model/hoc';
-import BoxModel from 'libs/editor/model/box';
+import BoxModel from 'gen/visoline/model/Box';
 import BoxSelection from '../BoxSelection';
 import { Set as ISet } from 'immutable';
 

@@ -7,17 +7,10 @@ import classnames from 'classnames';
 import * as Components from 'reflexbox';
 import { compose, withHandlers, withProps, branch, renderNothing } from 'recompose';
 import { withStreamProps, withStreams, getStream, pickProps } from 'libs/hoc';
-import { fromJS } from 'immutable';
-import uuid from 'uuid';
-import invariant from 'invariant';
-import _ from 'lodash';
-import storage from 'libs/storage';
 import * as handlers from './handlers';
-import * as selectors from './selectors';
-import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import { withModelStreamProp } from 'libs/model/hoc';
 
 import 'libs/loader';
-import testStyles from './test.scss';
 import InsertButton from 'components/StorageExplorer/components/Toolbar/InsertButton';
 import DeleteButton from 'components/StorageExplorer/components/Toolbar/DeleteButton';
 import AppendButton from 'components/StorageExplorer/components/Toolbar/AppendButton';
@@ -33,13 +26,9 @@ import { withActivation, ACTIVE_ELEMENT_STREAM, ACTIVE_ITEM_STREAM, ITEM_SELECTI
   Navigator,
 } from 'libs/hoc/editor';
 import { ACTIVE_PAGE_STREAM } from 'constants';
-import BoxModel from 'libs/editor/model/box';
 import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
 
-import { withItemWatcher, withItemBuilder, getItemBuilder } from 'libs/hoc/builder';
 import CSSStyleInspector from 'components/CSSStyleInspector';
-import ColorPicker from 'components/ColorPicker';
-import RatioBox from 'components/RatioBox';
 import StorageExplorer from 'components/StorageExplorer';
 import BoxProps from 'components/BoxProps';
 // import PropsSelectors from 'components/PropsSelectors';

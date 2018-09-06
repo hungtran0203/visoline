@@ -1,10 +1,9 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
-import { compose, branch, renderNothing, withHandlers, withProps } from 'recompose';
-import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
-import { ACTIVE_PAGE_STREAM } from 'constants';
+import { compose, withHandlers, withProps } from 'recompose';
+import { withModelStreamProp } from 'libs/model/hoc';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
-import BoxModel from 'libs/editor/model/box';
+
 import styles from './styles.scss';
 
 export const AppendButton = compose(

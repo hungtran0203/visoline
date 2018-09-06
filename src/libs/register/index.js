@@ -49,4 +49,16 @@ export const register = (ns) => {
   return lookup.get(ns);
 }
 
+register.load = (requireAll) => {
+  requireAll.keys().forEach((filename) => {
+    const req = requireAll(filename);
+    // json loader
+    const namespace = _.get(req, 'namespace');
+    const name = _.get(req, 'name');
+    const schema = _.get(req, 'schema');
+    register(namespace).register(name, schema);
+  });
+  
+}
+
 export default register;

@@ -4,9 +4,11 @@ import path from 'path';
 import uuid from 'uuid';
 import DirectoryModel from './model';
 import MetaModel from './meta';
+import register from 'libs/register';
 
-const requireAll = require.context('../../gen', true, /.*(\.js|meta\.json)$/);
-const selectors = {};
+
+const requireAll = require.context('../../gen', true, /.*(\.js)$/);
+const requireAllMeta = require.context('../../gen', true, /.*(meta\.json)$/);
 
 const DEFAULT_TYPE = 'item';
 const typeSymbols = new Map();
@@ -19,38 +21,35 @@ const getTypeSymbol = (type) => {
 
 let directoryStore = fromJS({}).asMutable();
 
-const loader = (filename, files) => {
+const metaLoader = (filename, files) => {
   const dirname = path.dirname(filename);
-  const basename = path.basename(filename);
 
   // load meta file
-  const metaFilename = `./${path.join(dirname, 'meta.json')}`;
-  if (files.includes(metaFilename)) {
-    const metaConfig = requireAll(metaFilename);
-    metaConfig.map((meta) => {
-      const paths = path.join(dirname).split(path.sep);
-      const node = DirectoryModel.mkdirp(paths);
-      const metaIt = MetaModel.getInstance(meta);
-      metaIt.directory.changeTo(node.getId());
-      metaIt.save();
-      node.meta.addUnique(metaIt);
-    
-      // // load content
-      // const req = requireAll(filename);
-      // Object.keys(req).map(key => {
-      //   if (key === 'default') {
-      //     node.setIn([uid, getTypeSymbol('handler')], req[key])
-      //   }
-      // });
-      node.save();
-    });
-  }
+  // const metaFilename = `./${path.join(dirname, 'meta.json')}`;
+  const metaConfig = requireAllMeta(filename);
+  metaConfig.map((meta) => {
+    const paths = path.join(dirname).split(path.sep);
+    const node = DirectoryModel.mkdirp(paths);
+    const metaIt = MetaModel.getInstance(meta);
+    metaIt.directory.changeTo(node.getId());
+    metaIt.save();
+    node.meta.addUnique(metaIt);
+  
+    // load content
+    const entryFile = _.get(meta, 'entry', 'index');
+    const entryFullFilename = path.join(dirname, `${entryFile}.js`);
+    if(requireAll.includes(entryFullFilename)) {
+      const req = requireAll(entryFullFilename);
+      const exp = _.get(meta, 'export', 'default');
+      const { id, type } = meta;
+      register(type).register(id, _.get(req, exp));
+    }
+    node.save();
+  });
 }
 
-requireAll.keys().forEach((filename, index, files) => {
-  const paths = _.compact(_.split(_.trim(filename, '.'), '/'));
-  const req = requireAll(filename);
-  loader(filename, files);
+requireAllMeta.keys().forEach((filename, index, files) => {
+  metaLoader(filename, files);
 });
 
 export const addType = (name, ns, typeStr = DEFAULT_TYPE) => {
@@ -58,7 +57,5 @@ export const addType = (name, ns, typeStr = DEFAULT_TYPE) => {
   const type = getTypeSymbol(typeStr);
   const value = directoryStore.getIn([...ns, type], Set()).add(uid);
   directoryStore = directoryStore.setIn([...ns, type], value);  
-  const node = DirectoryModel.getInstance(uid);
-  // directoryStore = store.set(uid, fromJS({ uid, type: typeStr, name, entry: name, ns: ns.join('.') }));
   return directoryStore.asImmutable();
 };

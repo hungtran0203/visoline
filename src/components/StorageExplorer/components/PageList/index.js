@@ -1,12 +1,11 @@
 import React from 'react';
-import Icon from '@material-ui/core/Icon';
 import PageListItem from '../PageListItem';
 import classnames from 'classnames';
 
 import { compose, branch, renderNothing } from 'recompose';
 import { withStreamProps } from 'libs/hoc';
 
-import BoxModel from 'libs/editor/model/box';
+import BoxModel from 'gen/visoline/model/Box';
 import { withModelSize } from 'libs/model/hoc';
 
 import { SHOW_PAGE_LIST_STREAM } from '../../constants';

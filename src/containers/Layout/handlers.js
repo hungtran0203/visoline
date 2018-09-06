@@ -1,7 +1,6 @@
 import { fromJS } from 'immutable';
 import uuid from 'uuid';
 import invariant from 'invariant';
-import _ from 'lodash';
 import storage from 'libs/storage';
 import styles from './styles.scss';
 import classnames from 'classnames';
@@ -9,7 +8,7 @@ import * as listHelper from 'libs/immutable/list';
 import * as Enhancers from 'libs/enhancer';
 import EnhancerItem from 'libs/storage/enhancer';
 
-import BoxModel from 'libs/editor/model/box';
+import BoxModel from 'gen/visoline/model/Box';
 
 export const initBox = ({ parentId }) => {
   return fromJS({

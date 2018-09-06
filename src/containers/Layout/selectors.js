@@ -1,12 +1,4 @@
-import { fromJS } from 'immutable';
-import uuid from 'uuid';
-import invariant from 'invariant';
-import _ from 'lodash';
-import storage from 'libs/storage';
-import styles from './styles.scss';
-import classnames from 'classnames';
-import * as listHelper from 'libs/immutable/list';
-import BoxModel from 'libs/editor/model/box';
+import BoxModel from 'gen/visoline/model/Box';
 
 export const selectBackground = (unsetVal = '#fff') => ({ activeItem$ }) => {
   let backgroundColor = unsetVal;

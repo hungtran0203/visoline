@@ -1,26 +1,10 @@
 import React from 'react';
-import classnames from 'classnames';
-import _ from 'lodash';
-import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
-import { withStreams, withStreamProps, omitProps, composeHandler } from 'libs/hoc';
-import { withItemWatcher, withItemImOrNothing, withItemItOrNothing, withItemIt } from 'libs/hoc/builder';
-import { withRootItem, withRootItem$, withActiveItem } from 'libs/hoc/builder/item';
+import { compose, withHandlers, renderComponent, branch } from 'recompose';
+import { withStreams, withStreamProps, composeHandler } from 'libs/hoc';
 
-import * as itemBuilderEnhancers from 'libs/hoc/builder/item';
-import * as layoutHandlers from 'containers/Layout/handlers';
-import { withModelStream } from 'libs/model/hoc';
 import Icon from '@material-ui/core/Icon';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Flex, Box } from 'reflexbox';
-import { Set } from 'immutable';
-import withProps from 'recompose/withProps';
 import EditableText from 'components/EditableText';
-import withPropsOnChange from 'recompose/withPropsOnChange';
-import BoxModel from 'libs/editor/model/box';
 
 export const AddProp = compose(
   withStreamProps({ 

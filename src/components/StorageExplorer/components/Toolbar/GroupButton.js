@@ -1,11 +1,11 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
-import { compose, branch, renderNothing, withHandlers, withProps } from 'recompose';
-import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
-import { withStreamProps, withStreams, composeHandler } from 'libs/hoc';
+import { compose, withHandlers, withProps } from 'recompose';
+import { withModelStreamProp } from 'libs/model/hoc';
+import { withStreams } from 'libs/hoc';
 import { ACTIVE_PAGE_STREAM } from 'constants';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
-import BoxModel from 'libs/editor/model/box';
+import BoxModel from 'gen/visoline/model/Box';
 import styles from './styles.scss';
 import _ from 'lodash';
 
