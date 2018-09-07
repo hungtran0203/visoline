@@ -1,0 +1,9 @@
+[
+  {
+    "id": "4e117ddb-29a9-4305-9e07-4ab646bd7dda",
+    "name": "BelongsTo",
+    "entry": "index",
+    "export": "default",
+    "type": "modelRelation"
+  }
+]

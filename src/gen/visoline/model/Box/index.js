@@ -1,6 +1,6 @@
 import Model from 'libs/model/model';
-import Nested from 'libs/model/relations/Nested';
-import HasMany from 'libs/model/relations/HasMany';
+import Nested from 'gen/visoline/model/relations/Nested';
+import HasMany from 'gen/visoline/model/relations/HasMany';
 import _ from 'lodash';
 
 import register from 'libs/register';

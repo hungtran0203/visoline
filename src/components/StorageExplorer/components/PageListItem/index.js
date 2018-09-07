@@ -10,11 +10,6 @@ import BoxModel from 'gen/visoline/model/Box';
 import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
 
 export const PageListItem = compose(
-  // withItemItOrNothing,
-  // withRootItem(),
-  // withRootItem$(),
-  // withItemIt(),
-  // withItemIt('rootItemIt', 'rootItem'),
   withModelStream({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePage$' }),
   withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, dstProp: 'activePageIt' }),
   withModel({ srcProp: 'pageId', dstProp: 'pageIt', watching: true }),
@@ -27,8 +22,7 @@ export const PageListItem = compose(
   withProps(({ activePageIt, pageIt }) => ({
     isActive: activePageIt && pageIt && activePageIt.getId() === pageIt.getId(),
   }))
-  // withItemWatcher(),
-)(({ pageIt, onClick, isActive, onSaveName }) => {
+)(({ pageIt, onClick, isActive, onSaveName, pageId }) => {
   return (
     <div className={classnames(styles.row, styles.rootItem, { [styles.isActive]: isActive })} onClick={onClick}>
       <EditableText value={pageIt.getOneOf(['name', 'id'])} onSave={onSaveName}/>

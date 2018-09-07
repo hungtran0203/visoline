@@ -1,0 +1,9 @@
+[
+  {
+    "id": "3ee7c52b-9259-4f99-b051-3bd35fb10cde",
+    "name": "HasMany",
+    "entry": "index",
+    "export": "default",
+    "type": "modelRelation"
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "id": "be4272c7-993b-4b14-8192-b36444a6d5e8",
+    "name": "withModelStreamProp",
+    "entry": "index",
+    "export": "default",
+    "type": "enhancer"
+  }
+]

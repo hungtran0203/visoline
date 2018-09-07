@@ -158,6 +158,12 @@ export class Model {
     storage.deleteItem(this.constructor.COLNAME, this.toIm());
     return this;
   }
+
+  /* COMPARATION METHOS */
+  is(val) {
+    const id = storage.getItemId(val);
+    return id.split('@')[0] === this.getId();
+  }
 }
 
 export default Model;

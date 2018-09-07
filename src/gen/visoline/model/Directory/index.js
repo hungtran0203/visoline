@@ -1,6 +1,6 @@
 import Model from 'libs/model/model';
-import Nested from 'libs/model/relations/Nested';
-import HasMany from 'libs/model/relations/HasMany';
+import Nested from 'gen/visoline/model/relations/Nested';
+import HasMany from 'gen/visoline/model/relations/HasMany';
 
 import register from 'libs/register';
 
@@ -23,11 +23,11 @@ export class DirectoryModel extends Model {
 
   static mkdirp = (paths) => {
     return paths.reduce((currNode, path) => {
+      const parentId = currNode ? currNode.getId() : null;
       let theNode = DirectoryModel.find((node) => {
-        const parentId = currNode ? currNode.getId() : null;
+        const nodeIt = DirectoryModel.getInstance(node);
         return (
-          ((!node.get('parentId') && !parentId) || node.get('parentId') === parentId) &&
-          node.get('name') === path
+          nodeIt.get('name') === path && nodeIt.parent.is(parentId)
         );
       });
       // create node
@@ -35,7 +35,9 @@ export class DirectoryModel extends Model {
         theNode = DirectoryModel.new({ name: path });
         const parentId = currNode ? currNode.getId() : null;
         theNode.parent.changeTo(parentId);
-        theNode.parent.toIt().children.push(theNode);
+        if (parentId) {
+          theNode.parent.toIt().children.push(theNode);
+        }
         theNode.save();
       }
       return theNode;

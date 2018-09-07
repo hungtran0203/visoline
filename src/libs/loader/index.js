@@ -2,13 +2,14 @@ import _ from 'lodash';
 import { fromJS, Set } from 'immutable';
 import path from 'path';
 import uuid from 'uuid';
-import DirectoryModel from './model';
-import MetaModel from './meta';
+import DirectoryModel from 'gen/visoline/model/Directory';
+import MetaModel from 'gen/visoline/model/Meta';
 import register from 'libs/register';
 
 
 const requireAll = require.context('../../gen', true, /.*(\.js)$/);
 const requireAllMeta = require.context('../../gen', true, /.*(meta\.json)$/);
+const allSourceFiles = requireAll.keys();
 
 const DEFAULT_TYPE = 'item';
 const typeSymbols = new Map();
@@ -37,8 +38,8 @@ const metaLoader = (filename, files) => {
   
     // load content
     const entryFile = _.get(meta, 'entry', 'index');
-    const entryFullFilename = path.join(dirname, `${entryFile}.js`);
-    if(requireAll.includes(entryFullFilename)) {
+    const entryFullFilename = './' + path.join(dirname, `${entryFile}.js`);
+    if(allSourceFiles.includes(entryFullFilename)) {
       const req = requireAll(entryFullFilename);
       const exp = _.get(meta, 'export', 'default');
       const { id, type } = meta;

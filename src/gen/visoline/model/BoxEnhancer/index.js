@@ -1,5 +1,5 @@
 import Model from 'libs/model/model';
-import BelongsTo from 'libs/model/relations/BelongsTo';
+import BelongsTo from 'gen/visoline/model/relations/BelongsTo';
 import register from 'libs/register';
 
 export class BoxEnhancerModel extends Model {
