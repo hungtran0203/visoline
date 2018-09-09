@@ -62,6 +62,7 @@ const InputField = compose(
   })),
 )(InputFieldUI);
 
+const EmptyText = () => <span>&#8203;</span>
 export const EditableText = compose(
   withState('isEditing', 'toggleEditing', false),
   withHandlers({
@@ -74,7 +75,7 @@ export const EditableText = compose(
   ),
 )(({ value, onStartEdit, className }) => {
   return (
-    <div onDoubleClick={onStartEdit} className={classnames(className)}>{value}</div>
+    <div onDoubleClick={onStartEdit} className={classnames(className, styles.text)}>{value || <EmptyText />}</div>
   )
 });
 

@@ -4,6 +4,14 @@
     "name": "withModel",
     "entry": "index",
     "export": "default",
-    "type": "enhancer"
+    "type": "enhancer",
+    "schema": {
+      "config": {
+        "srcProp": { "type": "editable" },
+        "model": { "type": "editable" },
+        "dstProp": { "type": "editable" },
+        "watching": { "type": "editable" }
+      }
+    }
   }
 ]

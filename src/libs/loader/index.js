@@ -35,7 +35,6 @@ const metaLoader = (filename, files) => {
     metaIt.directory.changeTo(node.getId());
     metaIt.save();
     node.meta.addUnique(metaIt);
-  
     // load content
     const entryFile = _.get(meta, 'entry', 'index');
     const entryFullFilename = './' + path.join(dirname, `${entryFile}.js`);
