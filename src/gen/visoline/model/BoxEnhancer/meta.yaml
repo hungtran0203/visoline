@@ -1,0 +1,20 @@
+LAYER_DEFAULT:
+  id: 3f06893f-3041-4ac4-b6b9-ae5053727098
+  name: BoxEnhancerModel
+  type: model
+LAYER_NAMESPACE_CONFIG:
+  name: boxEnhancer
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
+LAYER_EDITOR_PROPS_VALUE_MODIFIER:
+  content:
+    type: editable
+  style:
+    type: editable
+  children:
+    type: hidden
+  parentId:
+    type: hidden
+  id:
+    type: hidden

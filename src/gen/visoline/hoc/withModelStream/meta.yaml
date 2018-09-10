@@ -1,0 +1,16 @@
+LAYER_DEFAULT:
+  id: f30f0eba-0bc8-41b8-be95-ba544472f538
+  name: withModelStream
+  type: hoc
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
+LAYER_EDITOR_PROPS_VALUE_MODIFIER:
+  srcProp:
+    type: editable
+  model:
+    type: editable
+  dstProp:
+    type: editable
+  watching:
+    type: editable

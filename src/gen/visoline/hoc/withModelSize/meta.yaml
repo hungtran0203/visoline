@@ -1,0 +1,16 @@
+LAYER_DEFAULT:
+  id: 21e2d09d-0819-4648-a665-329a2c2e12c3
+  name: withModelSize
+  type: hoc
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
+LAYER_EDITOR_PROPS_VALUE_MODIFIER:
+  srcProp:
+    type: editable
+  model:
+    type: editable
+  dstProp:
+    type: editable
+  watching:
+    type: editable
