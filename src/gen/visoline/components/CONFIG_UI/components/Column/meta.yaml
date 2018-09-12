@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 790456f0-4cde-44cd-8332-f3aaafd9d340
+  name: Column
+  type: Component
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

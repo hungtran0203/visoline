@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 8848b6a3-6fd9-4a15-b2ff-cd8dfa5b5d19
+  name: HiddenRender
+  type: Component
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

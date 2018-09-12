@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: f3caa779-e1c1-4455-ad8b-8335d8fa9dd3
+  name: Row
+  type: Component
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
