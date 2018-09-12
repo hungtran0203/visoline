@@ -4,11 +4,12 @@ import path from 'path';
 import uuid from 'uuid';
 import DirectoryModel from 'gen/visoline/model/Directory';
 import MetaModel from 'gen/visoline/model/Meta';
-import register from 'libs/register';
-
+import register from 'libs/Registry';
+import * as layerProcessors from './processor';
 
 const requireAll = require.context('../../gen', true, /.*(\.js)$/);
 const requireAllMeta = require.context('../../gen', true, /.*(meta\.json)$/);
+const requireAllYaml = require.context('../../gen', true, /.*(meta\.yaml)$/);
 const allSourceFiles = requireAll.keys();
 
 const DEFAULT_TYPE = 'item';
@@ -22,7 +23,7 @@ const getTypeSymbol = (type) => {
 
 let directoryStore = fromJS({}).asMutable();
 
-const metaLoader = (filename, files) => {
+const metaLoader = (filename) => {
   const dirname = path.dirname(filename);
 
   // load meta file
@@ -50,6 +51,26 @@ const metaLoader = (filename, files) => {
 
 requireAllMeta.keys().forEach((filename, index, files) => {
   metaLoader(filename, files);
+});
+
+
+const processLayer = (props) => (layerId, data) => {
+  const layerData = _.get(data, layerId);
+  const layerProcessor = _.get(layerProcessors, layerId);
+  if(typeof layerProcessor === 'function') {
+    layerProcessor(props)(layerData, data);
+  }
+}
+
+const yamlMetaLoader = (filename) => {
+  const data = requireAllYaml(filename);
+  const props = { filename };
+  _.intersection(_.keys(data), _.keys(layerProcessors))
+    .map(layerId => processLayer(props)(layerId, data));
+}
+
+requireAllYaml.keys().forEach((filename) => {
+  yamlMetaLoader(filename);
 });
 
 export const addType = (name, ns, typeStr = DEFAULT_TYPE) => {

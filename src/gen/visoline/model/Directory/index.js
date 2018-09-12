@@ -2,7 +2,7 @@ import Model from 'libs/model/model';
 import Nested from 'gen/visoline/model/relations/Nested';
 import HasMany from 'gen/visoline/model/relations/HasMany';
 
-import register from 'libs/register';
+import register from 'libs/Registry';
 
 const metaSymbol = Symbol('meta');
 export class DirectoryModel extends Model {

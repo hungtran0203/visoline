@@ -1,4 +1,4 @@
-import register from 'libs/register';
+import register from 'libs/Registry';
 const COLNAME = 'box';
 
 register('MODEL_CONFIG_SCHEMA').register(COLNAME, {

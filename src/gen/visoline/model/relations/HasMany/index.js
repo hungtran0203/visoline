@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import register from 'libs/register';
+import register from 'libs/Registry';
 
 /*
   wrapper of immutable object

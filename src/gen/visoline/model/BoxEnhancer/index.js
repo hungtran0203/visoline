@@ -1,6 +1,6 @@
 import Model from 'libs/model/model';
 import BelongsTo from 'gen/visoline/model/relations/BelongsTo';
-import register from 'libs/register';
+import register from 'libs/Registry';
 
 export class BoxEnhancerModel extends Model {
   static COLNAME = 'boxEnhancer';

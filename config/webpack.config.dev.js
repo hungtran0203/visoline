@@ -138,6 +138,17 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
+          {
+            test: /\.yaml$/,
+            use: [
+              {
+                loader: require.resolve('json-loader')
+              },
+              {
+                loader: require.resolve('yaml-loader')
+              }
+            ],
+          },          
           // Process JS with Babel.
           {
             test: /\.(js|jsx|mjs)$/,

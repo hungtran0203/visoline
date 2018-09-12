@@ -1,4 +1,4 @@
-import register from 'libs/register';
+import register from 'libs/Registry';
 import React from 'react';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
 import EditableText from 'components/EditableText';

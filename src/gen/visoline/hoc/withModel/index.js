@@ -1,7 +1,7 @@
 import { compose, lifecycle, withState, withPropsOnChange } from 'recompose';
 import { omitProps } from 'libs/hoc';
 import withHandlers from 'recompose/withHandlers';
-import register from 'libs/register';
+import register from 'libs/Registry';
 
 const PROPS = {
   UPDATE_ITEM: '$$updateItem',

@@ -1,4 +1,4 @@
-import register from 'libs/register';
+import register from 'libs/Registry';
 import React from 'react';
 import { Flex, Box } from 'reflexbox';
 import styles from '../../styles.scss';

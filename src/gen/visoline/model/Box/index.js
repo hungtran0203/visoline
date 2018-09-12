@@ -3,7 +3,7 @@ import Nested from 'gen/visoline/model/relations/Nested';
 import HasMany from 'gen/visoline/model/relations/HasMany';
 import _ from 'lodash';
 
-import register from 'libs/register';
+import register from 'libs/Registry';
 
 export class BoxModel extends Model {
   static COLNAME = 'box';

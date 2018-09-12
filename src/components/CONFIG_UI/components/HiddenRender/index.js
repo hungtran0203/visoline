@@ -1,4 +1,4 @@
-import register from 'libs/register';
+import register from 'libs/Registry';
 
 export const HiddenRender = () => null;
 export default HiddenRender;

@@ -1,4 +1,4 @@
-import register from 'libs/register';
+import register from 'libs/Registry';
 
 import _ from 'lodash';
 
@@ -24,8 +24,6 @@ export const getRenderer = (prop) => {
   return register('CONFIG_UI').get(getPropType(prop)) || defaultRender
 }
 
-export const getConfigProps = () => {
-  return Object.keys(ConfigSchema);
-}
+export const getConfigProps = () => Object.keys(ConfigSchema);
 
 export default ConfigSchema;

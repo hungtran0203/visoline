@@ -1,7 +1,7 @@
 import Model from 'libs/model/model';
 import BelongsTo from 'gen/visoline/model/relations/BelongsTo';
 import _ from 'lodash';
-import register from 'libs/register';
+import register from 'libs/Registry';
 
 export class MetaModel extends Model {
   static COLNAME = 'meta';
