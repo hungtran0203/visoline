@@ -17,7 +17,7 @@ import EditableText from 'components/EditableText';
 import 'libs/loader';
 import DirectoryModel from 'gen/visoline/model/Directory';
 import MetaModel from 'gen/visoline/model/Meta';
-import { withModel } from 'libs/model/hoc';
+import withModel from 'gen/visoline/hoc/withModel';
 
 const EXPANDED_NODES_STREAM = 'tree.expanded.nodes';
 const SHOW_PAGE_LIST_STREAM = 'tree.pagelist.show';

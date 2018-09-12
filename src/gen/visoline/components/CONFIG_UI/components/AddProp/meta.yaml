@@ -1,7 +1,9 @@
 LAYER_DEFAULT:
   id: 030b6716-c794-4c08-844b-aab899d67537
   name: AddProp
-  type: Component
+  type: CONFIG_UI
+LAYER_NAMESPACE_CONFIG:
+  name: add
 LAYER_CONTENT_LOADER:
   entry: index
   export: default

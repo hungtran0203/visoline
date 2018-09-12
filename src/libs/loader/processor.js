@@ -18,9 +18,9 @@ export const LAYER_DEFAULT = directive(['filename'])((props) => (layerData) => {
 
   const dirname = path.dirname(filename);
   const paths = path.join(dirname).split(path.sep);
-  const id = _.get(layerData);
+  const id = _.get(layerData, 'id');
   const node = DirectoryModel.mkdirp(paths);
-  const metaIt = MetaModel.getInstance(id);
+  const metaIt = MetaModel.getInstance({ id, ...layerData });
   metaIt.directory.changeTo(node.getId());
   metaIt.save();
   node.meta.addUnique(metaIt);
@@ -43,10 +43,24 @@ export const LAYER_CONTENT_LOADER = directive(['filename', 'id', 'type'])((props
     const exp = _.get(layerData, 'export', 'default');
 
     const { id, type } = _.pick(props, ['id', 'type']);
-    Registry(type).register(id, _.get(req, exp));
+    const code = _.get(req, exp);
+    Registry(type).register(id, code);
+
+    /** data provide at this layer */
+    _.set(props, 'code', code);
+    /** data provide at this layer */
   }
 
   /** data provide at this layer */
+});
+
+export const LAYER_NAMESPACE_CONFIG = directive(['code', 'type'])((props) => (layerData) => {
+  const name = _.get(layerData, 'name');
+  const type = _.get(layerData, 'type', _.get(props, 'type'));
+  const code = _.get(props, 'code');
+  if (name && type && code) {
+    Registry(type).register(name, code);
+  }
 });
 
 export const LAYER_RAW_DATA = directive(['id'])((props) => (layerData, data) => {

@@ -1,7 +1,9 @@
 LAYER_DEFAULT:
   id: bdeb6d2d-204b-4837-9ea3-7e5bd4bfc8f7
   name: ReadOnlyRender
-  type: Component
+  type: CONFIG_UI
+LAYER_NAMESPACE_CONFIG:
+  name: readonly
 LAYER_CONTENT_LOADER:
   entry: index
   export: default

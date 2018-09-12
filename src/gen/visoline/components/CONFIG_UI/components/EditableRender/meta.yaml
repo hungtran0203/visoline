@@ -1,7 +1,9 @@
 LAYER_DEFAULT:
   id: a79882ae-5507-4730-a1f4-e139afe73035
   name: EditableRender
-  type: Component
+  type: CONFIG_UI
+LAYER_NAMESPACE_CONFIG:
+  name: editable
 LAYER_CONTENT_LOADER:
   entry: index
   export: default

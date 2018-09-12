@@ -1,9 +1,0 @@
-[
-  {
-    "id": "f30f0eba-0bc8-41b8-be95-ba544472f538",
-    "name": "withModelStream",
-    "entry": "index",
-    "export": "default",
-    "type": "enhancer"
-  }
-]

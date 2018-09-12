@@ -1,7 +1,7 @@
 LAYER_DEFAULT:
   id: 3ee7c52b-9259-4f99-b051-3bd35fb10cde
   name: Nested
-  type: modelRelation
+  type: MODEL_RELATION_CLASS
 LAYER_CONTENT_LOADER:
   entry: index
   export: default

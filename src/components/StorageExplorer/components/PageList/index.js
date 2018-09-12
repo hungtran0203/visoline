@@ -6,7 +6,7 @@ import { compose, branch, renderNothing } from 'recompose';
 import { withStreamProps } from 'libs/hoc';
 
 import BoxModel from 'gen/visoline/model/Box';
-import { withModelSize } from 'libs/model/hoc';
+import withModelSize from 'gen/visoline/hoc/withModelSize';
 
 import { SHOW_PAGE_LIST_STREAM } from '../../constants';
 import styles from '../../styles.scss';

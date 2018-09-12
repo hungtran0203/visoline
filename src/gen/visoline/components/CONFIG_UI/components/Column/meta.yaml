@@ -1,7 +1,7 @@
 LAYER_DEFAULT:
   id: 790456f0-4cde-44cd-8332-f3aaafd9d340
   name: Column
-  type: Component
+  type: CONFIG_UI
 LAYER_CONTENT_LOADER:
   entry: index
   export: default

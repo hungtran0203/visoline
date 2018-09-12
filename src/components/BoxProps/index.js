@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles.scss';
 import { compose, branch, renderNothing } from 'recompose';
 
-import { withModelStreamProp } from 'libs/model/hoc';
+import withModelStreamProp from 'gen/visoline/hoc/withModelStreamProp';
 import BoxModel from 'gen/visoline/model/Box';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { getRenderer, getConfigProps } from 'libs/ConfigSchema';

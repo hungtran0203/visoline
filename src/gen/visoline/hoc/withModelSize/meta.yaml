@@ -1,7 +1,7 @@
 LAYER_DEFAULT:
   id: 21e2d09d-0819-4648-a665-329a2c2e12c3
   name: withModelSize
-  type: hoc
+  type: HOC_CLASS
 LAYER_CONTENT_LOADER:
   entry: index
   export: default

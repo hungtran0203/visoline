@@ -3,7 +3,7 @@ import Icon from '@material-ui/core/Icon';
 import { ACTIVE_ITEM_STREAM, ACTIVE_ELEMENT_STREAM } from 'libs/hoc/editor';
 import { compose, withHandlers, withState, withProps } from 'recompose';
 import { withStreamProps, withStreams, composeHandler } from 'libs/hoc';
-import { withModelStreamProp } from 'libs/model/hoc';
+import withModelStreamProp from 'gen/visoline/hoc/withModelStreamProp';
 import EditableText from 'components/EditableText';
 import classnames from 'classnames';
 import { Flex, Box } from 'reflexbox';

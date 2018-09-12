@@ -1,4 +1,4 @@
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 
 /*
   wrapper of immutable object
@@ -13,7 +13,7 @@ export class BelongsTo {
   }
 
   getRelIt() {
-    const relIt = register('MODEL_CLASS').resolveById(this.getRel(), this.relClass);
+    const relIt = Registry('MODEL_CLASS').resolveById(this.getRel(), this.relClass);
     return relIt;
   }
 
@@ -50,7 +50,7 @@ export class BelongsTo {
   }
 
   changeTo(newVal) {
-    const newOrig = register('MODEL_CLASS').resolveById(newVal, this.relClass);
+    const newOrig = Registry('MODEL_CLASS').resolveById(newVal, this.relClass);
     if(newOrig && newOrig.isExists()) {
       this.relOwner.set(this.relName, newOrig.getRefId());
       this.relOwner.save();

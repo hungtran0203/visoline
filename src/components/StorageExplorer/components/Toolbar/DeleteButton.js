@@ -1,7 +1,8 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
 import { compose, branch, renderNothing, withHandlers, withProps } from 'recompose';
-import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import withModelStream from 'gen/visoline/hoc/withModelStream';
+import withModelStreamProp from 'gen/visoline/hoc/withModelStreamProp';
 import { ACTIVE_PAGE_STREAM } from 'constants';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import styles from './styles.scss';

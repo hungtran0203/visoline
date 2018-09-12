@@ -1,4 +1,4 @@
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 import React from 'react';
 import { Flex, Box } from 'reflexbox';
 import styles from '../../styles.scss';
@@ -16,5 +16,3 @@ export const ReadOnlyRender = ({ prop, value }) => {
 };
 
 export default ReadOnlyRender;
-
-register('CONFIG_UI').register('readonly', ReadOnlyRender);

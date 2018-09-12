@@ -3,13 +3,13 @@ import Nested from 'gen/visoline/model/relations/Nested';
 import HasMany from 'gen/visoline/model/relations/HasMany';
 import _ from 'lodash';
 
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 
 export class BoxModel extends Model {
   static COLNAME = 'box';
   constructor(...args) {
     super(...args);
-    const BoxEnhancerModel = register('MODEL_CLASS').get('boxEnhancer');
+    const BoxEnhancerModel = Registry('MODEL_CLASS').get('boxEnhancer');
 
     // define parent-children relationship
     const parentChildrenRel = new Nested({ relOwner: this, relUpperName: 'parentId', relLowerName: 'children', relClass: this.constructor });
@@ -26,7 +26,6 @@ export class BoxModel extends Model {
 };
 
 // load schema
-register.load(require.context('./schema', true, /.*(\.json)$/));
-register('MODEL_CLASS').register(BoxModel.COLNAME, BoxModel);
+Registry('MODEL_CLASS').register(BoxModel.COLNAME, BoxModel);
 
 export default BoxModel;

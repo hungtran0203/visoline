@@ -7,7 +7,9 @@ import { compose, withHandlers, withProps } from 'recompose';
 import styles from '../../styles.scss';
 
 import BoxModel from 'gen/visoline/model/Box';
-import { withModel, withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import withModel from 'gen/visoline/hoc/withModel';
+import withModelStream from 'gen/visoline/hoc/withModelStream';
+import withModelStreamProp from 'gen/visoline/hoc/withModelStreamProp';
 
 export const PageListItem = compose(
   withModelStream({ srcStream: ACTIVE_PAGE_STREAM, model: BoxModel, dstProp: 'activePage$' }),

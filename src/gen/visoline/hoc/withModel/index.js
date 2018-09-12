@@ -1,7 +1,7 @@
 import { compose, lifecycle, withState, withPropsOnChange } from 'recompose';
 import { omitProps } from 'libs/hoc';
 import withHandlers from 'recompose/withHandlers';
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 
 const PROPS = {
   UPDATE_ITEM: '$$updateItem',
@@ -15,7 +15,7 @@ export const withModel = ({ srcProp='id', model: Model, dstProp, watching=false 
   hocs.push(withPropsOnChange([srcProp], (props) => {
     const id = props[srcProp];
     if(id && dstProp) {
-      const modelIt = register('MODEL_CLASS').resolveById(id, Model);
+      const modelIt = Registry('MODEL_CLASS').resolveById(id, Model);
       return {
         [dstProp]: ((modelIt && modelIt.isExists()) ? modelIt : null),
       }

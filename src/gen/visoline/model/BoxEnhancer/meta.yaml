@@ -1,7 +1,7 @@
 LAYER_DEFAULT:
   id: 3f06893f-3041-4ac4-b6b9-ae5053727098
   name: BoxEnhancerModel
-  type: model
+  type: MODEL_CLASS
 LAYER_NAMESPACE_CONFIG:
   name: boxEnhancer
 LAYER_CONTENT_LOADER:

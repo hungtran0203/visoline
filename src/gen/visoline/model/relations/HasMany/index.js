@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 
 /*
   wrapper of immutable object
@@ -29,7 +29,7 @@ export class HasMany {
   }
 
   toIt() {
-    return this.getRelListIm().map(refId => register('MODEL_CLASS').resolveById(refId, this.relClass));
+    return this.getRelListIm().map(refId => Registry('MODEL_CLASS').resolveById(refId, this.relClass));
   }
 
   toJS() {

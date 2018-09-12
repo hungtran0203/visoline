@@ -1,19 +1,18 @@
 import Model from 'libs/model/model';
 import BelongsTo from 'gen/visoline/model/relations/BelongsTo';
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 
 export class BoxEnhancerModel extends Model {
   static COLNAME = 'boxEnhancer';
   constructor(...args) {
     super(...args);
-    const MetaModel = register('MODEL_CLASS').get('meta');
+    const MetaModel = Registry('MODEL_CLASS').get('meta');
 
     this.enhancer = new BelongsTo({ relOwner: this, relName: 'enhancerId', relClass: MetaModel });
   }
 };
 
 // load schema
-register.load(require.context('./schema', true, /.*(\.json)$/));
-register('MODEL_CLASS').register(BoxEnhancerModel.COLNAME, BoxEnhancerModel);
+Registry('MODEL_CLASS').register(BoxEnhancerModel.COLNAME, BoxEnhancerModel);
 
 export default BoxEnhancerModel;

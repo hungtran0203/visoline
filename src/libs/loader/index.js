@@ -23,35 +23,35 @@ const getTypeSymbol = (type) => {
 
 let directoryStore = fromJS({}).asMutable();
 
-const metaLoader = (filename) => {
-  const dirname = path.dirname(filename);
+// const metaLoader = (filename) => {
+//   const dirname = path.dirname(filename);
 
-  // load meta file
-  // const metaFilename = `./${path.join(dirname, 'meta.json')}`;
-  const metaConfig = requireAllMeta(filename);
-  metaConfig.map((meta) => {
-    const paths = path.join(dirname).split(path.sep);
-    const node = DirectoryModel.mkdirp(paths);
-    const metaIt = MetaModel.getInstance(meta);
-    metaIt.directory.changeTo(node.getId());
-    metaIt.save();
-    node.meta.addUnique(metaIt);
-    // load content
-    const entryFile = _.get(meta, 'entry', 'index');
-    const entryFullFilename = './' + path.join(dirname, `${entryFile}.js`);
-    if(allSourceFiles.includes(entryFullFilename)) {
-      const req = requireAll(entryFullFilename);
-      const exp = _.get(meta, 'export', 'default');
-      const { id, type } = meta;
-      register(type).register(id, _.get(req, exp));
-    }
-    node.save();
-  });
-}
+//   // load meta file
+//   // const metaFilename = `./${path.join(dirname, 'meta.json')}`;
+//   const metaConfig = requireAllMeta(filename);
+//   metaConfig.map((meta) => {
+//     const paths = path.join(dirname).split(path.sep);
+//     const node = DirectoryModel.mkdirp(paths);
+//     const metaIt = MetaModel.getInstance(meta);
+//     metaIt.directory.changeTo(node.getId());
+//     metaIt.save();
+//     node.meta.addUnique(metaIt);
+//     // load content
+//     const entryFile = _.get(meta, 'entry', 'index');
+//     const entryFullFilename = './' + path.join(dirname, `${entryFile}.js`);
+//     if(allSourceFiles.includes(entryFullFilename)) {
+//       const req = requireAll(entryFullFilename);
+//       const exp = _.get(meta, 'export', 'default');
+//       const { id, type } = meta;
+//       register(type).register(id, _.get(req, exp));
+//     }
+//     node.save();
+//   });
+// }
 
-requireAllMeta.keys().forEach((filename, index, files) => {
-  metaLoader(filename, files);
-});
+// requireAllMeta.keys().forEach((filename, index, files) => {
+//   metaLoader(filename, files);
+// });
 
 
 const processLayer = (props) => (layerId, data) => {
@@ -65,7 +65,7 @@ const processLayer = (props) => (layerId, data) => {
 const yamlMetaLoader = (filename) => {
   const data = requireAllYaml(filename);
   const props = { filename };
-  _.intersection(_.keys(data), _.keys(layerProcessors))
+  _.union(_.keys(data), _.keys(layerProcessors))
     .map(layerId => processLayer(props)(layerId, data));
 }
 

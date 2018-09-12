@@ -1,4 +1,4 @@
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 import React from 'react';
 import { compose, withHandlers, withState, renderComponent, branch, renderNothing } from 'recompose';
 import EditableText from 'components/EditableText';
@@ -26,5 +26,3 @@ export const EditableRender = compose(
 });
 
 export default EditableRender;
-
-register('CONFIG_UI').register('editable', EditableRender);

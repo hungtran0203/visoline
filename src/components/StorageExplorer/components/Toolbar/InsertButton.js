@@ -1,10 +1,11 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
 import { compose, withHandlers, withProps } from 'recompose';
-import { withModelStreamProp } from 'libs/model/hoc';
 import { ACTIVE_PAGE_STREAM } from 'constants';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
+
 import BoxModel from 'gen/visoline/model/Box';
+import withModelStreamProp from 'gen/visoline/hoc/withModelStreamProp';
 import styles from './styles.scss';
 
 export const InsertButton = compose(

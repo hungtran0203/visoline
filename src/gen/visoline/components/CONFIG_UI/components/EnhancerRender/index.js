@@ -1,4 +1,4 @@
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 import React from 'react';
 import { compose, withHandlers, renderComponent, branch, renderNothing, withProps } from 'recompose';
 import { Flex, Box } from 'reflexbox';
@@ -144,5 +144,3 @@ export const EnhancerRender = compose(
 });
 
 export default EnhancerRender;
-
-register('CONFIG_UI').register('enhancer', EnhancerRender);

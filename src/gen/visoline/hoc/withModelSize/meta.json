@@ -1,9 +1,0 @@
-[
-  {
-    "id": "21e2d09d-0819-4648-a665-329a2c2e12c3",
-    "name": "withModelSize",
-    "entry": "index",
-    "export": "default",
-    "type": "enhancer"
-  }
-]

@@ -2,7 +2,7 @@ import Model from 'libs/model/model';
 import Nested from 'gen/visoline/model/relations/Nested';
 import HasMany from 'gen/visoline/model/relations/HasMany';
 
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 
 const metaSymbol = Symbol('meta');
 export class DirectoryModel extends Model {
@@ -10,7 +10,7 @@ export class DirectoryModel extends Model {
   constructor(...args) {
     super(...args);
 
-    const MetaModel = register('MODEL_CLASS').get('meta');
+    const MetaModel = Registry('MODEL_CLASS').get('meta');
 
     // define parent-children relationship
     const parentChildrenRel = new Nested({ relOwner: this, relUpperName: 'parentId', relLowerName: 'children', relClass: this.constructor });
@@ -61,7 +61,6 @@ export class DirectoryModel extends Model {
 };
 
 // load schema
-register.load(require.context('./schema', true, /.*(\.json)$/));
-register('MODEL_CLASS').register(DirectoryModel.COLNAME, DirectoryModel);
+Registry('MODEL_CLASS').register(DirectoryModel.COLNAME, DirectoryModel);
 
 export default DirectoryModel;

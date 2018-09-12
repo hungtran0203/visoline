@@ -4,7 +4,8 @@ import { ACTIVE_PAGE_STREAM } from 'constants';
 import { compose, branch, renderNothing, withHandlers } from 'recompose';
 import { SHOW_PAGE_LIST_STREAM } from '../../constants';
 import { withStreamProps, withStreams } from 'libs/hoc';
-import { withModelStream, withModelStreamProp } from 'libs/model/hoc';
+import withModelStream from 'gen/visoline/hoc/withModelStream';
+import withModelStreamProp from 'gen/visoline/hoc/withModelStreamProp';
 
 import Header from '../Header';
 import { Flex } from 'reflexbox';

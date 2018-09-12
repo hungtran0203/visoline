@@ -1,7 +1,7 @@
 LAYER_DEFAULT:
   id: f30f0eba-0bc8-41b8-be95-ba544472f538
   name: withModelStream
-  type: hoc
+  type: HOC_CLASS
 LAYER_CONTENT_LOADER:
   entry: index
   export: default

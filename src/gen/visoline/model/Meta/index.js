@@ -1,13 +1,13 @@
 import Model from 'libs/model/model';
 import BelongsTo from 'gen/visoline/model/relations/BelongsTo';
 import _ from 'lodash';
-import register from 'libs/Registry';
+import Registry from 'libs/Registry';
 
 export class MetaModel extends Model {
   static COLNAME = 'meta';
   constructor(...args) {
     super(...args);
-    const DirectoryModel = register('MODEL_CLASS').get('directory');
+    const DirectoryModel = Registry('MODEL_CLASS').get('directory');
 
     // define directory relationship
     this.directory = new BelongsTo({ relOwner: this, relName: 'directoryId', relClass: DirectoryModel });
@@ -24,7 +24,6 @@ export class MetaModel extends Model {
   }
 };
 
-register.load(require.context('./schema', true, /.*(\.json)$/));
-register('MODEL_CLASS').register(MetaModel.COLNAME, MetaModel);
+Registry('MODEL_CLASS').register(MetaModel.COLNAME, MetaModel);
 
 export default MetaModel;

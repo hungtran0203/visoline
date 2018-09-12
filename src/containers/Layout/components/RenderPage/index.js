@@ -1,7 +1,7 @@
 import { withItemBuilder, getItemBuilder } from 'libs/hoc/builder';
 import { compose, withHandlers, withProps, branch, renderNothing } from 'recompose';
 import { withActivation } from 'libs/hoc/editor';
-import { withModel } from 'libs/model/hoc';
+import withModel from 'gen/visoline/hoc/withModel';
 
 const editorHOC = [
   withActivation(),

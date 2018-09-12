@@ -8,7 +8,7 @@ import * as Components from 'reflexbox';
 import { compose, withHandlers, withProps, branch, renderNothing } from 'recompose';
 import { withStreamProps, withStreams, getStream, pickProps } from 'libs/hoc';
 import * as handlers from './handlers';
-import { withModelStreamProp } from 'libs/model/hoc';
+import withModelStreamProp from 'gen/visoline/hoc/withModelStreamProp';
 
 import 'libs/loader';
 import InsertButton from 'components/StorageExplorer/components/Toolbar/InsertButton';

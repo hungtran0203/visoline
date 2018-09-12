@@ -1,9 +1,0 @@
-[
-  {
-    "id": "7274bc40-1aec-4cbc-b29b-9b6a034237b6",
-    "name": "HasMany",
-    "entry": "index",
-    "export": "default",
-    "type": "modelRelation"
-  }
-]
