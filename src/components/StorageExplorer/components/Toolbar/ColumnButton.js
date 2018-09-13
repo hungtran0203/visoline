@@ -12,7 +12,7 @@ export const ColumnButton = compose(
   withHandlers({
     onClick: ({ activeBoxIt }) => () => {
       if (activeBoxIt) {
-        activeBoxIt.set('type', 'Box').save();
+        activeBoxIt.set('component', 'Box').save();
       }
     }
   }),

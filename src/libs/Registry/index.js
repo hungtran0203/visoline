@@ -7,11 +7,11 @@ const lookup = new Map();
 class Registry {
   constructor(ns) {
     this.ns = ns;
-    this.Components = {};
+    this.Components = new Map();
   }
 
   get(type) {
-    return _.get(this.Components, type);
+    return this.Components.get(type);
   }
 
   resolve(type) {
@@ -23,7 +23,7 @@ class Registry {
   }
 
   register(type, Class) {
-    _.set(this.Components, type, Class);
+    this.Components.set(type, Class);
     return this;
   }
 

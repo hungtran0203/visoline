@@ -2,11 +2,11 @@ LAYER_DEFAULT:
   id: 0d7fa800-c9fc-48ac-9598-072633ed9c2c
   name: BoxModel
   type: MODEL_CLASS
-LAYER_NAMESPACE_CONFIG:
-  name: box
 LAYER_CONTENT_LOADER:
   entry: index
   export: default
+LAYER_NAMESPACE_CONFIG:
+  name: box
 LAYER_EDITOR_PROPS_VALUE_MODIFIER:
   type:
     type: editable

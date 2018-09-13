@@ -15,7 +15,7 @@ export const InsertButton = compose(
     onClick: ({ activePageIt, activeBoxIt }) => () => {
       const targetBoxIt = activeBoxIt ? activeBoxIt : activePageIt;
       if (targetBoxIt) {
-        const newBoxIt = BoxModel.new({ type: 'Box', name: 'New' });
+        const newBoxIt = BoxModel.new({ component: 'Box', name: 'New' });
         newBoxIt.parent.changeTo(targetBoxIt);
         targetBoxIt.children.push(newBoxIt);  
       }

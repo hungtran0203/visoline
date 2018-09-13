@@ -37,7 +37,7 @@ export const withComponentBuilder = () => compose(
   withItemIt(),
   withProps(({ itemIt }) => {
     if(itemIt) {
-      const Component = ComponentRegister.getInstance().get(itemIt.get('type', 'Box'));
+      const Component = ComponentRegister.getInstance().get(itemIt.get('component', 'Box'));
       return { Component };
     }
     return {};

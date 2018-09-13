@@ -10,7 +10,7 @@ export const RowButton = compose(
   withHandlers({
     onClick: ({ activeBoxIt }) => () => {
       if (activeBoxIt) {
-        activeBoxIt.set('type', 'Flex').save();
+        activeBoxIt.set('component', 'Flex').save();
       }
     }
   }),

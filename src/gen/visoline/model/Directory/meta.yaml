@@ -2,11 +2,11 @@ LAYER_DEFAULT:
   id: cb6f0898-5013-4bb6-9ad1-9c5a640dc2fd
   name: DirectoryModel
   type: MODEL_CLASS
-LAYER_NAMESPACE_CONFIG:
-  name: directory
 LAYER_CONTENT_LOADER:
   entry: index
   export: default
+LAYER_NAMESPACE_CONFIG:
+  name: directory
 LAYER_EDITOR_PROPS_VALUE_MODIFIER:
   content:
     type: editable

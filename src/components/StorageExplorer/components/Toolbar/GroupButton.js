@@ -19,7 +19,7 @@ export const GroupButton = compose(
       const selectedBoxes = selectedBoxes$.get();
       if (activeBoxIt && _.get(selectedBoxes, 'length')) {
         const parentIt = activeBoxIt.parent.toIt();
-        const groupBoxIt = BoxModel.new({ name: 'Group', type: 'Box'});
+        const groupBoxIt = BoxModel.new({ name: 'Group', component: 'Box'});
         [...selectedBoxes, activeBoxIt.getId()].map(boxId => {
           const boxIt = BoxModel.getInstance(boxId);
           boxIt.parent.toIt().children.remove(boxIt);

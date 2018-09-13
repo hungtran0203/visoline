@@ -34,6 +34,7 @@ export const withActivation = (activationClass='isActivation', isSelectedClass='
     }),
     withHandlers({
       onClick: ({ item, activationId$, activationEle$, ctrlKey$, selection$ }) => (e) => {
+        console.log('itemitem', item);
         const itemIm = storage.getItem(item);
         activationEle$.set(e.target);
         e.stopPropagation();

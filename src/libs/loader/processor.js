@@ -19,6 +19,7 @@ export const LAYER_DEFAULT = directive(['filename'])((props) => (layerData) => {
   const dirname = path.dirname(filename);
   const paths = path.join(dirname).split(path.sep);
   const id = _.get(layerData, 'id');
+  const type = _.get(layerData, 'type');
   const node = DirectoryModel.mkdirp(paths);
   const metaIt = MetaModel.getInstance({ id, ...layerData });
   metaIt.directory.changeTo(node.getId());
@@ -28,6 +29,7 @@ export const LAYER_DEFAULT = directive(['filename'])((props) => (layerData) => {
 
   /** data provide at this layer */
   _.set(props, 'id', id);
+  _.set(props, 'type', type);
   /** data provide at this layer */
 });
 
@@ -54,17 +56,28 @@ export const LAYER_CONTENT_LOADER = directive(['filename', 'id', 'type'])((props
   /** data provide at this layer */
 });
 
-export const LAYER_NAMESPACE_CONFIG = directive(['code', 'type'])((props) => (layerData) => {
+export const LAYER_NAMESPACE_CONFIG = directive(['id', 'code', 'type'])((props) => (layerData) => {
+  const id = _.get(props, 'id');
   const name = _.get(layerData, 'name');
   const type = _.get(layerData, 'type', _.get(props, 'type'));
   const code = _.get(props, 'code');
   if (name && type && code) {
     Registry(type).register(name, code);
+    Registry('CODE_LOOKUP').register(code, id);
   }
+  /** data provide at this layer */
+  _.set(props, 'namespace', name);
+  /** data provide at this layer */
 });
 
 export const LAYER_RAW_DATA = directive(['id'])((props) => (layerData, data) => {
-  const id = _.set(props, 'id');
+  const id = _.get(props, 'id');
   const type = 'LAYER_RAW_DATA';
   Registry(type).register(id, data);
+});
+
+export const LAYER_EDITOR_PROPS_VALUE_MODIFIER = directive(['id'])((props) => (layerData, data) => {
+  const id = _.get(props, 'id');
+  const type = 'CONFIG_SCHEMA';
+  Registry(type).register(id, layerData);
 });
