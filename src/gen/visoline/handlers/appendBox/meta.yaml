@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 1e99f290-0aa0-4405-83b3-e99650a99d43
+  name: withHandler
+  type: HANDLER_CLASS
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

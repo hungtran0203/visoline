@@ -5,3 +5,5 @@ LAYER_DEFAULT:
 LAYER_CONTENT_LOADER:
   entry: index
   export: default
+LAYER_NAMESPACE_CONFIG:
+  name: column

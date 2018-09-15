@@ -6,7 +6,7 @@ import withModelStreamProp from 'gen/visoline/hoc/withModelStreamProp';
 import BoxModel from 'gen/visoline/model/Box';
 import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import { getRenderer, getConfigProps } from 'libs/ConfigSchema';
-import AddProp from 'components/CONFIG_UI/components/AddProp'
+import AddProp from 'gen/visoline/components/CONFIG_UI/components/AddProp'
 
 export const BoxProps = compose(
   withModelStreamProp({ srcStream: ACTIVE_ITEM_STREAM, model: BoxModel, dstProp: 'activeBoxIt', watching: true }),

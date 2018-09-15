@@ -1,7 +1,5 @@
 import React from 'react';
 
-import 'components/CONFIG_UI';
-
 import styles from './styles.scss';
 import classnames from 'classnames';
 import * as Components from 'reflexbox';
@@ -19,6 +17,7 @@ import RowButton from 'components/StorageExplorer/components/Toolbar/RowButton';
 import ColumnButton from 'components/StorageExplorer/components/Toolbar/ColumnButton';
 
 import RenderPage from './components/RenderPage';
+import PageViewModeRender from './components/PageViewModeRender';
 
 import { DATA_STREAM, ROOT_ITEM_STREAM } from 'constants';
 
@@ -53,6 +52,12 @@ const RenderActivePage = compose(
   withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, dstProp: 'activePageIt', watching: true }),
 )(({ activePageIt }) => {
   return <RenderPage item={activePageIt}/>
+});
+
+const ActivePageViewModeRender = compose(
+  withModelStreamProp({ srcStream: ACTIVE_PAGE_STREAM, dstProp: 'activePageIt', watching: true }),
+)(({ activePageIt }) => {
+  return <PageViewModeRender item={activePageIt}/>
 });
 
 export class Layout extends React.Component {
@@ -99,6 +104,11 @@ export class Layout extends React.Component {
         </Flex>
         <Flex>
           <Box auto>
+            <div>
+              <Flex>
+                <ActivePageViewModeRender />
+              </Flex>
+            </div>
             <div  className={classnames(styles.container)}>
               <Flex>
                 <RenderActivePage />

@@ -7,6 +7,7 @@ import { withStreams, withStreamProps } from 'libs/hoc';
 import MetaModel from 'gen/visoline/model/Meta';
 import AddProp from '../AddProp'
 import { getRenderer, getConfigProps } from 'libs/ConfigSchema';
+import _ from 'lodash';
 
 const EnhancerOptionList = compose(
   withStreamProps({
@@ -16,13 +17,22 @@ const EnhancerOptionList = compose(
     ({ active, model }) => active !== model.getId(),
     renderNothing,
   ),
+  withProps(({ model }) => {
+    const configId = model.enhancer.toId();
+    const arrProps = getConfigProps(configId);
+    const configProps = {};
+    arrProps.map(prop => {
+      configProps[prop] = getRenderer(configId, prop);
+    })
+    return { configProps };
+  }),
 )(
-  ({ model }) => {
+  ({ model, configProps }) => {
     return (
       <Flex column>
         {
-          getConfigProps(model).map(prop => {
-            const Renderer = getRenderer(model, prop);
+          Object.keys(configProps).map(prop => {
+            const Renderer = configProps[prop];
             const value = model.get(prop);
             return (
               <Renderer key={prop} prop={prop} value={value} model={model} />

@@ -2,8 +2,8 @@ LAYER_DEFAULT:
   id: 42989619-546e-4f29-874f-ce4e70d5a53b
   name: EnhancerRender
   type: CONFIG_UI
-LAYER_NAMESPACE_CONFIG:
-  name: enhancer
 LAYER_CONTENT_LOADER:
   entry: index
   export: default
+LAYER_NAMESPACE_CONFIG:
+  name: enhancer
