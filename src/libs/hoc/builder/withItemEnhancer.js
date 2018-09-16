@@ -11,27 +11,12 @@ export const withItemEnhancer = () => BaseComponent => {
       const hocs = _.compact(item.enhancers.toIt().map(boxEnhancerIt => {
         const args = _.omit(boxEnhancerIt.toJS(), ['enhancerId', 'id']);
         const enhancerClass = Registry('HOC_CLASS').get(boxEnhancerIt.enhancer.toId());
-        return enhancerClass(args);
+        return typeof enhancerClass === 'function' ? enhancerClass(args) : null;
       }).toJS());
       if(hocs.length) {
         return compose(...hocs);
       }
       return null;
-    
-      // const itemIm = storage.getItem(item);
-      // const enhancerList = itemIm.get('enhancers');
-      // if (enhancerList) {
-      //   const hocs = _.compact(enhancerList.map(en => {
-      //     const enh = Enhancer.fromIm(en);
-      //     if (enh) {
-      //       return enh.build();
-      //     }
-      //   }).toJS());
-      //   if(hocs.length) {
-      //     return compose(...hocs);
-      //   }
-      // }
-      // return null;
     }
     render() {
       const hoc = this.getEnhancers();

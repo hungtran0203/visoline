@@ -10,6 +10,8 @@ LAYER_NAMESPACE_CONFIG:
 LAYER_EDITOR_PROPS_VALUE_MODIFIER:
   type:
     type: editable
+  component:
+    type: editable
   name:
     type: editable
   content:

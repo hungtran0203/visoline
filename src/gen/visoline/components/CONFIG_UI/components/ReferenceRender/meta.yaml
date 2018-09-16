@@ -1,0 +1,9 @@
+LAYER_DEFAULT:
+  id: 6860bfd1-e273-4664-a004-50b993e7b707
+  name: ReferenceRender
+  type: CONFIG_UI
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
+LAYER_NAMESPACE_CONFIG:
+  name: reference

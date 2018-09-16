@@ -1,0 +1,6 @@
+LAYER_DEFAULT:
+  id: c119b799-dfdd-43b9-83ec-d40a86511699
+  name: ACTIVE_ITEM_STREAM
+  type: CONSTANT_CLASS
+LAYER_CONSTANT_LOADER:
+  value: activeItem.stream

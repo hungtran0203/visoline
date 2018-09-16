@@ -27,6 +27,8 @@ export const LAYER_DEFAULT = directive(['filename'])((props) => (layerData) => {
   node.meta.addUnique(metaIt);
   node.save();
 
+  Registry.setLookup(id, type);
+
   /** data provide at this layer */
   _.set(props, 'id', id);
   _.set(props, 'type', type);
@@ -54,6 +56,14 @@ export const LAYER_CONTENT_LOADER = directive(['filename', 'id', 'type'])((props
   }
 
   /** data provide at this layer */
+});
+
+export const LAYER_CONSTANT_LOADER = directive(['id', 'type'])((props) => (layerData) => {
+  if (layerData) {
+    const { id, type } = _.pick(props, ['id', 'type']);
+    const value = _.get(layerData, 'value');
+    Registry(type).register(id, value);  
+  }
 });
 
 export const LAYER_NAMESPACE_CONFIG = directive(['id', 'code', 'type'])((props) => (layerData) => {

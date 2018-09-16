@@ -9,4 +9,4 @@ LAYER_EDITOR_PROPS_VALUE_MODIFIER:
   handlerName:
     type: editable
   handlerRefId:
-    type: editable
+    type: reference

@@ -1,5 +1,6 @@
 
 import _ from 'lodash';
+import { register } from '../register/index';
 
 const UUID_LENGTH = 36;
 
@@ -71,6 +72,25 @@ registry.load = (requireAll) => {
     const schema = _.get(req, 'schema');
     registry(namespace).register(name, schema);
   });
+}
+
+
+const typeLookup = new Map();
+registry.setLookup = (id, type) => {
+  typeLookup.set(id, type);
+}
+
+registry.lookup = (id) => {
+  const type = typeLookup.get(id);
+  return [type, id];
+}
+
+registry.lookupMeta = (id) => {
+  const identifier = registry.lookup(id);
+  if (identifier) {
+    const [ type ] = identifier;
+    return register(type).get(id);
+  }
 }
 
 export default registry;
