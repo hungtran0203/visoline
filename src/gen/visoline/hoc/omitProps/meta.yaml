@@ -1,0 +1,10 @@
+LAYER_DEFAULT:
+  id: bf2943c1-b751-4e79-af0c-5c5187d91a84
+  name: omitProps
+  type: HOC_CLASS
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
+LAYER_EDITOR_PROPS_VALUE_MODIFIER:
+  propNames:
+    type: list

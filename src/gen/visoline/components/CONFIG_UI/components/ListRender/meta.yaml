@@ -1,0 +1,9 @@
+LAYER_DEFAULT:
+  id: 471ddb69-1a0f-4959-a094-4ef224381c34
+  name: ListRender
+  type: CONFIG_UI
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
+LAYER_NAMESPACE_CONFIG:
+  name: list
