@@ -90,6 +90,7 @@ const EnhancerList = compose(
   withStreamProps({
     active: 'render.enahcer.active',
   }),
+  withStreams({ active$: 'render.boxenahcer.active' }),
   branch(
     ({ active, model }) => active !== model.getId(),
     renderNothing,
@@ -103,10 +104,17 @@ const EnhancerList = compose(
       const boxEnhIt = model.enhancers.relClass.new({ enhancerId: enhIt.getId() });
       boxEnhIt.save();
       model.enhancers.push(boxEnhIt);
-    },    
+    },
+    onRemove: ({ active$, model }) => () => {
+      const selectedBoxEnh = active$.get();
+      if (selectedBoxEnh) {
+        model.enhancers.remove(selectedBoxEnh);
+      }
+      console.log('rrmarmamramr', )
+    }
   })
 )(
-  ({ onAdd, model }) => {
+  ({ onAdd, model, onRemove }) => {
     return (
       <Flex column>
         {
@@ -114,14 +122,18 @@ const EnhancerList = compose(
             return (<BoxEnhancerRender key={boxEnhIt.getId()} model={boxEnhIt}/>)
           })
         }
-        <Flex justify="space-between">
-          <Box onClick={onAdd}>
+        <Flex>
+          <Box onClick={onRemove}>
             <Icon>remove</Icon>
-            Remove
+          </Box>
+          <Box onClick={onAdd}>
+            <Icon>arrow_upward</Icon>
+          </Box>
+          <Box onClick={onAdd}>
+            <Icon>arrow_downward</Icon>
           </Box>
           <Box onClick={onAdd}>
             <Icon>add</Icon>
-            Add Enhancer
           </Box>
         </Flex>
       </Flex>
