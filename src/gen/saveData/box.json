@@ -1,0 +1,217 @@
+{
+  "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1": {
+    "name": "Toolbar",
+    "type": "Box",
+    "id": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1",
+    "children": [
+      "0ed73e90-4348-48dc-aa80-ccfe73ec5966@box",
+      "a502acec-f277-4bd1-af8d-f3cad37fcdd1@box",
+      "2217ca3a-9854-44bf-96c2-97686895a33e@box",
+      "94c1fc58-91ca-4641-84fd-211f3e867b41@box",
+      "f80298ff-d7e2-466d-8845-31ca2d3a7d44@box",
+      "29d5ae56-816a-4faa-8274-4cbd69e21a4c@box",
+      "218985ae-e902-41b6-935d-1af552b73783@box"
+    ]
+  },
+  "0ed73e90-4348-48dc-aa80-ccfe73ec5966": {
+    "component": "Flex",
+    "name": "Append",
+    "id": "0ed73e90-4348-48dc-aa80-ccfe73ec5966",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box",
+    "enhancers": [
+      "0acc23f0-3ad1-49a4-93a9-b6d56832654b@boxEnhancer",
+      "02aec7fc-eb58-499a-8033-f54934b6e51e@boxEnhancer",
+      "309637af-5960-41f5-8738-5255c6529e8d@boxEnhancer"
+    ],
+    "children": [
+      "863fc7b5-d68b-40cf-a47b-bc325f9d919a@box",
+      "f86ec696-1c97-4703-92af-bd6c10c7d993@box"
+    ]
+  },
+  "a502acec-f277-4bd1-af8d-f3cad37fcdd1": {
+    "component": "Flex",
+    "name": "Insert",
+    "id": "a502acec-f277-4bd1-af8d-f3cad37fcdd1",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box",
+    "enhancers": [
+      "6a3d925a-72de-4f57-b63e-0104a0259bc5@boxEnhancer",
+      "3eaef0d2-66a9-4c91-8f76-5f60226224c4@boxEnhancer",
+      "24706d2d-cc19-4810-8c55-7fd53599ab9d@boxEnhancer",
+      "86544efc-a71e-4d40-9e6a-c3237acd2854@boxEnhancer",
+      "f02a8681-1143-41a9-8c39-3235fc261c2e@boxEnhancer"
+    ],
+    "children": [
+      "21d9eb98-d56f-491b-ada2-3e62ebecb342@box",
+      "cddc7f21-c452-4d9c-9df9-c276b0e0c116@box"
+    ]
+  },
+  "2217ca3a-9854-44bf-96c2-97686895a33e": {
+    "component": "Flex",
+    "name": "Delete",
+    "id": "2217ca3a-9854-44bf-96c2-97686895a33e",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box",
+    "children": [
+      "84e1b632-f411-4119-bfda-971908d79646@box",
+      "052ab3c3-c7da-4713-a5d9-3d2216ad9f29@box"
+    ],
+    "enhancers": [
+      "bc59d3d8-9ce2-46e6-b1ca-41bf4573f113@boxEnhancer",
+      "4b7f88a3-239f-4eec-be26-40115f984a93@boxEnhancer",
+      "c0f21016-25b8-4eeb-937f-66d15ef2687b@boxEnhancer"
+    ]
+  },
+  "84e1b632-f411-4119-bfda-971908d79646": {
+    "component": "Icon",
+    "name": "Icon",
+    "id": "84e1b632-f411-4119-bfda-971908d79646",
+    "parentId": "2217ca3a-9854-44bf-96c2-97686895a33e@box",
+    "type": "Icon",
+    "content": "delete"
+  },
+  "052ab3c3-c7da-4713-a5d9-3d2216ad9f29": {
+    "component": "Box",
+    "name": "Text",
+    "id": "052ab3c3-c7da-4713-a5d9-3d2216ad9f29",
+    "parentId": "2217ca3a-9854-44bf-96c2-97686895a33e@box",
+    "content": "Delete"
+  },
+  "863fc7b5-d68b-40cf-a47b-bc325f9d919a": {
+    "component": "Icon",
+    "name": "Icon",
+    "id": "863fc7b5-d68b-40cf-a47b-bc325f9d919a",
+    "parentId": "0ed73e90-4348-48dc-aa80-ccfe73ec5966@box",
+    "content": "add"
+  },
+  "f86ec696-1c97-4703-92af-bd6c10c7d993": {
+    "component": "Box",
+    "name": "Text",
+    "id": "f86ec696-1c97-4703-92af-bd6c10c7d993",
+    "parentId": "0ed73e90-4348-48dc-aa80-ccfe73ec5966@box",
+    "content": "Append"
+  },
+  "21d9eb98-d56f-491b-ada2-3e62ebecb342": {
+    "component": "Icon",
+    "name": "Icon",
+    "id": "21d9eb98-d56f-491b-ada2-3e62ebecb342",
+    "parentId": "a502acec-f277-4bd1-af8d-f3cad37fcdd1@box",
+    "content": "add"
+  },
+  "cddc7f21-c452-4d9c-9df9-c276b0e0c116": {
+    "component": "Box",
+    "name": "Text",
+    "id": "cddc7f21-c452-4d9c-9df9-c276b0e0c116",
+    "parentId": "a502acec-f277-4bd1-af8d-f3cad37fcdd1@box",
+    "content": "Insert"
+  },
+  "94c1fc58-91ca-4641-84fd-211f3e867b41": {
+    "component": "Flex",
+    "name": "Group",
+    "id": "94c1fc58-91ca-4641-84fd-211f3e867b41",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box",
+    "enhancers": [
+      "0091f3d9-ffd1-439c-8c55-0777d555d26e@boxEnhancer",
+      "d0d9ac3f-e109-448a-b4cb-a7b33d93812f@boxEnhancer",
+      "bb134c57-147d-4a6f-9395-7b56ba3aa96d@boxEnhancer",
+      "f49c5394-76fb-4142-9adc-a06df2f83298@boxEnhancer",
+      "87acee7d-d978-4cb8-905a-1697261825d3@boxEnhancer"
+    ],
+    "content": "Group",
+    "children": [
+      "6aa8f90d-eb2e-406d-aff5-18502677d4a7@box",
+      "1fc40963-17b3-4e33-a48e-19393caa44b0@box"
+    ]
+  },
+  "5fc999df-de3a-403b-94d2-d821c1dbafbc": {
+    "component": "Box",
+    "name": "New",
+    "id": "5fc999df-de3a-403b-94d2-d821c1dbafbc",
+    "parentId": "5243cb96-9918-48fe-b914-5f93e3515756@box"
+  },
+  "66b42061-7b73-413c-95b3-e6c733045b29": {
+    "component": "Box",
+    "name": "New",
+    "id": "66b42061-7b73-413c-95b3-e6c733045b29",
+    "parentId": "080bc440-fb91-455f-b35f-15001854362e@box"
+  },
+  "undefined": { "parentId": "74f553e2-8a11-4c6a-aa76-05fd3d5207f7@box" },
+  "9bef7f9b-6109-4bd4-a86e-c469d923e89f": {
+    "component": "Box",
+    "name": "New",
+    "id": "9bef7f9b-6109-4bd4-a86e-c469d923e89f",
+    "parentId": "f581db19-8966-43a1-b9b0-48841bc3307a@box"
+  },
+  "4607d4fe-ade9-4a0a-a7e8-e5b185847ee7": {
+    "component": "Box",
+    "name": "New",
+    "id": "4607d4fe-ade9-4a0a-a7e8-e5b185847ee7",
+    "parentId": "74f553e2-8a11-4c6a-aa76-05fd3d5207f7@box"
+  },
+  "c85ddbc6-74f3-40f3-95f9-4fb5e02f1e6f": {
+    "component": "Box",
+    "name": "New",
+    "id": "c85ddbc6-74f3-40f3-95f9-4fb5e02f1e6f",
+    "parentId": "5243cb96-9918-48fe-b914-5f93e3515756@box"
+  },
+  "abdfb5d8-1963-448c-adea-338abd68fa41": {
+    "component": "Box",
+    "name": "New",
+    "id": "abdfb5d8-1963-448c-adea-338abd68fa41",
+    "parentId": "6bbb2cc3-a187-4050-b56d-d6a3660ba4e0@box"
+  },
+  "5dbcdaa8-b8de-4642-b955-933b8d0a7199": {
+    "component": "Box",
+    "name": "New",
+    "id": "5dbcdaa8-b8de-4642-b955-933b8d0a7199",
+    "parentId": "6bbb2cc3-a187-4050-b56d-d6a3660ba4e0@box"
+  },
+  "6aa8f90d-eb2e-406d-aff5-18502677d4a7": {
+    "component": "Icon",
+    "name": "Icon",
+    "id": "6aa8f90d-eb2e-406d-aff5-18502677d4a7",
+    "parentId": "94c1fc58-91ca-4641-84fd-211f3e867b41@box",
+    "content": "group"
+  },
+  "1fc40963-17b3-4e33-a48e-19393caa44b0": {
+    "component": "Box",
+    "name": "Text",
+    "id": "1fc40963-17b3-4e33-a48e-19393caa44b0",
+    "parentId": "94c1fc58-91ca-4641-84fd-211f3e867b41@box",
+    "content": "Group"
+  },
+  "c2bbd47d-2d93-4b76-ab22-c8d0ec114bce": {
+    "component": "Box",
+    "name": "New",
+    "id": "c2bbd47d-2d93-4b76-ab22-c8d0ec114bce",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box"
+  },
+  "39709a9c-4ebf-4c46-8a72-1b3a53b5958e": {
+    "component": "Box",
+    "name": "New",
+    "id": "39709a9c-4ebf-4c46-8a72-1b3a53b5958e",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box"
+  },
+  "7a7e502f-a26a-45eb-a7c3-4dc00c636c51": {
+    "component": "Box",
+    "name": "New",
+    "id": "7a7e502f-a26a-45eb-a7c3-4dc00c636c51",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box"
+  },
+  "f80298ff-d7e2-466d-8845-31ca2d3a7d44": {
+    "component": "Box",
+    "name": "New",
+    "id": "f80298ff-d7e2-466d-8845-31ca2d3a7d44",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box"
+  },
+  "29d5ae56-816a-4faa-8274-4cbd69e21a4c": {
+    "component": "Box",
+    "name": "New",
+    "id": "29d5ae56-816a-4faa-8274-4cbd69e21a4c",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box"
+  },
+  "218985ae-e902-41b6-935d-1af552b73783": {
+    "component": "Box",
+    "name": "New",
+    "id": "218985ae-e902-41b6-935d-1af552b73783",
+    "parentId": "d1215a5a-e5a3-4d08-ac2b-7e39d106f9d1@box"
+  }
+}

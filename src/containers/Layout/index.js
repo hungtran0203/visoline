@@ -13,6 +13,7 @@ import InsertButton from 'components/StorageExplorer/components/Toolbar/InsertBu
 import DeleteButton from 'components/StorageExplorer/components/Toolbar/DeleteButton';
 import AppendButton from 'components/StorageExplorer/components/Toolbar/AppendButton';
 import GroupButton from 'components/StorageExplorer/components/Toolbar/GroupButton';
+import UnGroupButton from 'components/StorageExplorer/components/Toolbar/UnGroupButton';
 import RowButton from 'components/StorageExplorer/components/Toolbar/RowButton';
 import ColumnButton from 'components/StorageExplorer/components/Toolbar/ColumnButton';
 
@@ -63,13 +64,13 @@ const ActivePageViewModeRender = compose(
 export class Layout extends React.Component {
   componentWillMount() {
     this._nav = new Navigator(this.props.activeItem$);
-    const { doLoad } = this.props;
-    doLoad();
+    // const { doLoad } = this.props;
+    // doLoad();
   }
 
   render() {
     const { doPush, doInsert, doDelete, toColum, toRow, newRoot,
-      doSave, rootItem, doGroup, doUnGroup, doAddEnh,
+      doSave, doLoad, rootItem, doGroup, doUnGroup, doAddEnh,
       changeBackground,
     } = this.props;
     return (
@@ -90,16 +91,16 @@ export class Layout extends React.Component {
         <Flex>
           <Box className={styles.btn} onClick={newRoot}>New</Box>
           <Box className={styles.btn} onClick={doSave}>Save</Box>
+          <Box className={styles.btn} onClick={doLoad}>Load</Box>
         </Flex>
         <Flex>
           <AppendButton />
           <InsertButton />
           <DeleteButton />
-          <Box className={styles.btn} onClick={doDelete}>Delete</Box>
           <ColumnButton />
           <RowButton />
           <GroupButton />
-          <Box className={styles.btn} onClick={doUnGroup}>UnGroup</Box>
+          <UnGroupButton />
           <Box className={styles.btn} onClick={doAddEnh}>AddEnh</Box>
         </Flex>
         <Flex>

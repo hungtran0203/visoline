@@ -57,5 +57,33 @@ router.post('/renameDir', (req, res, next) => {
   });
 })
 
+router.post('/saveData', (req, res, next) => {
+  const route = req.baseUrl;
+  const payload = req.body;
+  const data = _.get(payload, 'data', {});
+  const name = _.get(payload, 'name', 'unknown');
+  const filePath = path.join(appDir, 'src', 'gen', 'saveData', `${name}.json`);
+  mkdirp(path.dirname(filePath), () => {
+    fs.writeFile(filePath, beautify(data, null, 2, 80), (err) => {
+      if (err) {
+        return next();
+      }  
+      res.json({status: 1});
+    })  
+  })
+})
+
+router.post('/loadData', (req, res, next) => {
+  const route = req.baseUrl;
+  const payload = req.body;
+  const name = _.get(payload, 'name', '');
+  const filePath = path.join(appDir, 'src', 'gen', 'saveData', `${name}.json`);
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      return next();
+    }  
+    res.json({ data: JSON.parse(data) });
+  })  
+})
 
 module.exports = router;

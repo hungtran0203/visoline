@@ -1,4 +1,5 @@
 import { fromJS } from 'immutable';
+import _ from 'lodash';
 import uuid from 'uuid';
 import invariant from 'invariant';
 import storage from 'libs/storage';
@@ -9,6 +10,9 @@ import * as Enhancers from 'libs/enhancer';
 import EnhancerItem from 'libs/storage/enhancer';
 
 import BoxModel from 'gen/visoline/model/Box';
+import BoxEnhancerModel from 'gen/visoline/model/BoxEnhancer';
+
+const EDITOR_URL = 'http://localhost:3001';
 
 export const initBox = ({ parentId }) => {
   return fromJS({
@@ -49,28 +53,73 @@ export const deleteBox = (item) => {
   return [newParent];
 };
 
+const saveModelToServer = (Model) => {
+  const modelIts = Model.findAll(() => true);
+  const data = {};
+  modelIts.map(modelIt => data[modelIt.getId()] = modelIt.toJS());
+  const endpointUrl = `${EDITOR_URL}/api/v1/ide/saveData`;
+  fetch(endpointUrl, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify({
+      data,
+      name: Model.COLNAME,
+    }),
+  });  
+
+};
+
+const loadModelFromServer = (Model) => {
+  const endpointUrl = `${EDITOR_URL}/api/v1/ide/loadData`;
+  fetch(endpointUrl, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify({
+      name: Model.COLNAME,
+    }),
+  })
+  .then(res => res.json())
+  .then(res => {
+    const data = _.get(res, 'data');
+    if(data) {
+      _.mapValues(data, (modelObj) => {
+        const modelIt = Model.getInstance(modelObj);
+        if (modelIt && modelIt.getId()) {
+          modelIt.save();
+          console.log('modelIt', modelIt.getId());  
+        } else {
+          console.log(modelObj);
+        }
+      })
+    }
+  });
+
+};
+
 export const doSave = ({ rootItem$ }) => () => {
-  const data = storage.toJS();
-  localStorage.setItem('visoline.storage', JSON.stringify(data));
-  EnhancerItem.doSave();
-  // save rootItem
-  localStorage.setItem('visoline.rootItemId', storage.getItem(rootItem$.get()).get('id'));
+  saveModelToServer(BoxModel);
+  saveModelToServer(BoxEnhancerModel);
 };
 
 export const doLoad = ({ rootItem$ }) => () => {
+  loadModelFromServer(BoxModel);
   // load storage
-  const data = localStorage.getItem('visoline.storage');
-  if(data) {
-    storage.load(JSON.parse(data));
-  }
+  // const data = localStorage.getItem('visoline.storage');
+  // if(data) {
+  //   storage.load(JSON.parse(data));
+  // }
 
-  EnhancerItem.doLoad();
-  // load rootItem
-  const rootItemId = localStorage.getItem('visoline.rootItemId');
-  if (rootItemId) {
-    const rootItemIm = storage.getItem(rootItemId);
-    rootItem$.set(rootItemIm);  
-  }
+  // EnhancerItem.doLoad();
+  // // load rootItem
+  // const rootItemId = localStorage.getItem('visoline.rootItemId');
+  // if (rootItemId) {
+  //   const rootItemIm = storage.getItem(rootItemId);
+  //   rootItem$.set(rootItemIm);  
+  // }
 }
 
 export const newRoot =  ({ setRootItem, setActiveItem }) => () => {

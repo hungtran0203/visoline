@@ -122,6 +122,11 @@ export class Model {
   isExists() {
     return !!this.data;
   }
+
+  isNew() {
+    const id = this.getId();
+    return !id || !storage.getItemFromId(this.constructor.COLNAME, id);
+  }
   /*
     read method
   */

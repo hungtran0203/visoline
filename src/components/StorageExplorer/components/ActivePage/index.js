@@ -13,7 +13,7 @@ import { Set as ISet } from 'immutable';
 import { EXPANDED_NODES_STREAM } from '../../constants';
 
 const buildNodes = (acc, { box, level = 0, expandedNodes, excludedSelf } ) => {
-  if(box) {
+  if(box && !box.isNew()) {
     if (!excludedSelf) {
       acc.push((
         <div key={box.getRefId()} className={styles.node}><BoxSelection boxIt={box} level={level} /></div>
