@@ -110,11 +110,22 @@ const EnhancerList = compose(
       if (selectedBoxEnh) {
         model.enhancers.remove(selectedBoxEnh);
       }
-      console.log('rrmarmamramr', )
-    }
+    },
+    onMoveUp: ({ active$, model }) => () => {
+      const selectedBoxEnh = active$.get();
+      if (selectedBoxEnh) {
+        model.enhancers.move(selectedBoxEnh, -1);
+      }
+    },
+    onMoveDown: ({ active$, model }) => () => {
+      const selectedBoxEnh = active$.get();
+      if (selectedBoxEnh) {
+        model.enhancers.move(selectedBoxEnh, 1);
+      }
+    },
   })
 )(
-  ({ onAdd, model, onRemove }) => {
+  ({ model, onAdd, onRemove, onMoveUp, onMoveDown }) => {
     return (
       <Flex column>
         {
@@ -126,10 +137,10 @@ const EnhancerList = compose(
           <Box onClick={onRemove}>
             <Icon>remove</Icon>
           </Box>
-          <Box onClick={onAdd}>
+          <Box onClick={onMoveUp}>
             <Icon>arrow_upward</Icon>
           </Box>
-          <Box onClick={onAdd}>
+          <Box onClick={onMoveDown}>
             <Icon>arrow_downward</Icon>
           </Box>
           <Box onClick={onAdd}>

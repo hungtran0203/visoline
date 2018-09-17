@@ -13,14 +13,16 @@ import { Set as ISet } from 'immutable';
 import { EXPANDED_NODES_STREAM } from '../../constants';
 
 const buildNodes = (acc, { box, level = 0, expandedNodes, excludedSelf } ) => {
-  if (!excludedSelf) {
-    acc.push((
-      <div key={box.getRefId()} className={styles.node}><BoxSelection boxIt={box} level={level} /></div>
-    ))  
-  }
-  const childrenIt = box.children.toIt();
-  if (childrenIt && (expandedNodes.has(box.getRefId()) || level === 0)) {
-    childrenIt.map((childIt => buildNodes(acc, { box: childIt, expandedNodes, level: level + 1 })))
+  if(box) {
+    if (!excludedSelf) {
+      acc.push((
+        <div key={box.getRefId()} className={styles.node}><BoxSelection boxIt={box} level={level} /></div>
+      ))  
+    }
+    const childrenIt = box.children.toIt();
+    if (childrenIt && (expandedNodes.has(box.getRefId()) || level === 0)) {
+      childrenIt.map((childIt => buildNodes(acc, { box: childIt, expandedNodes, level: level + 1 })))
+    }  
   }
   return acc;
 };

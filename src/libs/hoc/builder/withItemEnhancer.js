@@ -19,6 +19,10 @@ export const withItemEnhancer = () => BaseComponent => {
       return null;
     }
     render() {
+      const { item } = this.props;
+      if(!item) {
+        return null;
+      }
       const hoc = this.getEnhancers();
       if(hoc) {
         const Component = hoc(BaseComponent);

@@ -1,0 +1,12 @@
+LAYER_DEFAULT:
+  id: aa52f56c-a3d2-4833-b091-f1ab6729e73f
+  name: withStream
+  type: HOC_CLASS
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
+LAYER_EDITOR_PROPS_VALUE_MODIFIER:
+  propName:
+    type: editable
+  srcStream:
+    type: editable

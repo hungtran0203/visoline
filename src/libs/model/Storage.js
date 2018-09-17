@@ -26,8 +26,16 @@ export const isItemId = (itemId) => {
   return typeof itemId === 'string';
 };
 
+export const isRefId = (itemId) => {
+  return typeof itemId === 'string' && itemId.includes('@');
+}
+
 export const getItemId = (itemId) => {
   if ( !itemId ) return null;
+  if (isRefId(itemId)) {
+    const parts = itemId.split('@');
+    return parts[0].length > parts[1].length ? parts[0] : parts[1];
+  }
   if (isItemId(itemId))  return itemId;
   if (IMap.isMap(itemId)) return itemId.get('id');
   return _.get(itemId, 'id');
