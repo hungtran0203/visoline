@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: d421befc-bd9a-4847-af15-227391f48062
+  name: ungroupBox
+  type: HANDLER_CLASS
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

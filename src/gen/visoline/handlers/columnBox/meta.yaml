@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 5ab83381-a6d8-42bd-970f-ccc5a8675a6b
+  name: columnBox
+  type: HANDLER_CLASS
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

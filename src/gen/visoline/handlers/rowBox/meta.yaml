@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: b03cae72-98fe-438f-b3f2-064aa509c056
+  name: rowBox
+  type: HANDLER_CLASS
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

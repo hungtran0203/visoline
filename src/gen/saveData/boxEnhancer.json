@@ -132,5 +132,56 @@
     "enhancerId": "bf2943c1-b751-4e79-af0c-5c5187d91a84",
     "id": "87acee7d-d978-4cb8-905a-1697261825d3",
     "propNames": [ "activePageIt", "activeBoxIt", "selectedBoxes$" ]
+  },
+  "4104feda-1e21-40ea-b2a9-103c5930bd34": {
+    "enhancerId": "be4272c7-993b-4b14-8192-b36444a6d5e8",
+    "id": "4104feda-1e21-40ea-b2a9-103c5930bd34",
+    "dstProp": "activeBoxIt",
+    "srcStream": "activeItem.stream"
+  },
+  "4bee5cf7-d9c9-446b-b543-29fd96e61ce7": {
+    "enhancerId": "8b230e60-53cc-4a65-85aa-7b5ccb5f5a9f",
+    "id": "4bee5cf7-d9c9-446b-b543-29fd96e61ce7",
+    "handlerName": "onClick",
+    "handlerRefId": "d421befc-bd9a-4847-af15-227391f48062"
+  },
+  "0d3ccab7-a8b1-4d95-876e-479ba07ca8f7": {
+    "enhancerId": "bf2943c1-b751-4e79-af0c-5c5187d91a84",
+    "id": "0d3ccab7-a8b1-4d95-876e-479ba07ca8f7",
+    "propNames": [ "activeBoxIt" ]
+  },
+  "4c442ba8-3075-4f14-8aa7-976b99e1f23d": {
+    "enhancerId": "be4272c7-993b-4b14-8192-b36444a6d5e8",
+    "id": "4c442ba8-3075-4f14-8aa7-976b99e1f23d",
+    "srcStream": "activeItem.stream",
+    "dstProp": "activeBoxIt"
+  },
+  "da241ac7-efe2-4b3f-8a71-969d55e15a4b": {
+    "enhancerId": "8b230e60-53cc-4a65-85aa-7b5ccb5f5a9f",
+    "id": "da241ac7-efe2-4b3f-8a71-969d55e15a4b",
+    "handlerRefId": "5ab83381-a6d8-42bd-970f-ccc5a8675a6b",
+    "handlerName": "onClick"
+  },
+  "797f39bd-c766-4bd7-a681-d3e32c80e4e5": {
+    "enhancerId": "bf2943c1-b751-4e79-af0c-5c5187d91a84",
+    "id": "797f39bd-c766-4bd7-a681-d3e32c80e4e5",
+    "propNames": [ "activeBoxIt" ]
+  },
+  "9397754b-7cf8-4c9b-bc05-1766ec87e077": {
+    "enhancerId": "be4272c7-993b-4b14-8192-b36444a6d5e8",
+    "id": "9397754b-7cf8-4c9b-bc05-1766ec87e077",
+    "srcStream": "activeItem.stream",
+    "dstProp": "activeBoxIt"
+  },
+  "1403101c-fd4f-4ada-9d99-e9a4bab494d0": {
+    "enhancerId": "8b230e60-53cc-4a65-85aa-7b5ccb5f5a9f",
+    "id": "1403101c-fd4f-4ada-9d99-e9a4bab494d0",
+    "handlerRefId": "b03cae72-98fe-438f-b3f2-064aa509c056",
+    "handlerName": "onClick"
+  },
+  "313dc3eb-c188-4405-a1b3-d986fd48ea39": {
+    "enhancerId": "bf2943c1-b751-4e79-af0c-5c5187d91a84",
+    "id": "313dc3eb-c188-4405-a1b3-d986fd48ea39",
+    "propNames": [ "activeBoxIt" ]
   }
 }
