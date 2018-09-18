@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 61837a06-4369-4146-abc0-434b194ea328
+  name: Box
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

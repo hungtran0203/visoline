@@ -5,39 +5,26 @@ import { withItemIm, withItemIt } from 'libs/hoc/builder';
 
 import { Flex, Box } from 'reflexbox';
 import Icon from '@material-ui/core/Icon';
+import Registry from 'libs/Registry';
 
-let ComponentRegisterInstance = null;
-class ComponentRegister {
-  static getInstance() {
-    if(!ComponentRegisterInstance) {
-      const Class = this;
-      ComponentRegisterInstance = new Class();
-    }
-    return ComponentRegisterInstance;
-  }
+Registry('COMPONENT').register('Box', Box);
+Registry('COMPONENT').register('Flex', Flex);
+Registry('COMPONENT').register('Icon', Icon);
 
-  constructor() {
-    this.Components = {};
-  }
-  get(type) {
-    return _.get(this.Components, type);
-  }
-  register(type, Component) {
-    _.set(this.Components, type, Component);
-    return this;
-  }
-}
-
-const instance = ComponentRegister.getInstance();
-instance.register('Box', Box);
-instance.register('Flex', Flex);
-instance.register('Icon', Icon);
+const objectFormatter = v => v;
 
 export const withComponentBuilder = () => compose(
   withItemIt(),
   withProps(({ itemIt }) => {
     if(itemIt) {
-      const Component = ComponentRegister.getInstance().get(itemIt.get('component', 'Box'));
+      const componentId = Registry.refValueToString(itemIt.get('component', 'Box'), objectFormatter);
+      let Component;
+      if (typeof componentId === 'string') {
+        Component = Registry('COMPONENT').get(componentId);
+      } else {
+        const { type, id } = componentId;
+        Component = Registry(type).get(id);
+      }
       return { Component };
     }
     return {};

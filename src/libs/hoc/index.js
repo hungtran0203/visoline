@@ -4,6 +4,7 @@ export { withCachedProp } from './withCachedProp';
 export { omitProps } from './omitProps';
 export * from './pickProps';
 export { withRef } from './withRef';
+export { withUuid } from './withUuid';
 
 export * from './withComposedHandlers';
 export * from './stream';

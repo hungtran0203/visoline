@@ -11,7 +11,7 @@ import { ACTIVE_ITEM_STREAM } from 'libs/hoc/editor';
 import _ from 'lodash';
 
 const InputFieldUI = compose(
-  omitProps(['changeValueStr', 'newValue', 'changedValues', 'onDoneEdit', 'onStartEdit', 'onSave', 'isEditing', 'toggleEditing', 'setNewValue']),
+  omitProps(['displayValue', 'changeValueStr', 'newValue', 'changedValues', 'onDoneEdit', 'onStartEdit', 'onSave', 'isEditing', 'toggleEditing', 'setNewValue']),
 )((props) => {
   return (
     <Box auto>
@@ -73,6 +73,9 @@ export const EditableText = compose(
     ({ isEditing }) => !!isEditing,
     renderComponent(InputField),
   ),
+  withProps((props) => ({
+    value: _.has(props, 'displayValue') ? props.displayValue : props.value,
+  })),
 )(({ value, onStartEdit, className }) => {
   return (
     <div onDoubleClick={onStartEdit} className={classnames(className, styles.text)}>{value || <EmptyText />}</div>

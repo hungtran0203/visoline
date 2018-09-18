@@ -11,6 +11,10 @@ class Registry {
     this.Components = new Map();
   }
 
+  has(type) {
+    return this.Components.has(type);
+  }
+
   get(type) {
     return this.Components.get(type);
   }
@@ -91,6 +95,17 @@ registry.lookupMeta = (id) => {
     const [ type ] = identifier;
     return register(type).get(id);
   }
+}
+
+registry.refValueToString = (value, formatter = JSON.stringify) => {
+  if(typeof value === 'string' && value[0] === '@') {
+    const id = value.slice(1);
+    const [type] = registry.lookup(id);
+    if (registry('NAME_LOOKUP').has(id)) {
+      return formatter({ type, name: registry('NAME_LOOKUP').get(id), id });
+    }
+  }
+  return value;
 }
 
 export default registry;

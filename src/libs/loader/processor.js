@@ -20,6 +20,7 @@ export const LAYER_DEFAULT = directive(['filename'])((props) => (layerData) => {
   const paths = path.join(dirname).split(path.sep);
   const id = _.get(layerData, 'id');
   const type = _.get(layerData, 'type');
+  const name = _.get(layerData, 'name');
   const node = DirectoryModel.mkdirp(paths);
   const metaIt = MetaModel.getInstance({ id, ...layerData });
   metaIt.directory.changeTo(node.getId());
@@ -28,6 +29,8 @@ export const LAYER_DEFAULT = directive(['filename'])((props) => (layerData) => {
   node.save();
 
   Registry.setLookup(id, type);
+
+  Registry('NAME_LOOKUP').register(id, name);
 
   /** data provide at this layer */
   _.set(props, 'id', id);

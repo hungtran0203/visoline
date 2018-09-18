@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 57cec1ed-0c28-4c55-b2c3-b4f38cec9775
+  name: Flex
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

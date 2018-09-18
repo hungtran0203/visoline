@@ -1,6 +1,7 @@
 .row {
   height: 30px;
   display: flex;
+  position: relative;
   flex-direction: row;
   align-items: center;
   &:nth-child(2n) {
@@ -16,6 +17,20 @@
     &:not(:last-child) {
       border-inline-end: 1px solid black;
     }
+  }
+  &.activeRow {
+    color: white;
+    background: #5f91e0;
+    & .linkBtn {
+      display: block;
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      cursor: pointer;
+    }
+  }
+  & .linkBtn {
+    display: none;
   }
 }
 
