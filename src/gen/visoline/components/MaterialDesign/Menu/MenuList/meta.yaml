@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 5494c317-0b48-4d80-b8da-b7147b137bcd
+  name: MenuList
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

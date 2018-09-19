@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 0f82630c-ff45-44a7-a1ed-c30061e98f27
+  name: ListItemText
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

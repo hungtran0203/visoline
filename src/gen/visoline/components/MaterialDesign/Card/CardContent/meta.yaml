@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 4b9f878d-653c-4bfd-ba28-b226f4e953eb
+  name: CardContent
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

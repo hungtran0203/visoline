@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 1ad0e5c7-e782-4f10-976a-8fc29d076f79
+  name: ListSubheader
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

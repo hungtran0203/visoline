@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 6cc63cae-946f-46ea-8353-595bf0082866
+  name: ListItemSecondaryAction
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

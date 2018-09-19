@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: cadfacc2-bda5-43fa-b958-788e79e93f8f
+  name: DialogActions
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

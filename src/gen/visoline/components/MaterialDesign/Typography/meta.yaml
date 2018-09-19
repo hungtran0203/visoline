@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 0c1c93d8-07ee-4052-8659-c7c4eca9b7c7
+  name: Typography
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 71582ce7-2af2-4445-b201-b428f00810ae
+  name: ExpansionPanelDetails
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

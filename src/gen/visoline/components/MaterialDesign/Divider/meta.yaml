@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 552385f1-f7cf-4d37-835e-21b598d2e483
+  name: Divider
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

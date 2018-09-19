@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: beb1b547-0708-4505-8f63-a86e19b18fe9
+  name: ExpansionPanelActions
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 61179bb0-94eb-4cf6-9313-057609aacb7b
+  name: ListItemIcon
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

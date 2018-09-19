@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: f68b1d1c-53cd-4b9c-82e7-0cce6358a527
+  name: Switch
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

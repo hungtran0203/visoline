@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 18dcc3a4-3ce3-4f11-8d1d-012382edfca9
+  name: DialogTitle
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

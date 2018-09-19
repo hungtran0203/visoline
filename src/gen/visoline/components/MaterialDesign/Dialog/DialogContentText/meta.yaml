@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: dc516086-3426-4592-9c0f-aeb17a7b96b0
+  name: DialogContentText
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 9ef2fd76-22f6-4194-8e37-54c53ec5950a
+  name: ClickAwayListener
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

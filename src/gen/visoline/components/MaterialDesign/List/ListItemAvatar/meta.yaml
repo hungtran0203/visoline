@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: dc772537-c395-43cd-b88e-b2e4b8d005aa
+  name: ListItemAvatar
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: db71dffb-dfff-4844-a99c-e196fd448e53
+  name: Menu
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

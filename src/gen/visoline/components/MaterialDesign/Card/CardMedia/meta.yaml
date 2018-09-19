@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: ed5987ab-8d87-4d03-959d-6ffbcb8d2df1
+  name: Chip
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

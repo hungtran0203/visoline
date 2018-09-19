@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 761e9ca5-a8b4-4781-8f69-520d0a338e41
+  name: Checkbox
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

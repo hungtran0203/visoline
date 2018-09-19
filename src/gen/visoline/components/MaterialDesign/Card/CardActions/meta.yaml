@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: de0a1cf1-5d9e-47f8-953f-b101eb1ff813
+  name: CardActions
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

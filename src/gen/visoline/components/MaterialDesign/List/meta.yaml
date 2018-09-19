@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 676a4b6c-6faf-4bec-9ad0-80899f4349d4
+  name: List
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

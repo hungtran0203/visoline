@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 9c7b2c03-c4ea-4575-8178-07c2c46cf952
+  name: MenuItem
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

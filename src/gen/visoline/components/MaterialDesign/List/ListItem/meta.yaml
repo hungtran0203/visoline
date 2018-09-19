@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 50e7948a-1c36-4e08-80c9-a14d0a91c5a7
+  name: ListItem
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
