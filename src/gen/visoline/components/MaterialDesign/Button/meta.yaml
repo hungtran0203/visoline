@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 3550241d-be2f-4b49-8865-49028ec0022a
+  name: Button
+  type: COMPONENT
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default

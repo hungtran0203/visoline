@@ -183,5 +183,23 @@
     "enhancerId": "bf2943c1-b751-4e79-af0c-5c5187d91a84",
     "id": "313dc3eb-c188-4405-a1b3-d986fd48ea39",
     "propNames": [ "activeBoxIt" ]
+  },
+  "51a89aac-3b24-4e86-bbef-2e37b78195b8": {
+    "enhancerId": "db0daea5-6972-4c34-b184-39cad839dae4",
+    "id": "51a89aac-3b24-4e86-bbef-2e37b78195b8",
+    "propValue": "contained",
+    "propName": "variant"
+  },
+  "09c333d8-e6a5-4ed9-b591-3cb7266ffa38": {
+    "enhancerId": "db0daea5-6972-4c34-b184-39cad839dae4",
+    "id": "09c333d8-e6a5-4ed9-b591-3cb7266ffa38",
+    "propName": "color",
+    "propValue": "primary"
+  },
+  "71338e1e-1646-4ed8-956d-05caa17ff267": {
+    "enhancerId": "db0daea5-6972-4c34-b184-39cad839dae4",
+    "id": "71338e1e-1646-4ed8-956d-05caa17ff267",
+    "propName": "variant",
+    "propValue": "contained"
   }
 }

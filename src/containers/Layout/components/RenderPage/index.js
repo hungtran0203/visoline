@@ -6,6 +6,7 @@ import withModel from 'gen/visoline/hoc/withModel';
 const editorHOC = [
   withActivation(),
   withModel({ srcProp: 'item', dstProp: 'item', watching:true }),
+  withProps(() => ({ className: 'defaultBox' })),
 ];
 
 export const PageRender = compose(
