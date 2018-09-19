@@ -1,0 +1,6 @@
+LAYER_DEFAULT:
+  id: ce7a02c5-3fad-4026-9402-e3f39e329b8a
+  name: BOOLEAN_TRUE
+  type: CONSTANT_CLASS
+LAYER_CONSTANT_LOADER:
+  value: true

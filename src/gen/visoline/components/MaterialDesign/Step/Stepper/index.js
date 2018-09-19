@@ -1,1 +1,1 @@
-export * from '@material-ui/core/Stepper';
+export { default } from '@material-ui/core/Stepper';

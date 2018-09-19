@@ -97,7 +97,16 @@ registry.lookupMeta = (id) => {
   }
 }
 
-registry.refValueToString = (value, formatter = JSON.stringify) => {
+const contentFormatter = ({ type, name, id }) => {
+  switch(type) {
+    case 'CONSTANT_CLASS':
+      return registry('CONSTANT_CLASS').get(id);
+    default:
+      return registry(type).get(id);
+  }
+}
+
+registry.refValueToString = (value, formatter = contentFormatter) => {
   if(typeof value === 'string' && value[0] === '@') {
     const id = value.slice(1);
     const [type] = registry.lookup(id);

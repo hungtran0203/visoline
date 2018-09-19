@@ -1,6 +1,6 @@
 LAYER_DEFAULT:
   id: 1fb748f2-fbdb-4b43-b232-8aa8e2772288
-  name: Pager
+  name: Paper
   type: COMPONENT
 LAYER_CONTENT_LOADER:
   entry: index

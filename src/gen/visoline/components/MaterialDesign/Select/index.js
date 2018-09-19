@@ -1,1 +1,1 @@
-export * from '@material-ui/core/Select';
+export { default } from '@material-ui/core/Select';

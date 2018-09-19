@@ -9,7 +9,7 @@ export const withItemEnhancer = () => BaseComponent => {
     getEnhancers() {
       const { item } = this.props;
       const hocs = _.compact(item.enhancers.toIt().map(boxEnhancerIt => {
-        const args = _.omit(boxEnhancerIt.toJS(), ['enhancerId', 'id']);
+        const args = _.mapValues(_.omit(boxEnhancerIt.toJS(), ['enhancerId', 'id']), (val) => Registry.refValueToString(val));
         const enhancerClass = Registry('HOC_CLASS').get(boxEnhancerIt.enhancer.toId());
         return typeof enhancerClass === 'function' ? enhancerClass(args) : null;
       }).toJS());
