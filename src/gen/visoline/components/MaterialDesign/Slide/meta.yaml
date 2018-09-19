@@ -1,6 +1,6 @@
 LAYER_DEFAULT:
-  id: 17ca58e5-5de4-40f1-a3b1-f078df767457
-  name: Pager
+  id: 551fca08-72ff-4ede-a32e-7a6f71605fd1
+  name: Slide
   type: COMPONENT
 LAYER_CONTENT_LOADER:
   entry: index

@@ -1,6 +1,6 @@
 LAYER_DEFAULT:
-  id: 17ca58e5-5de4-40f1-a3b1-f078df767457
-  name: Pager
+  id: 3d674ae7-a27f-4e73-ad7b-a2a9cd9bd22e
+  name: StepContent
   type: COMPONENT
 LAYER_CONTENT_LOADER:
   entry: index

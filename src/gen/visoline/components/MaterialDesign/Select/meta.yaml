@@ -1,6 +1,6 @@
 LAYER_DEFAULT:
-  id: 17ca58e5-5de4-40f1-a3b1-f078df767457
-  name: Pager
+  id: 11200cdb-fcec-40cb-b357-5207616fd60d
+  name: Select
   type: COMPONENT
 LAYER_CONTENT_LOADER:
   entry: index

@@ -1,6 +1,6 @@
 LAYER_DEFAULT:
-  id: ed5987ab-8d87-4d03-959d-6ffbcb8d2df1
-  name: Chip
+  id: f79e3564-9987-4bce-8c2a-93ce1745b124
+  name: CardMedia
   type: COMPONENT
 LAYER_CONTENT_LOADER:
   entry: index

@@ -1,6 +1,6 @@
 LAYER_DEFAULT:
-  id: fc50c7a6-a4f4-46d9-993f-dbb610154944
-  name: Tooltip
+  id: 4ac160e1-88b0-4c0f-b1b8-21e75657b9ce
+  name: TableSortLabel
   type: COMPONENT
 LAYER_CONTENT_LOADER:
   entry: index
