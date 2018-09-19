@@ -201,5 +201,17 @@
     "id": "71338e1e-1646-4ed8-956d-05caa17ff267",
     "propName": "variant",
     "propValue": "contained"
+  },
+  "e9556a27-272d-4e9c-9cac-a4089affe004": {
+    "enhancerId": "db0daea5-6972-4c34-b184-39cad839dae4",
+    "id": "e9556a27-272d-4e9c-9cac-a4089affe004",
+    "propName": "open",
+    "propValue": "@ce7a02c5-3fad-4026-9402-e3f39e329b8a"
+  },
+  "2a83275b-0075-44a4-9444-826dab1d5f86": {
+    "enhancerId": "db0daea5-6972-4c34-b184-39cad839dae4",
+    "id": "2a83275b-0075-44a4-9444-826dab1d5f86",
+    "propName": "primary",
+    "propValue": "ListItemText"
   }
 }

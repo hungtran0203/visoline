@@ -353,5 +353,108 @@
     "id": "370cffe8-f925-400c-9da3-869574fcccc5",
     "parentId": "b0b836c0-2fd4-4d00-b070-efbd475c3ef6@box",
     "content": "x2"
+  },
+  "35efe15b-7765-4722-89bc-f065a7d2dbff": {
+    "name": "MD",
+    "type": "Box",
+    "id": "35efe15b-7765-4722-89bc-f065a7d2dbff",
+    "children": [
+      "cb8a3eee-2eea-4d9a-9150-3fc34567389f@box",
+      "b3744e01-2627-4a7d-9a54-53a507d7dea1@box",
+      "c10b23c8-68d3-40c5-ad07-46f0a6137f3b@box"
+    ]
+  },
+  "cb8a3eee-2eea-4d9a-9150-3fc34567389f": {
+    "component": "Box",
+    "name": "Menu",
+    "id": "cb8a3eee-2eea-4d9a-9150-3fc34567389f",
+    "parentId": "35efe15b-7765-4722-89bc-f065a7d2dbff@box",
+    "children": [
+      "283c30dc-e510-478b-8ab5-d75fdb587e74@box",
+      "b8992eb4-80fe-4489-b752-19823a997108@box",
+      "6cc446b8-f50d-46b1-90fe-0dc68a3b3ef6@box"
+    ],
+    "enhancers": [ "e9556a27-272d-4e9c-9cac-a4089affe004@boxEnhancer" ]
+  },
+  "b3744e01-2627-4a7d-9a54-53a507d7dea1": {
+    "component": "@676a4b6c-6faf-4bec-9ad0-80899f4349d4",
+    "name": "List",
+    "id": "b3744e01-2627-4a7d-9a54-53a507d7dea1",
+    "parentId": "35efe15b-7765-4722-89bc-f065a7d2dbff@box",
+    "children": [
+      "bc5b0cb9-fdcd-4696-b1f9-2f635e37c04e@box",
+      "63a27b37-b1a8-444b-b76f-0d6f5aa38168@box",
+      "be85b16c-bb96-4008-9d4c-dd4e8af96a4c@box"
+    ]
+  },
+  "c10b23c8-68d3-40c5-ad07-46f0a6137f3b": {
+    "component": "Box",
+    "name": "New",
+    "id": "c10b23c8-68d3-40c5-ad07-46f0a6137f3b",
+    "parentId": "35efe15b-7765-4722-89bc-f065a7d2dbff@box"
+  },
+  "283c30dc-e510-478b-8ab5-d75fdb587e74": {
+    "component": "@9c7b2c03-c4ea-4575-8178-07c2c46cf952",
+    "name": "MenuItem1",
+    "id": "283c30dc-e510-478b-8ab5-d75fdb587e74",
+    "parentId": "cb8a3eee-2eea-4d9a-9150-3fc34567389f@box",
+    "content": "MenuItem1"
+  },
+  "b8992eb4-80fe-4489-b752-19823a997108": {
+    "component": "@9c7b2c03-c4ea-4575-8178-07c2c46cf952",
+    "name": "MenuItem2",
+    "id": "b8992eb4-80fe-4489-b752-19823a997108",
+    "parentId": "cb8a3eee-2eea-4d9a-9150-3fc34567389f@box",
+    "content": "MenuItem2"
+  },
+  "6cc446b8-f50d-46b1-90fe-0dc68a3b3ef6": {
+    "component": "@9c7b2c03-c4ea-4575-8178-07c2c46cf952",
+    "name": "MenuItem3",
+    "id": "6cc446b8-f50d-46b1-90fe-0dc68a3b3ef6",
+    "parentId": "cb8a3eee-2eea-4d9a-9150-3fc34567389f@box",
+    "content": "MenuItem3"
+  },
+  "bc5b0cb9-fdcd-4696-b1f9-2f635e37c04e": {
+    "component": "@50e7948a-1c36-4e08-80c9-a14d0a91c5a7",
+    "name": "ListItem1",
+    "id": "bc5b0cb9-fdcd-4696-b1f9-2f635e37c04e",
+    "parentId": "b3744e01-2627-4a7d-9a54-53a507d7dea1@box",
+    "children": [ "92751603-136e-4808-be54-a66cfa919711@box" ]
+  },
+  "63a27b37-b1a8-444b-b76f-0d6f5aa38168": {
+    "component": "@50e7948a-1c36-4e08-80c9-a14d0a91c5a7",
+    "name": "ListItem2",
+    "id": "63a27b37-b1a8-444b-b76f-0d6f5aa38168",
+    "parentId": "b3744e01-2627-4a7d-9a54-53a507d7dea1@box",
+    "children": [ "6c6a1736-1ef1-454e-939d-efd07df1d6e4@box" ]
+  },
+  "be85b16c-bb96-4008-9d4c-dd4e8af96a4c": {
+    "component": "@50e7948a-1c36-4e08-80c9-a14d0a91c5a7",
+    "name": "ListItem3",
+    "id": "be85b16c-bb96-4008-9d4c-dd4e8af96a4c",
+    "parentId": "b3744e01-2627-4a7d-9a54-53a507d7dea1@box",
+    "children": [ "153e7b41-55fc-483b-a51a-b10d089d4325@box" ]
+  },
+  "92751603-136e-4808-be54-a66cfa919711": {
+    "component": "@0f82630c-ff45-44a7-a1ed-c30061e98f27",
+    "name": "ListItemText",
+    "id": "92751603-136e-4808-be54-a66cfa919711",
+    "parentId": "bc5b0cb9-fdcd-4696-b1f9-2f635e37c04e@box",
+    "enhancers": [ "2a83275b-0075-44a4-9444-826dab1d5f86@boxEnhancer" ],
+    "content": "primary"
+  },
+  "6c6a1736-1ef1-454e-939d-efd07df1d6e4": {
+    "component": "Box",
+    "name": "ListItemText",
+    "id": "6c6a1736-1ef1-454e-939d-efd07df1d6e4",
+    "parentId": "63a27b37-b1a8-444b-b76f-0d6f5aa38168@box",
+    "content": "ListItemText"
+  },
+  "153e7b41-55fc-483b-a51a-b10d089d4325": {
+    "component": "Box",
+    "name": "ListItemText",
+    "id": "153e7b41-55fc-483b-a51a-b10d089d4325",
+    "parentId": "be85b16c-bb96-4008-9d4c-dd4e8af96a4c@box",
+    "content": "ListItemText"
   }
 }
