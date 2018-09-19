@@ -6,7 +6,7 @@ export const withClassNameBuilder = () => compose(
   withItemIm(),
   withProps(({ itemIm, className }) => {
     if(itemIm) {
-      return { className: classnames(className, itemIm.get('className', 'defaultBox')) };
+      return { className: classnames(className, itemIm.get('className')) };
     }
     return {};
   }),

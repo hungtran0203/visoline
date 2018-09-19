@@ -1,0 +1,12 @@
+LAYER_DEFAULT:
+  id: db0daea5-6972-4c34-b184-39cad839dae4
+  name: withProp
+  type: HOC_CLASS
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
+LAYER_EDITOR_PROPS_VALUE_MODIFIER:
+  propName:
+    type: editable
+  propValue:
+    type: editable
