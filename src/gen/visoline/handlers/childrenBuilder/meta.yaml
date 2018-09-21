@@ -1,0 +1,7 @@
+LAYER_DEFAULT:
+  id: 85235405-2ee2-4b16-aa40-4823b1fc152f
+  name: childrenBuilder
+  type: HANDLER_CLASS
+LAYER_CONTENT_LOADER:
+  entry: index
+  export: default
